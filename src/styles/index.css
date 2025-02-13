@@ -1,1 +1,82 @@
 @import "tailwindcss";
+
+body {
+ font-family: "Lato", sans-serif;
+}
+
+/* Custom colors for the main theme */
+@theme {
+  --color-beige: #f2e9d8;
+  --color-lightGreen: #aaff9f;
+}
+
+.text-shadow {
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
+}
+
+
+
+.headerNavBox {
+  background-image: url("../images/bg-palms.jpg");
+}
+
+/* .lato-thin {
+  font-family: "Lato", serif;
+  font-weight: 100;
+  font-style: normal;
+}
+
+.lato-light {
+  font-family: "Lato", serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.lato-regular {
+  font-family: "Lato", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.lato-bold {
+  font-family: "Lato", serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.lato-black {
+  font-family: "Lato", serif;
+  font-weight: 900;
+  font-style: normal;
+}
+
+.lato-thin-italic {
+  font-family: "Lato", serif;
+  font-weight: 100;
+  font-style: italic;
+}
+
+.lato-light-italic {
+  font-family: "Lato", serif;
+  font-weight: 300;
+  font-style: italic;
+}
+
+.lato-regular-italic {
+  font-family: "Lato", serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.lato-bold-italic {
+  font-family: "Lato", serif;
+  font-weight: 700;
+  font-style: italic;
+}
+
+/* Logo, h1 */
+.lato-black-italic {
+  font-family: "Lato", serif;
+  font-weight: 900;
+  font-style: italic;
+} */
