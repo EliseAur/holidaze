@@ -1,6 +1,6 @@
 export default function Hero() {
   return (
-    <hero className="text-beige relative z-10 text-center">
+    <div className="text-beige relative z-10 text-center">
       <div className="py-20 px-4 sm:px-6 lg:px-8">
         <h1 className="text-shadow text-4xl sm:text-5xl lg:text-6xl font-black italic ">
           Find Your Perfect Getaway
@@ -24,7 +24,6 @@ export default function Hero() {
               type="text"
               placeholder="Search for venues..."
               className="flex-grow w-full sm:w-auto py-2 px-3 rounded-l-sm focus:outline-none input-inner-shadow bg-zinc-800/50 bg-opacity-90 border-beige border-2 text-beige placeholder-stone-400"
-              value=""
             />
             <button className="bg-beige text-black font-bold px-3 py-2 rounded-r-sm hover:bg-lightBeige">
               Search
@@ -32,6 +31,6 @@ export default function Hero() {
           </div>
         </div>
       </div>
-    </hero>
+    </div>
   );
 }
