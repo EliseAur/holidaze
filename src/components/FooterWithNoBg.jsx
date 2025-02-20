@@ -5,23 +5,11 @@ import {
   faYoutube,
 } from "@fortawesome/free-brands-svg-icons";
 
-export default function Footer() {
+export default function FooterWithNoBg() {
   return (
-    <footer
-      className="footerBg py-6 px-4 text-beige bg-cover bg-center
-        bg-no-repeat relative"
-    >
-      <div className="absolute inset-0 bg-black opacity-40"></div>
-      <div className="z-10 relative mx-auto flex justify-between items-center">
-        <div>
-          <a
-            to="/"
-            className="text-shadow font-black italic text-lightGreen hover:text-darkGreen text-2xl sm:text-3xl"
-          >
-            HoliDaze
-          </a>
-        </div>
-        <div className="flex space-x-4">
+    <footer className="py-6 px-4 text-beige">
+      <div className="mx-auto">
+        <div className="flex space-x-4 justify-center">
           <a
             href="https://facebook.com"
             target="_blank"

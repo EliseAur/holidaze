@@ -17,9 +17,11 @@ body {
 @theme {
   --color-beige: #f2e9d8;
   --color-lightBeige: #f9f6f1;
+  --color-darkBeige: #95928c;
   --color-lightGreen: #aaff9f;
   --color-darkGreen: #7cd870;
-  /* --color-darkGreen: #467157; #41604e */
+  --color-darkerGreen: #1a201d;
+  /* #467157; #41604e */
   --shadow-custom-dark: 0 3px 6px rgba(0, 0, 0, 0.5);
 }
 
@@ -40,7 +42,7 @@ body {
 }
 
 .headerNavBox,
-footer {
+.footerBg {
   background-image: url("../images/bg-palms.jpg");
 }
 

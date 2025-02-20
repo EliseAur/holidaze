@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
-import { Home } from "../pages";
-import { HomeLayout } from "../layouts";
+import { Home, Login } from "../pages";
+import { HomeLayout, BgPalmsLayout } from "../layouts";
 
 const router = createBrowserRouter([
   {
@@ -15,9 +15,17 @@ const router = createBrowserRouter([
       //Other routes that share the same structure as the Home route (HeaderWithHero, Outlet, Footer)
     ],
   },
-  // {
-  //  Other layouts and pages that doesn't share the same structure and layout as Home and About
-  // }
+  {
+    // Other layouts and pages that doesn't share the same structure and layout as Home and About
+    path: "/login",
+    element: <BgPalmsLayout />,
+    children: [
+      {
+        path: "/login",
+        element: <Login />,
+      },
+    ],
+  },
 ]);
 
 export { router };
