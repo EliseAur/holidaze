@@ -109,12 +109,12 @@ function App() {
           </div>
         </hero>
       </div>
-      <main className="bg-beige py-10 px-4 sm:px-6 lg:px-8">
+      <main className="bg-beige py-8 lg:px-8  max-w-96 px-3 sm:max-w-2xl sm:px-4 md:max-w-3xl md:px-6 lg:max-w-6xl mx-auto">
         <h2 className="text-3xl font-black italic">Latest venues</h2>
-        <p className="font-bold text-lg mt-2">Find your next getaway</p>
+        <p className="font-bold text-lg">Find your next getaway</p>
         {/* filter start */}
-        <div className="mt-4">
-          <h2 className="text-xl font-bold mb-4">
+        <div className="mt-5">
+          <h2 className="text-xl font-bold mb-2">
             <FontAwesomeIcon icon={faSliders} className="mr-2" />
             Filter Venues
           </h2>
@@ -197,7 +197,7 @@ function App() {
                 </label>
               </div>
             </div>
-            <div className="mt-4">
+            <div className="mt-2">
               <button className="bg-lightGreen text-black font-bold shadow-custom-dark py-2 px-4 rounded-sm hover:bg-darkGreen">
                 Apply Filters
               </button>
@@ -205,7 +205,7 @@ function App() {
           </div>
         </div>
         {/* filter finished */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
           {/* Venue Card 1 */}
           <div className="bg-lightBeige rounded-sm shadow-lg relative">
             <a href="">
@@ -245,10 +245,18 @@ function App() {
                   Norway - Lofoten
                 </div>
                 <div className="items-center space-x-2 flex-grow border border-black rounded-sm p-1 inline-block">
-                  <FontAwesomeIcon icon={faWifi} />
-                  <FontAwesomeIcon icon={faPaw} />
-                  <FontAwesomeIcon icon={faUtensils} />
-                  <FontAwesomeIcon icon={faParking} />
+                  <span title="Wifi">
+                    <FontAwesomeIcon icon={faWifi} />
+                  </span>
+                  <span title="Pets Allowed">
+                    <FontAwesomeIcon icon={faPaw} />
+                  </span>
+                  <span title="Breakfast Included">
+                    <FontAwesomeIcon icon={faUtensils} />
+                  </span>
+                  <span title="Parking Available">
+                    <FontAwesomeIcon icon={faParking} />
+                  </span>
                 </div>
               </div>
               <button className="w-full bg-lightGreen text-black font-bold py-2 px-4 rounded mt-4 shadow-custom-dark hover:bg-darkGreen">
@@ -356,7 +364,60 @@ function App() {
               </button>
             </div>
           </div>
+          {/* Venue Card 4 */}
+          <div className="bg-lightBeige rounded-sm shadow-lg relative">
+            <a href="">
+              <img
+                src="/src/images/home-beach.jpg"
+                alt="Beautiful home at the beach"
+                className="rounded-t-sm"
+              />
+            </a>
+            <button className="absolute top-2 right-2 text-2xl text-lightBeige text-shadow hover:text-darkGreen hover:scale-110 transform transition-transform duration-200">
+              <FontAwesomeIcon icon={faHeart} />
+            </button>
+            <div className="p-4">
+              <a href="">
+                <h2 className="text-xl font-black hover:underline hover:decoration-2 truncate">
+                  Room with a view that is absolutely stunning and breathtaking
+                </h2>
+              </a>
+              <div className="text-sm flex w-full justify-between text-center mt-2 space-x-2">
+                <div className="flex-grow font-bold border border-black rounded-sm p-1 inline-block">
+                  $200/night
+                </div>
+                <div className="flex-grow border border-black rounded-sm p-1 inline-block">
+                  <span className="font-bold">Guests:</span> 4
+                </div>
+                <div className="flex-grow items-center border border-black rounded-sm p-1 inline-block">
+                  <FontAwesomeIcon icon={faStar} className="text-yellow-500" />
+                  <span className="ml-1 font-bold">4.5</span>
+                </div>
+              </div>
+              <div className="flex w-full justify-between text-center mt-2 space-x-2">
+                <div className="text-sm font-bold flex-grow items-center border border-black rounded-sm p-1 inline-block">
+                  <FontAwesomeIcon
+                    icon={faMapMarkerAlt}
+                    className="text-red-500 mr-2"
+                  />
+                  Norway - Lofoten
+                </div>
+                <div className="items-center space-x-2 flex-grow border border-black rounded-sm p-1 inline-block">
+                  <FontAwesomeIcon icon={faWifi} />
+                  <FontAwesomeIcon icon={faPaw} />
+                  <FontAwesomeIcon icon={faUtensils} />
+                  <FontAwesomeIcon icon={faParking} />
+                </div>
+              </div>
+              <button className="w-full bg-lightGreen text-black font-bold py-2 px-4 rounded mt-4 shadow-custom-dark hover:bg-darkGreen">
+                View
+              </button>
+            </div>
+          </div>
         </div>
+        <button className="bg-lightGreen text-black font-bold py-2 px-4 rounded mt-4 shadow-custom-dark hover:bg-darkGreen mx-auto block">
+          Load More Venues
+        </button>
       </main>
       <footer
         className=" py-6 px-4 text-beige bg-cover bg-center
