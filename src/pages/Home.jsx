@@ -1,9 +1,8 @@
-import { FilterVenues, Footer, HeaderWithHero, VenueCard } from "../components";
+import { FilterVenues, VenueCard } from "../components";
 
 function Home() {
   return (
     <div id="" className="">
-      <HeaderWithHero />
       <main className="bg-beige py-8 lg:px-8  max-w-96 px-3 sm:max-w-2xl sm:px-4 md:max-w-3xl md:px-6 lg:max-w-6xl mx-auto">
         <h2 className="text-3xl font-black italic">Latest venues</h2>
         <p className="font-bold text-lg">Find your next getaway</p>
@@ -20,7 +19,6 @@ function Home() {
           Load More Venues
         </button>
       </main>
-      <Footer />
     </div>
   );
 }
