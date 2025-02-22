@@ -1,7 +1,7 @@
 export default function Hero() {
   return (
     <div className="text-beige relative z-10 text-center">
-      <div className="py-20 px-4 sm:px-6 lg:px-8">
+      <div className="py-20 px-4 sm:px-6 lg:px-8 relative z-10">
         <h1 className="text-shadow text-4xl sm:text-5xl lg:text-6xl font-black italic ">
           Find Your Perfect Getaway
         </h1>
