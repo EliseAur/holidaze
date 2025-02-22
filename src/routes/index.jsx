@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import { Home, Login } from "../pages";
+import { Home, Login, Register } from "../pages";
 import { HomeLayout, BgPalmsLayout } from "../layouts";
 
 const router = createBrowserRouter([
@@ -23,6 +23,20 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: <Login />,
+      },
+      // {
+      //   path: "/register",
+      //   element: <Register />,
+      // },
+    ],
+  },
+  {
+    path: "/register",
+    element: <BgPalmsLayout />,
+    children: [
+      {
+        path: "/register",
+        element: <Register />,
       },
     ],
   },
