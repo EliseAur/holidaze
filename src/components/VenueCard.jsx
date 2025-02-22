@@ -9,13 +9,19 @@ import {
   faHeart,
 } from "@fortawesome/free-solid-svg-icons";
 
-export default function VenueCard() {
+export default function VenueCard({ venue }) {
   return (
     <div className="bg-lightBeige rounded-sm shadow-lg relative">
       <a href="">
-        <img
+        {/* <img
+        src={}
           src="/src/images/home-beach.jpg"
           alt="Beautiful home at the beach"
+          className="rounded-t-sm"
+        /> */}
+        <img
+          src={venue.media[0].url}
+          alt={venue.media[0]?.alt}
           className="rounded-t-sm"
         />
       </a>
@@ -25,7 +31,8 @@ export default function VenueCard() {
       <div className="p-4">
         <a href="">
           <h2 className="text-xl font-black hover:underline hover:decoration-2 truncate">
-            Room with a view that is absolutely stunning and breathtaking
+            {/* Room with a view that is absolutely stunning and breathtaking */}
+            {venue.name}
           </h2>
         </a>
         <div className="text-sm flex w-full justify-between text-center mt-2 space-x-2">

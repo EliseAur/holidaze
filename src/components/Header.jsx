@@ -105,7 +105,7 @@ export default function Header() {
           >
             <FontAwesomeIcon
               icon={faTimes}
-              className="text-lg h-6 w-6 hover:text-darkGreen"
+              className="text-lg h-6 w-6 text-beige hover:text-darkGreen"
             />
           </button>
 
