@@ -55,7 +55,7 @@ export default function Footer() {
         </div>
       </div>
       <div className="z-10 relative text-shadow font-bold text-center py-4">
-        &copy; 2025 Elise Aurtande, Inc. All rights reserved
+        <p>&copy; 2025 Elise Aurtande. All rights reserved.</p>
       </div>
     </footer>
   );
