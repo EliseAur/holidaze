@@ -88,8 +88,13 @@ export default function VenueCard({ venue }) {
             </span>
           </div>
         </div>
-        <div className="w-full bg-lightGreen text-black font-bold py-2 px-4 rounded mt-4 shadow-custom-dark hover:bg-darkGreen">
-          <Link to={`/venue/${venue.id}`}>View</Link>
+        <div>
+          <Link
+            to={`/venue/${venue.id}`}
+            className="inline-block w-full text-center bg-lightGreen text-black font-bold py-2 px-4 rounded mt-4 shadow-custom-dark hover:bg-darkGreen"
+          >
+            View
+          </Link>
         </div>
       </div>
     </div>
