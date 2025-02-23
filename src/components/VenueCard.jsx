@@ -8,6 +8,7 @@ import {
   faStar,
   faMapMarkerAlt,
   faHeart,
+  faUserGroup,
 } from "@fortawesome/free-solid-svg-icons";
 
 export default function VenueCard({ venue }) {
@@ -34,7 +35,11 @@ export default function VenueCard({ venue }) {
             <span className="font-black">${venue.price}</span>/night
           </div>
           <div className="flex-grow border border-black rounded-sm p-1 inline-block">
-            <span className="font-bold">Guests:</span> {venue.maxGuests}
+            <span className="font-bold">
+              <FontAwesomeIcon icon={faUserGroup} className="mr-1" />
+              Guests:
+            </span>{" "}
+            {venue.maxGuests}
           </div>
           <div className="flex-grow items-center border border-black rounded-sm p-1 inline-block">
             <FontAwesomeIcon icon={faStar} className="text-yellow-500" />
