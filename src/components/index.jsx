@@ -4,6 +4,7 @@ import HeaderWithHero from "./HeaderWithHero";
 import HeaderBgPalmsScreen from "./HeaderBgPalmsScreen";
 import FilterVenues from "./FilterVenues";
 import VenueCard from "./VenueCard";
+import VenueDetailContent from "./VenueDetailContent";
 import Footer from "./Footer";
 import FooterWithNoBg from "./FooterWithNoBg";
 
@@ -16,4 +17,5 @@ export {
   VenueCard,
   Footer,
   FooterWithNoBg,
+  VenueDetailContent,
 };
