@@ -1,7 +1,7 @@
 import Header from "./Header";
 import Hero from "./Hero";
 import HeaderWithHero from "./HeaderWithHero";
-import HeaderBgPalmsScreen from "./HeaderBgPalmsScreen";
+import HeaderBgPalms from "./HeaderBgPalms";
 import FilterVenues from "./FilterVenues";
 import VenueCard from "./VenueCard";
 import VenueDetailContent from "./VenueDetailContent";
@@ -12,7 +12,7 @@ export {
   Header,
   Hero,
   HeaderWithHero,
-  HeaderBgPalmsScreen,
+  HeaderBgPalms,
   FilterVenues,
   VenueCard,
   Footer,
