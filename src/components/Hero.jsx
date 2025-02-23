@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export default function Hero() {
   return (
     <div className="text-beige relative z-10 text-center">
@@ -13,12 +15,18 @@ export default function Hero() {
           </p>
         </div>
         <div className="max-w-[300px] mx-auto">
-          <a
+          <Link
+            to="/"
+            onClick={(e) => {
+              e.preventDefault();
+              document
+                .getElementById("venueContainer")
+                .scrollIntoView({ behavior: "smooth" });
+            }}
             className="w-full mt-8 inline-block bg-lightGreen text-black font-bold px-6 py-2 rounded-sm text-lg hover:bg-darkGreen"
-            href="/"
           >
             Latest venues
-          </a>
+          </Link>
           <div className="flex mt-4 w-full">
             <input
               type="text"
