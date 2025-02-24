@@ -1,81 +1,170 @@
 // import PropTypes from "prop-types";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 // import { calculateDiscount } from "../utils";
+import { Carousel } from "react-responsive-carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faWifi,
+  faPaw,
+  faUtensils,
+  faParking,
+  faStar,
+  faMapMarkerAlt,
+  faHeart,
+  faUserGroup,
+} from "@fortawesome/free-solid-svg-icons";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
+import { registerLocale } from "react-datepicker";
+import enGB from "date-fns/locale/en-GB";
+
+registerLocale("en-GB", enGB);
 
 export default function VenueDetailContent({ venue }) {
-  // const { name, description, price, rating } = venue;
-
-  // const discountInfo = calculateDiscount(product);
+  const { name, media, description, price, rating, maxGuests, meta } = venue;
+  const [startDate, setStartDate] = useState(new Date());
 
   return (
-    <div className="container mx-auto p-4 max-w-[400px] flex-grow">
-      <h1 className="text-3xl font-semibold">{venue.name}</h1>
-      <img
-        src={venue.media[0].url}
-        alt={venue.media[0].alt}
-        className="mt-3 w-full h-80 object-cover rounded-md"
-      />
-      <div className="mt-3 p-2 bg-zinc-100 rounded">
-        <h2 className="text-xl font-semibold">Product details</h2>
-        <p className="">{venue.description}</p>
+    <div className="mx-auto p-4 max-w-[500px]">
+      <h1 className="text-3xl font-black break-words">{name}</h1>
+      {media.length > 1 ? (
+        <Carousel
+          showThumbs={false}
+          infiniteLoop
+          useKeyboardArrows
+          className="mt-3"
+        >
+          {media.map((image, index) => (
+            <div key={index} className="">
+              <img
+                src={image.url}
+                alt={image.alt || "Venue image"}
+                className="w-full h-60 sm:h-72 object-cover rounded-sm"
+              />
+            </div>
+          ))}
+        </Carousel>
+      ) : (
+        <img
+          src={media[0]?.url}
+          alt={media[0]?.alt || "Beautiful home at the beach"}
+          className="mt-3 w-full h-60 sm:h-72 object-cover rounded-sm"
+        />
+      )}
+
+      <div className="mt-3 p-2">
+        <h2 className="text-xl font-black">Description</h2>
+        <p className="font-bold">{description}</p>
       </div>
-      <span>${venue.price}</span>
-      {/* <div className="mt-3 p-2 bg-zinc-100 rounded">
-        <p className="text-xl font-semibold bg-zinc-100 rounded flex justify-between">
-          ${discountedPrice.toFixed(2)}
-          {discountedPrice < price && (
-            <span className="ml-4 font-light text-zinc-800 line-through italic">
-              <span>${price.toFixed(2)}</span>
+      <div className="flex flex-column md:flex-row justify-between">
+        <div className=" p-2">
+          <h2 className="text-xl font-black">Features hello</h2>
+          <div>
+            <FontAwesomeIcon
+              icon={faStar}
+              className="text-yellow-500 text-xl"
+            />
+            <span className="ml-1 font-bold">{rating}</span>
+          </div>
+
+          <div className="flex flex-row mt-1">
+            <div className="bg-black rounded-full w-[22px] h-[22px] flex items-center justify-center">
+              <div>
+                <FontAwesomeIcon
+                  icon={faUserGroup}
+                  className="text-beige mb-0.5 text-xs"
+                />
+              </div>
+            </div>
+            <span className="ml-1">Max {maxGuests} guests</span>
+          </div>
+          <div className="flex flex-row mt-1">
+            <span
+              className={
+                meta.wifi
+                  ? "bg-black rounded-full w-[22px] h-[22px] flex items-center justify-center"
+                  : "bg-darkBeige rounded-full w-[22px] h-[22px] flex items-center justify-center"
+              }
+            >
+              <FontAwesomeIcon icon={faWifi} className="text-beige text-xs" />
             </span>
-          )}
-        </p>
-        {discountInfo && (
-          <p className="font-semibold text-red-600 text-base flex justify-between">
-            <span>&nbsp;</span>
-            <span className="text-right">
-              On sale: -{discountInfo.discountPercentage.toFixed(0)}%
+            <span className="ml-1">
+              {meta.wifi ? "Wifi available" : "No wifi in the venue"}
             </span>
-          </p>
-        )}
-      </div> */}
+          </div>
+          <div className="flex flex-row mt-1">
+            <span
+              className={
+                meta.parking
+                  ? "bg-black rounded-full w-[22px] h-[22px] flex items-center justify-center"
+                  : "bg-darkBeige rounded-full w-[22px] h-[22px] flex items-center justify-center"
+              }
+            >
+              <FontAwesomeIcon
+                icon={faParking}
+                className="text-beige text-xs"
+              />
+            </span>
+            <span className="ml-1">
+              {meta.parking ? "Parking available" : "Parking not available"}
+            </span>
+          </div>
+          <div className="flex flex-row mt-1">
+            <span
+              className={
+                meta.breakfast
+                  ? "bg-black rounded-full w-[22px] h-[22px] flex items-center justify-center"
+                  : "bg-darkBeige rounded-full w-[22px] h-[22px] flex items-center justify-center"
+              }
+            >
+              <FontAwesomeIcon
+                icon={faUtensils}
+                className="text-beige text-xs"
+              />
+            </span>
+            <span className="ml-1">
+              {meta.breakfast ? "Breakfast included" : "Breakfast not included"}
+            </span>
+          </div>
+          <div className="flex flex-row mt-1">
+            <span
+              className={
+                meta.pets
+                  ? "bg-black rounded-full w-[22px] h-[22px] flex items-center justify-center"
+                  : "bg-darkBeige rounded-full w-[22px] h-[22px] flex items-center justify-center"
+              }
+            >
+              <FontAwesomeIcon icon={faPaw} className="text-beige text-xs" />
+            </span>
+            <span className="ml-1">
+              {meta.pets ? "Pets allowed" : "Pets not allowed"}
+            </span>
+          </div>
+        </div>
+        <div className="mt-3 p-2 md:mt-0">
+          <h2 className="text-xl font-black">Select dates</h2>
+          <DatePicker
+            selected={startDate}
+            onChange={(date) => setStartDate(date)}
+            inline
+            locale="en-GB"
+          />
+        </div>
+      </div>
+
+      <span>${price}</span>
+
       <div className="sm:flex">
-        {/* <div className="my-4 max-w-[157px] sm:max-w-[180px] sm:flex-1">
-          <button
-            onClick={() => onAddToCart(product)}
-            className="w-full bg-zinc-900 text-white py-2 rounded-md hover:bg-zinc-800"
-          >
-            Add to Cart
-          </button>
-        </div> */}
         <div className="my-4 max-w-[157px] sm:max-w-[180px] sm:flex-1">
           <div className="sm:ml-2 w-full bg-white text-black border-zinc-900 border-2 py-1.5 rounded-md hover:bg-zinc-200 text-center">
             <Link to="/#productsContainer">Back to products</Link>
           </div>
         </div>
       </div>
-      <h2 className="p-2 text-xl bg-zinc-100 rounded">
-        <span className="font-semibold">Ratings:</span> {venue.rating}/5
-      </h2>
-      {/* <div className="p-2 mt-4 bg-zinc-100 rounded">
-        <h2 className="text-xl font-semibold">Reviews ({reviews.length})</h2>
-        {reviews.length > 0 ? (
-          reviews.map((review) => (
-            <div key={review.id} className="mt-2">
-              <p className="font-bold underline">{review.username}</p>
-              <p className="text-sm">
-                <span className="font-semibold">Rating: </span>
-                {review.rating}
-              </p>
-              <p className="text-sm">
-                <span className="font-semibold">Description: </span>
-                {review.description}
-              </p>
-            </div>
-          ))
-        ) : (
-          <p>No reviews yet</p>
-        )}
-      </div> */}
     </div>
   );
 }

@@ -21,13 +21,8 @@ body {
   --color-lightGreen: #aaff9f;
   --color-darkGreen: #7cd870;
   --color-darkerGreen: #1a201d;
-  /* #467157; #41604e */
   --shadow-custom-dark: 0 3px 6px rgba(0, 0, 0, 0.5);
 }
-
-/* .text-shadow {
-  text-shadow: 3px 3px 3px rgba(0, 0, 0, 1);
-} */
 
 .text-shadow {
   filter: drop-shadow(3px 3px 3px rgba(0, 0, 0, 1));
@@ -44,6 +39,55 @@ body {
 .headerNavBox,
 .footerBg {
   background-image: url("../images/bg-palms.jpg");
+}
+
+/* Custom styles for the carousel */
+.carousel .control-arrow,
+.carousel.carousel-slider .control-arrow {
+  opacity: 1;
+}
+
+.carousel .control-next.control-arrow::before {
+  border-left: 14px solid white;
+  filter: drop-shadow(3px 3px 3px rgba(0, 0, 0, 1));
+}
+
+.carousel .control-prev.control-arrow::before {
+  border-right: 14px solid white;
+  filter: drop-shadow(3px 3px 3px rgba(0, 0, 0, 1));
+}
+
+.carousel .control-next.control-arrow:hover::before {
+  border-left: 14px solid var(--color-darkGreen);
+}
+
+.carousel .control-prev.control-arrow:hover::before {
+  border-right: 14px solid var(--color-darkGreen);
+}
+
+.carousel .control-arrow::before,
+.carousel.carousel-slider .control-arrow::before {
+  border-top: 12px solid transparent;
+  border-bottom: 12px solid transparent;
+}
+
+.carousel-slider {
+  border-radius: 4px;
+}
+
+.carousel .control-dots .dot {
+  background-color: white;
+  opacity: 1;
+  width: 20px;
+  border-radius: 4px;
+}
+
+.carousel .control-dots .dot:hover {
+  background-color: var(--color-darkGreen);
+}
+
+.carousel .control-dots .selected {
+  background-color: var(--color-darkGreen);
 }
 
 /* .lato-thin {

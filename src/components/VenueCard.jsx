@@ -37,9 +37,8 @@ export default function VenueCard({ venue }) {
           <div className="flex-grow border border-black rounded-sm p-1 inline-block">
             <span className="font-bold">
               <FontAwesomeIcon icon={faUserGroup} className="mr-1" />
-              Guests:
-            </span>{" "}
-            {venue.maxGuests}
+              Max {venue.maxGuests} guests
+            </span>
           </div>
           <div className="flex-grow items-center border border-black rounded-sm p-1 inline-block">
             <FontAwesomeIcon icon={faStar} className="text-yellow-500" />
