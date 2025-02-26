@@ -57,12 +57,12 @@ export default function VenueDetailContent({ venue }) {
       )}
 
       <div className="mt-3 p-2">
-        <h2 className="text-xl font-black">Description</h2>
-        <p className="font-bold">{description}</p>
+        <h2 className="text-xl font-black break-words">Description</h2>
+        <p className="font-bold break-words">{description}</p>
       </div>
-      <div className="flex flex-column md:flex-row justify-between">
-        <div className=" p-2">
-          <h2 className="text-xl font-black">Features hello</h2>
+      <div className="flex flex-col sm:flex-row justify-between items-stretch">
+        <div className="p-2 flex-grow h-full">
+          <h2 className="text-xl font-black">Features</h2>
           <div>
             <FontAwesomeIcon
               icon={faStar}
@@ -80,7 +80,7 @@ export default function VenueDetailContent({ venue }) {
                 />
               </div>
             </div>
-            <span className="ml-1">Max {maxGuests} guests</span>
+            <span className="ml-1 text-xxs">Max {maxGuests} guests</span>
           </div>
           <div className="flex flex-row mt-1">
             <span
@@ -145,7 +145,7 @@ export default function VenueDetailContent({ venue }) {
             </span>
           </div>
         </div>
-        <div className="mt-3 p-2 md:mt-0">
+        <div className=" p-2 h-full">
           <h2 className="text-xl font-black">Select dates</h2>
           <DatePicker
             selected={startDate}
