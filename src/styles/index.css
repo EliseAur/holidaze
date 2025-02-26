@@ -1,5 +1,17 @@
 @import "tailwindcss";
 
+/* Custom colors for the main theme */
+@theme {
+  --color-beige: #f2e9d8;
+  --color-lightBeige: #f9f6f1;
+  --color-darkBeige: #95928c;
+  --color-lightGreen: #aaff9f;
+  --color-darkGreen: #7cd870;
+  --color-darkerGreen: #1a201d;
+  --shadow-custom-dark: 0 3px 6px rgba(0, 0, 0, 0.5);
+  --drop-shadow: drop-shadow(3px 3px 3px rgba(0, 0, 0, 1));
+}
+
 html,
 body {
   height: 100%;
@@ -13,19 +25,8 @@ body {
   background-color: var(--color-beige);
 }
 
-/* Custom colors for the main theme */
-@theme {
-  --color-beige: #f2e9d8;
-  --color-lightBeige: #f9f6f1;
-  --color-darkBeige: #95928c;
-  --color-lightGreen: #aaff9f;
-  --color-darkGreen: #7cd870;
-  --color-darkerGreen: #1a201d;
-  --shadow-custom-dark: 0 3px 6px rgba(0, 0, 0, 0.5);
-}
-
 .text-shadow {
-  filter: drop-shadow(3px 3px 3px rgba(0, 0, 0, 1));
+  filter: var(--drop-shadow);
 }
 
 .input-inner-shadow:focus {
@@ -48,27 +49,27 @@ body {
 }
 
 .carousel .control-next.control-arrow::before {
-  border-left: 14px solid white;
-  filter: drop-shadow(3px 3px 3px rgba(0, 0, 0, 1));
+  border-left: 11px solid white;
+  filter: var(--drop-shadow);
 }
 
 .carousel .control-prev.control-arrow::before {
-  border-right: 14px solid white;
-  filter: drop-shadow(3px 3px 3px rgba(0, 0, 0, 1));
+  border-right: 11px solid white;
+  filter: var(--drop-shadow);
 }
 
 .carousel .control-next.control-arrow:hover::before {
-  border-left: 14px solid var(--color-darkGreen);
+  border-left: 11px solid var(--color-darkGreen);
 }
 
 .carousel .control-prev.control-arrow:hover::before {
-  border-right: 14px solid var(--color-darkGreen);
+  border-right: 11px solid var(--color-darkGreen);
 }
 
 .carousel .control-arrow::before,
 .carousel.carousel-slider .control-arrow::before {
-  border-top: 12px solid transparent;
-  border-bottom: 12px solid transparent;
+  border-top: 11px solid transparent;
+  border-bottom: 11px solid transparent;
 }
 
 .carousel-slider {
@@ -88,6 +89,16 @@ body {
 
 .carousel .control-dots .selected {
   background-color: var(--color-darkGreen);
+}
+
+/* Custom styles for the date picker */
+.react-datepicker__header {
+  background-color: var(--color-lightGreen);
+  color: white;
+}
+
+.react-datepicker__navigation-icon::before {
+  border-color: black;
 }
 
 /* .lato-thin {
