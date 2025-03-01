@@ -10,6 +10,7 @@
   --color-darkerGreen: #1a201d;
   --shadow-custom-dark: 0 3px 6px rgba(0, 0, 0, 0.5);
   --drop-shadow: drop-shadow(3px 3px 3px rgba(0, 0, 0, 1));
+  --border-datepicker: 1px solid #aeaeae;
 }
 
 html,
@@ -99,6 +100,22 @@ body {
 
 .react-datepicker__navigation-icon::before {
   border-color: black;
+}
+
+.react-datepicker__day--selected {
+  background-color: var(--color-blue-400);
+}
+
+.react-datepicker__day:not([aria-disabled="true"]):hover {
+  background-color: var(--color-blue-100);
+}
+
+.react-datepicker__day--selected:not([aria-disabled="true"]):hover {
+  background-color: var(--color-blue-500);
+}
+
+.border-datepicker {
+  border: var(--border-datepicker);
 }
 
 /* .lato-thin {
