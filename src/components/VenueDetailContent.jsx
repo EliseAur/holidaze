@@ -25,18 +25,28 @@ import enGB from "date-fns/locale/en-GB";
 registerLocale("en-GB", enGB);
 
 export default function VenueDetailContent({ venue }) {
-  const { name, media, description, price, rating, maxGuests, meta } = venue;
+  const {
+    name,
+    media,
+    description,
+    price,
+    rating,
+    maxGuests,
+    meta,
+    location,
+    owner,
+  } = venue;
   const [startDate, setStartDate] = useState(new Date());
 
   return (
-    <div className="mx-auto p-4 max-w-[500px]">
+    <div className="mx-auto p-4 max-w-[600px]">
       <h1 className="text-3xl font-black break-words">{name}</h1>
       {media.length > 1 ? (
         <Carousel
           showThumbs={false}
           infiniteLoop
           useKeyboardArrows
-          className="mt-3"
+          className="mt-3 shadow-sm"
         >
           {media.map((image, index) => (
             <div key={index} className="">
@@ -55,23 +65,37 @@ export default function VenueDetailContent({ venue }) {
           className="mt-3 w-full h-60 sm:h-72 object-cover rounded-sm"
         />
       )}
-
-      <div className="mt-3 p-2">
-        <h2 className="text-xl font-black break-words">Description</h2>
-        <p className="font-bold break-words">{description}</p>
-      </div>
-      <div className="flex flex-col sm:flex-row justify-between">
-        <div className="">
-          <div className="p-2">
-            <h2 className="text-xl font-black">Features</h2>
-            <div>
+      <div className="mt-3 bg-lightBeige rounded-sm shadow-sm p-5">
+        <div className="flex justify-between">
+          <div className="">
+            <span>
               <FontAwesomeIcon
-                icon={faStar}
-                className="text-yellow-500 text-xl"
+                icon={faMapMarkerAlt}
+                className="text-red-500 text-xl mr-1"
               />
-              <span className="ml-1 font-bold">{rating}</span>
-            </div>
-
+            </span>
+            <span className="font-bold">
+              {location.city}, {location.country}
+            </span>
+          </div>
+          <div>
+            <FontAwesomeIcon
+              icon={faStar}
+              className="text-yellow-500 text-xl"
+            />
+            <span className="ml-1">
+              <span className="font-bold">Rating:</span> {rating}
+            </span>
+          </div>
+        </div>
+        <h2 className="text-lg font-black break-words mt-3">Description</h2>
+        <p className="break-words">{description}</p>
+      </div>
+      <div>
+        {/* Features and Contact flex-box */}
+        <div className="flex flex-col sm:flex-row justify-between items-stretch">
+          <div className="min-w-[258.3px] w-full bg-lightBeige rounded-sm shadow-sm p-5 mt-3 sm:mr-1">
+            <h2 className="text-lg font-black">Features</h2>
             <div className="flex flex-row mt-1">
               <div className="bg-black rounded-full w-[22px] h-[22px] flex items-center justify-center">
                 <div>
@@ -148,79 +172,90 @@ export default function VenueDetailContent({ venue }) {
               </span>
             </div>
           </div>
-          <div className="p-2">
-            <h2 className="text-xl font-black">Contact host</h2>
-            <p className="font-bold break-words">
-              For any inquiries, please contact the host directly.
-            </p>
+          <div className="min-w-[258.3px] w-full bg-lightBeige rounded-sm shadow-sm p-5 mt-3 sm:ml-1">
+            <h2 className="text-lg font-black">Contact host</h2>
+            <div>
+              <img
+                src={owner.avatar.url}
+                alt={owner.name}
+                className="w-10 h-10 rounded-full mt-3"
+              />
+            </div>
+            <p className="mt-3">{owner.name}</p>
+            <p>{owner.email}</p>
           </div>
         </div>
+        {/* Datepicker and select/buttons flexbox */}
+        <div className="flex flex-col sm:flex-row justify-between bg-lightBeige rounded-sm shadow-sm mt-3 p-5">
+          <div className="h-full min-w-[258.3px]">
+            <h2 className="text-lg font-black">Book</h2>
+            <DatePicker
+              selected={startDate}
+              onChange={(date) => setStartDate(date)}
+              inline
+              locale="en-GB"
+            />
+            <div className="flex text-xs ml-1">
+              <div className="flex items-center mr-2">
+                <span className="w-4 h-4 bg-white inline-block rounded-sm border-datepicker mr-1"></span>
+                <span>Available</span>
+              </div>
+              <div className="flex items-center mr-2">
+                <span className="w-4 h-4 bg-darkBeige inline-block rounded-sm border-datepicker mr-1"></span>
+                <span>Unavailable</span>
+              </div>
+              <div className="flex items-center">
+                <span className="w-4 h-4 bg-blue-300 inline-block rounded-sm border-datepicker mr-1"></span>
+                <span>Selected</span>
+              </div>
+            </div>
+          </div>
 
-        <div className="p-2 h-full">
-          <h2 className="text-xl font-black">Select dates</h2>
-          <DatePicker
-            selected={startDate}
-            onChange={(date) => setStartDate(date)}
-            inline
-            locale="en-GB"
-          />
-          <div className="flex text-xs ml-1">
-            <div className="flex items-center mr-2">
-              <span className="w-4 h-4 bg-white inline-block rounded-sm border-datepicker mr-1"></span>
-              <span>Available</span>
+          <div className="min-w-[258.3px] mt-5 sm:mt-0 sm:ml-6">
+            <div className="">
+              <h2 className="font-black text-lg">Summary</h2>
+              <p className="mt-1 sm:mt-4">
+                <span className="font-bold">Price:</span> {price}$/night
+              </p>
             </div>
-            <div className="flex items-center mr-2">
-              <span className="w-4 h-4 bg-darkBeige inline-block rounded-sm border-datepicker mr-1"></span>
-              <span>Unavailable</span>
+            <div className="mt-3 max-w-[242.3px]">
+              <label className="block">
+                <span className="font-bold">Guests</span>
+                <select
+                  name="guests"
+                  className="form-select block w-full bg-white px-2 py-1 rounded-sm shadow-sm  text-sm"
+                >
+                  {/* <option value="">Any</option> */}
+                  <option value="1">1 guest</option>
+                  <option value="2">2 guests</option>
+                  <option value="3">3 guests</option>
+                  <option value="4">4 guests</option>
+                  <option value="5">More than 4 guests</option>
+                </select>
+              </label>
             </div>
-            <div className="flex items-center">
-              <span className="w-4 h-4 bg-blue-300 inline-block rounded-sm border-datepicker mr-1"></span>
-              <span>Selected</span>
+            <div className="mt-3">
+              <p>
+                <span className="font-bold">Nights: </span>3
+              </p>
+              <p className="text-">
+                <span className="font-bold">Total: </span> 600$
+              </p>
             </div>
-          </div>
-          <div className="mt-4 ml-1">
-            <p>
-              <span className="font-bold">Price:</span> 200$/night
-            </p>
-          </div>
-          <div className="select-number-of-guests mt-4 max-w-[242.3px]">
-            <label className="block">
-              <span className="font-bold ml-1">Guests</span>
-              <select
-                name="guests"
-                className="form-select block w-full bg-white px-2 py-1 rounded-sm shadow-sm  text-sm"
-              >
-                {/* <option value="">Any</option> */}
-                <option value="1">1 guest</option>
-                <option value="2">2 guests</option>
-                <option value="3">3 guests</option>
-                <option value="4">4 guests</option>
-                <option value="5">More than 4 guests</option>
-              </select>
-            </label>
-          </div>
-          <div className="mt-4 max-w-[242.3px]">
-            <p className="text-xs mb-1">
-              Login or register to book your nest stay
-            </p>
-            <div className="bg-lightGreen text-black font-bold py-1.5 rounded-sm hover:bg-darkGreen shadow-custom-dark text-center mb-2">
-              <Link to="/login">Login</Link>
-            </div>
-            <div className="bg-black text-white font-bold py-1.5 rounded-sm hover:bg-gray-900 shadow-custom-dark text-center">
-              <Link to="/register">Register</Link>
+            <div className="mt-6 max-w-[242.3px]">
+              <p className="text-xs mb-1">
+                Login or register to book your nest stay
+              </p>
+              <div className="bg-lightGreen text-black font-bold py-1.5 rounded-sm hover:bg-darkGreen shadow-custom-dark text-center mb-2">
+                <Link to="/login">Login</Link>
+              </div>
+              <div className="bg-black text-white font-bold py-1.5 rounded-sm hover:bg-gray-900 shadow-custom-dark text-center">
+                <Link to="/register">Register</Link>
+              </div>
             </div>
           </div>
         </div>
       </div>
-
-      {/* <div className="p-2">
-        <h2 className="text-xl font-black">Contact host</h2>
-        <p className="font-bold break-words">
-          For any inquiries, please contact the host directly.
-        </p>
-      </div> */}
-
-      <span>${price}</span>
     </div>
   );
 }

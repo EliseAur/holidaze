@@ -44,6 +44,9 @@ body {
 }
 
 /* Custom styles for the carousel */
+.carousel-root {
+  border-radius: 4px;
+}
 .carousel .control-arrow,
 .carousel.carousel-slider .control-arrow {
   opacity: 1;
