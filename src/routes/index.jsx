@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import { Home, Login, Register, VenueDetail } from "../pages";
+import { Home, Login, Register, VenueDetail, Venues } from "../pages";
 import { HomeLayout, BgPalmsLayout, MainLayout } from "../layouts";
 
 const router = createBrowserRouter([
@@ -43,6 +43,16 @@ const router = createBrowserRouter([
       {
         path: "/venue/:id",
         element: <VenueDetail />,
+      },
+    ],
+  },
+  {
+    path: "/venues",
+    element: <MainLayout />,
+    children: [
+      {
+        path: "/venues",
+        element: <Venues />,
       },
     ],
   },

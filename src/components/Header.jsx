@@ -66,7 +66,7 @@ export default function Header() {
               Home
             </Link>
             <Link
-              to="#"
+              to="venues"
               className="text-shadow border border-transparent px-5 py-1 text-center hover:border hover:border-beige rounded-sm whitespace-nowrap"
             >
               All venues

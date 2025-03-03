@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { fetchVenues } from "../api/fetchVenues";
+import { Link } from "react-router-dom";
+import { fetchLatestVenues } from "../api/fetchVenues";
 import { FilterVenues, VenueCard } from "../components";
 
 function Home() {
@@ -8,11 +9,11 @@ function Home() {
   useEffect(() => {
     async function getVenues() {
       try {
-        const venues = await fetchVenues();
-        console.log("Fetched venues:", venues); // Log the fetched venues
+        const venues = await fetchLatestVenues();
+        console.log("Latest Fetched venues:", venues); // Log the fetched venues
         setVenues(venues); // Store the fetched venues in the state
       } catch (error) {
-        console.error("Error fetching venues:", error);
+        console.error("Error fetching latest venues:", error);
       }
     }
 
@@ -31,17 +32,10 @@ function Home() {
         {venues.map((venue) => (
           <VenueCard key={venue.id} venue={venue} />
         ))}
-        {/* <ProductCard key={product.id} product={product} /> */}
-        {/* <VenueCard />
-        <VenueCard />
-        <VenueCard />
-        <VenueCard />
-        <VenueCard />
-        <VenueCard /> */}
       </div>
-      <button className="bg-lightGreen text-black font-bold py-2 px-4 rounded mt-4 shadow-custom-dark hover:bg-darkGreen mx-auto block">
-        Load More Venues
-      </button>
+      <div className="bg-black text-white text-center font-bold py-2 px-4 rounded mt-8 shadow-custom-dark hover:bg-gray-900 mx-auto w-3xs">
+        <Link to="/venues">All venues</Link>
+      </div>
     </main>
   );
 }
