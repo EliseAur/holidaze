@@ -86,6 +86,16 @@ export default function FilterVenues() {
             Apply Filters
           </button>
         </div>
+        <div className="flex mt-2 w-full shadow-sm">
+          <input
+            type="text"
+            placeholder="Search for venues..."
+            className="flex-grow w-full sm:w-auto py-2 px-3 rounded-l-sm focus:outline-none bg-lightBeige  text-black placeholder-stone-400"
+          />
+          <button className="bg-lightGreen text-black font-bold px-3 py-2 rounded-r-sm hover:bg-darkGreen">
+            Search
+          </button>
+        </div>
       </div>
     </div>
   );
