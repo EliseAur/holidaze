@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 export default function Hero() {
   return (
@@ -23,7 +25,7 @@ export default function Hero() {
                 .getElementById("venueContainer")
                 .scrollIntoView({ behavior: "smooth" });
             }}
-            className="w-full mt-8 inline-block bg-lightGreen text-black font-bold px-6 py-2 rounded-sm text-lg hover:bg-darkGreen"
+            className="w-full mt-8 inline-block bg-lightGreen text-black font-bold px-6 py-2 rounded-sm text-lg shadow-custom-dark hover:bg-darkGreen"
           >
             Latest venues
           </Link>
@@ -31,10 +33,10 @@ export default function Hero() {
             <input
               type="text"
               placeholder="Search for venues..."
-              className="flex-grow w-full sm:w-auto py-2 px-3 rounded-l-sm focus:outline-none input-inner-shadow bg-zinc-800/50 bg-opacity-90 border-beige border-2 text-beige placeholder-stone-400"
+              className="flex-grow w-full sm:w-auto py-2 px-3 rounded-l-sm focus:outline-none input-inner-shadow bg-zinc-800/50 bg-opacity-90 border-beige border-2 text-beige placeholder-stone-400 shadow-custom-dark"
             />
-            <button className="bg-beige text-black font-bold px-3 py-2 rounded-r-sm hover:bg-lightBeige">
-              Search
+            <button className="bg-beige text-lg text-black font-bold px-3 py-2 rounded-r-sm hover:bg-lightBeige">
+              <FontAwesomeIcon icon={faSearch} />
             </button>
           </div>
         </div>
