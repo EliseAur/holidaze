@@ -5,6 +5,7 @@ import {
   faUtensils,
   faParking,
   faSliders,
+  faSearch,
 } from "@fortawesome/free-solid-svg-icons";
 
 export default function FilterVenues() {
@@ -81,20 +82,22 @@ export default function FilterVenues() {
             </label>
           </div>
         </div>
-        <div className="mt-2">
-          <button className="bg-lightGreen text-black font-bold shadow-custom-dark py-2 px-4 rounded-sm hover:bg-darkGreen">
-            Apply Filters
-          </button>
-        </div>
-        <div className="flex mt-2 w-full shadow-sm">
-          <input
-            type="text"
-            placeholder="Search for venues..."
-            className="flex-grow w-full sm:w-auto py-2 px-3 rounded-l-sm focus:outline-none bg-lightBeige  text-black placeholder-stone-400"
-          />
-          <button className="bg-lightGreen text-black font-bold px-3 py-2 rounded-r-sm hover:bg-darkGreen">
-            Search
-          </button>
+        <div className="flex flex-col sm:flex-row col-span-2">
+          <div className="mt-2 w-full sm:w-auto">
+            <button className="bg-black text-white font-bold shadow-lg py-2 px-4 rounded-sm hover:bg-grey-900 w-full cursor-pointer hover:shadow-custom-dark">
+              Apply Filters
+            </button>
+          </div>
+          <div className="flex mt-2 shadow-lg flex-grow w-full sm:max-w-[49.5%] sm:ml-auto">
+            <input
+              type="text"
+              placeholder="Search for venues..."
+              className="flex-grow w-full py-2 px-3 rounded-l-sm focus:outline-none bg-lightBeige  text-black placeholder-stone-400"
+            />
+            <button className="bg-black text-white font-bold px-3 py-2 rounded-r-sm hover:bg-gray-800 cursor-pointer">
+              <FontAwesomeIcon icon={faSearch} />
+            </button>
+          </div>
         </div>
       </div>
     </div>
