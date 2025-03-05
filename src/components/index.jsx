@@ -7,6 +7,7 @@ import VenueCard from "./VenueCard";
 import VenueDetailContent from "./VenueDetailContent";
 import Footer from "./Footer";
 import FooterWithNoBg from "./FooterWithNoBg";
+import SwitchField from "./registerHostSwitch";
 
 export {
   Header,
@@ -18,4 +19,5 @@ export {
   Footer,
   FooterWithNoBg,
   VenueDetailContent,
+  SwitchField,
 };
