@@ -18,10 +18,10 @@ export default function VenueCard({ venue }) {
         <img
           src={venue.media[0]?.url || "src/images/home-beach.jpg"}
           alt={venue.media[0]?.alt || "Beautiful home at the beach"}
-          className="rounded-t-sm w-full h-56 object-cover object-center"
+          className="rounded-t-sm w-full h-56 object-cover object-center cursor-pointer"
         />
       </Link>
-      <button className="absolute top-2 right-2 text-2xl text-lightBeige text-shadow hover:text-darkGreen hover:scale-110 transform transition-transform duration-200">
+      <button className="absolute top-2 right-2 text-2xl text-lightBeige text-shadow hover:text-darkGreen hover:scale-110 transform transition-transform duration-200 cursor-pointer">
         <FontAwesomeIcon icon={faHeart} />
       </button>
       <div className="p-4">
@@ -92,14 +92,12 @@ export default function VenueCard({ venue }) {
             </span>
           </div>
         </div>
-        <div>
-          <Link
-            to={`/venue/${venue.id}`}
-            className="inline-block w-full text-center bg-lightGreen text-black font-bold py-2 px-4 rounded mt-4 shadow-custom-dark hover:bg-darkGreen"
-          >
-            View
-          </Link>
-        </div>
+        <Link
+          to={`/venue/${venue.id}`}
+          className="inline-block w-full text-center bg-lightGreen text-black font-bold py-2 px-4 rounded mt-4 shadow-custom-dark hover:bg-darkGreen"
+        >
+          View
+        </Link>
       </div>
     </div>
   );

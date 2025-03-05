@@ -246,12 +246,18 @@ export default function VenueDetailContent({ venue }) {
               <p className="text-xs mb-1">
                 Login or register to book your nest stay
               </p>
-              <div className="bg-lightGreen text-black font-bold py-1.5 rounded-sm hover:bg-darkGreen shadow-custom-dark text-center mb-2">
-                <Link to="/login">Login</Link>
-              </div>
-              <div className="bg-black text-white font-bold py-1.5 rounded-sm hover:bg-gray-900 shadow-custom-dark text-center">
-                <Link to="/register">Register</Link>
-              </div>
+              <Link
+                to="/login"
+                className="bg-lightGreen text-black font-bold py-1.5 rounded-sm hover:bg-darkGreen shadow-custom-dark text-center mb-2 cursor-pointer block"
+              >
+                Login
+              </Link>
+              <Link
+                to="/register"
+                className="bg-black text-white font-bold py-1.5 rounded-sm hover:bg-gray-900 shadow-custom-dark text-center cursor-pointer block"
+              >
+                Register
+              </Link>
             </div>
           </div>
         </div>
