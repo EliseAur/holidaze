@@ -186,7 +186,7 @@ export default function VenueDetailContent({ venue }) {
           </div>
         </div>
         {/* Datepicker and select/buttons flexbox */}
-        <div className="flex flex-col sm:flex-row justify-between bg-lightBeige rounded-sm shadow-sm mt-3 p-5">
+        <div className="flex flex-col sm:flex-row justify-between bg-lightBeige rounded-sm shadow-sm mt-3 mb-5 p-5 pb-8">
           <div className="h-full min-w-[258.3px]">
             <h2 className="text-lg font-black">Book</h2>
             <DatePicker
