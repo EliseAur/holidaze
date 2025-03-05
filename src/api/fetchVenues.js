@@ -14,7 +14,7 @@ export async function fetchLatestVenues() {
   return data;
 }
 
-export async function fetchAllVenues(page = 1, limit = 21) {
+export async function fetchAllVenues(page = 1, limit = 12) {
   const url = `https://v2.api.noroff.dev/holidaze/venues?sort=created&sortOrder=desc&limit=${limit}&page=${page}`;
   const data = await fetchData(url);
 

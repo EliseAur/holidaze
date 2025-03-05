@@ -15,9 +15,9 @@ export default function BgPalmsLayout() {
   return (
     <div
       className="headerNavBox bg-cover bg-bottom
-         bg-no-repeat bg-fixed h-screen relative pb-2 pt-1"
+         bg-no-repeat bg-fixed h-screen relative"
     >
-      <div className="absolute inset-0 bg-black opacity-40"></div>
+      <div className="absolute inset-0 bg-black opacity-50"></div>
       <div className="relative z-10 flex flex-col min-h-screen">
         <Header />
         <main
@@ -25,7 +25,9 @@ export default function BgPalmsLayout() {
         >
           <Outlet />
         </main>
-        <FooterWithNoBg />
+        <footer className="p-5 pb-2">
+          <FooterWithNoBg />
+        </footer>
       </div>
     </div>
   );

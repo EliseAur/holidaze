@@ -7,7 +7,7 @@ import {
 
 export default function FooterWithNoBg() {
   return (
-    <footer className="py-6 px-4 text-beige">
+    <>
       <div className="mx-auto">
         <div className="flex space-x-4 justify-center">
           <a
@@ -42,9 +42,9 @@ export default function FooterWithNoBg() {
           </a>
         </div>
       </div>
-      <div className="z-10 relative text-shadow font-bold text-center py-4">
+      <div className="z-10 relative text-shadow font-bold text-beige text-center py-4">
         <p>&copy; 2025 Elise Aurtande. All rights reserved.</p>
       </div>
-    </footer>
+    </>
   );
 }
