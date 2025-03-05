@@ -7,21 +7,6 @@ function Home() {
   const [page, setPage] = useState(1); // Initialize the page state
   const [loading, setLoading] = useState(false); // Initialize the loading state
 
-  // useEffect(() => {
-  //   async function getVenues() {
-
-  //     try {
-  //       const venues = await fetchAllVenues();
-  //       console.log("Fetched all venues:", venues); // Log the fetched venues
-  //       setVenues(venues); // Store the fetched venues in the state
-  //     } catch (error) {
-  //       console.error("Error fetching venues:", error);
-  //     }
-  //   }
-
-  //   getVenues();
-  // }, []);
-
   useEffect(() => {
     async function getVenues() {
       setLoading(true);
@@ -47,8 +32,7 @@ function Home() {
       id="venueContainer"
       className="bg-beige py-8 lg:px-8  max-w-96 px-3 sm:max-w-2xl sm:px-4 md:max-w-3xl md:px-6 lg:max-w-6xl mx-auto"
     >
-      <h2 className="text-3xl font-black italic">Latest venues</h2>
-      <p className="font-bold text-lg">Find your next getaway</p>
+      <h2 className="text-3xl font-black italic">All venues</h2>
       <FilterVenues />
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
         {venues.map((venue) => (
