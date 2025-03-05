@@ -2,12 +2,11 @@ import { useState, useEffect } from "react";
 // import { useParams, useOutletContext } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { fetchVenueDetails } from "../api";
-import { VenueDetailContent } from "../components";
+import { VenueDetailContent, LoadingSpinner } from "../components";
 // import { ErrorMessage } from "../components";
 
 function VenueDetail() {
   const { id } = useParams();
-  // const { addToCart } = useOutletContext();
   const [venue, setVenue] = useState(null);
   const [error, setError] = useState(null);
 
@@ -43,7 +42,8 @@ function VenueDetail() {
   }
 
   if (!venue) {
-    return <div>Loading...</div>;
+    // return <div>Loading...</div>;
+    return <LoadingSpinner />;
   }
 
   return <VenueDetailContent venue={venue} />;
