@@ -46,7 +46,7 @@ export default function Header() {
   };
 
   return (
-    <header className="text-beige font-bold w-full relative z-20">
+    <header id="top" className="text-beige font-bold w-full relative z-20">
       <div className="container mx-auto flex justify-between items-center p-3">
         <div>
           <Link
