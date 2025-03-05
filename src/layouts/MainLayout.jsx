@@ -1,5 +1,5 @@
-import { HeaderBgPalms, Footer } from "../components";
 import { Outlet } from "react-router-dom";
+import { HeaderBgPalms, Footer } from "../components";
 
 function MainLayout() {
   return (
@@ -8,7 +8,6 @@ function MainLayout() {
       <main className="flex-grow">
         <Outlet />
       </main>
-
       <Footer />
     </div>
   );
