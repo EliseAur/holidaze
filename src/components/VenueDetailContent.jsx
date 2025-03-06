@@ -1,10 +1,9 @@
-// import PropTypes from "prop-types";
+import PropTypes from "prop-types";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 // import { calculateDiscount } from "../utils";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faWifi,
@@ -13,12 +12,11 @@ import {
   faParking,
   faStar,
   faMapMarkerAlt,
-  faHeart,
+  // faHeart,
   faUserGroup,
 } from "@fortawesome/free-solid-svg-icons";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
 import { registerLocale } from "react-datepicker";
 import enGB from "date-fns/locale/en-GB";
 
@@ -265,3 +263,36 @@ export default function VenueDetailContent({ venue }) {
     </div>
   );
 }
+
+VenueDetailContent.propTypes = {
+  venue: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    media: PropTypes.arrayOf(
+      PropTypes.shape({
+        url: PropTypes.string.isRequired,
+        alt: PropTypes.string,
+      }),
+    ).isRequired,
+    description: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+    rating: PropTypes.number.isRequired,
+    maxGuests: PropTypes.number.isRequired,
+    meta: PropTypes.shape({
+      wifi: PropTypes.bool,
+      parking: PropTypes.bool,
+      breakfast: PropTypes.bool,
+      pets: PropTypes.bool,
+    }).isRequired,
+    location: PropTypes.shape({
+      city: PropTypes.string.isRequired,
+      country: PropTypes.string.isRequired,
+    }).isRequired,
+    owner: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      email: PropTypes.string.isRequired,
+      avatar: PropTypes.shape({
+        url: PropTypes.string.isRequired,
+      }).isRequired,
+    }).isRequired,
+  }).isRequired,
+};

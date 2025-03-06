@@ -1,3 +1,4 @@
+import { PropTypes } from "prop-types";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -102,3 +103,29 @@ export default function VenueCard({ venue }) {
     </div>
   );
 }
+
+VenueCard.propTypes = {
+  venue: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    media: PropTypes.arrayOf(
+      PropTypes.shape({
+        url: PropTypes.string,
+        alt: PropTypes.string,
+      }),
+    ),
+    name: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+    maxGuests: PropTypes.number.isRequired,
+    rating: PropTypes.number.isRequired,
+    location: PropTypes.shape({
+      country: PropTypes.string.isRequired,
+      city: PropTypes.string.isRequired,
+    }).isRequired,
+    meta: PropTypes.shape({
+      wifi: PropTypes.bool,
+      pets: PropTypes.bool,
+      breakfast: PropTypes.bool,
+      parking: PropTypes.bool,
+    }).isRequired,
+  }).isRequired,
+};

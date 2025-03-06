@@ -1,4 +1,5 @@
 import { Switch } from "@headlessui/react";
+import PropTypes from "prop-types";
 
 export default function SwitchField({ label, checked, onChange }) {
   return (
@@ -21,3 +22,9 @@ export default function SwitchField({ label, checked, onChange }) {
     </div>
   );
 }
+
+SwitchField.propTypes = {
+  label: PropTypes.string.isRequired,
+  checked: PropTypes.bool.isRequired,
+  onChange: PropTypes.func.isRequired,
+};
