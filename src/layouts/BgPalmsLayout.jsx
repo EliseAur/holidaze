@@ -15,7 +15,7 @@ export default function BgPalmsLayout() {
   return (
     <div
       className="headerNavBox bg-cover bg-bottom
-         bg-no-repeat bg-fixed h-screen relative"
+         bg-no-repeat bg-fixed h-full relative"
     >
       <div className="absolute inset-0 bg-black opacity-50"></div>
       <div className="relative z-10 flex flex-col min-h-screen">
