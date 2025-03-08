@@ -1,13 +1,17 @@
 import { useEffect, useState } from "react";
+import { useOutletContext } from "react-router-dom";
 import { fetchAllVenues } from "../api/fetchVenues";
 import { FilterVenues, VenueCard, LoadingSpinner } from "../components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
+import { useFavorites } from "../hooks/useFavorites";
 
 function Venues() {
   const [venues, setVenues] = useState([]); // Initialize the state with an empty array
   const [page, setPage] = useState(1); // Initialize the page state
   const [loading, setLoading] = useState(false); // Initialize the loading state
+  const { isLoggedIn } = useOutletContext();
+  const { favorites, handleFavoriteClick } = useFavorites(isLoggedIn);
 
   useEffect(() => {
     async function getVenues() {
@@ -45,7 +49,12 @@ function Venues() {
               <VenueCard key={venue.id} venue={venue} />
             ))} */}
             {venues.map((venue, index) => (
-              <VenueCard key={`${venue.id}-${index}`} venue={venue} />
+              <VenueCard
+                key={`${venue.id}-${index}`}
+                venue={venue}
+                isFavorite={favorites.includes(venue.id)}
+                onFavoriteClick={handleFavoriteClick}
+              />
             ))}
           </div>
           <div className="flex justify-center items-center mx-auto">

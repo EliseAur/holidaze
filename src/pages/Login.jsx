@@ -1,56 +1,30 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { authLogin } from "../auth/authLogin";
+import { useAuth } from "../context/useAuth";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const { handleLogin } = useAuth();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const user = {
-      email,
-      password,
-    };
-
-    // // Log the user object
-    // console.log("User login data:", user);
-
-    const url = "https://v2.api.noroff.dev/auth/login?_holidaze=true";
-
     try {
-      const response = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-Noroff-API-Key": "4b610d11-d5e1-4d4d-a3fb-82542f6e858e",
-        },
-        body: JSON.stringify(user),
-      });
+      const result = await authLogin(email, password);
 
-      if (response.ok) {
-        const result = await response.json();
-        console.log("Login data:", result);
-        console.log("stringify JSON:", JSON.stringify(result));
-
-        // Check the structure of the response object
-        console.log("Response object:", result);
-
-        // Store the token in local storage
-        if (result.data && result.data.accessToken) {
-          localStorage.setItem("token", result.data.accessToken);
-          navigate("/");
-        } else {
-          console.error("Token not found in the response");
-        }
+      // Store the token in local storage
+      if (result.data && result.data.accessToken) {
+        localStorage.setItem("token", result.data.accessToken);
+        handleLogin();
+        navigate("/");
       } else {
-        const errorData = await response.json();
-        console.error("Error logging in:", errorData);
-        throw new Error("An error occurred when logging in");
+        console.error("Token not found in the response");
       }
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error logging in:", error);
     }
   };
 

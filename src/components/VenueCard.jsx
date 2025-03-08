@@ -11,8 +11,33 @@ import {
   faHeart,
   faUserGroup,
 } from "@fortawesome/free-solid-svg-icons";
+// import { useState, useEffect } from "react";
 
-export default function VenueCard({ venue }) {
+export default function VenueCard({ venue, isFavorite, onFavoriteClick }) {
+  // const [favorites, setFavorites] = useState(() => {
+  //   const savedFavorites = localStorage.getItem("favorites");
+  //   return savedFavorites ? JSON.parse(savedFavorites) : [];
+  // });
+
+  // const handleFavoriteClick = (venueId) => {
+  //   setFavorites((prevFavorites) => {
+  //     let updatedFavorites;
+  //     if (prevFavorites.includes(venueId)) {
+  //       updatedFavorites = prevFavorites.filter((id) => id !== venueId);
+  //     } else {
+  //       updatedFavorites = [...prevFavorites, venueId];
+  //     }
+  //     localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+  //     return updatedFavorites;
+  //   });
+  // };
+
+  // useEffect(() => {
+  //   console.log("Favorites:", favorites);
+  // }, [favorites]);
+
+  // const isFavorite = favorites.includes(venue.id);
+
   return (
     <div className="bg-lightBeige rounded-sm shadow-lg relative">
       <Link to={`/venue/${venue.id}`}>
@@ -22,7 +47,16 @@ export default function VenueCard({ venue }) {
           className="rounded-t-sm w-full h-56 object-cover object-center cursor-pointer"
         />
       </Link>
-      <button className="absolute top-2 right-2 text-2xl text-lightBeige text-shadow hover:text-darkGreen hover:scale-110 transform transition-transform duration-200 cursor-pointer">
+      {/* <button
+      className={`absolute top-2 right-2 text-2xl text-lightBeige text-shadow hover:text-darkGreen hover:scale-110 transform transition-transform duration-200 cursor-pointer ${isFavorite ? "text-red-500" : ""}`}
+        onClick={() => handleFavoriteClick(venue.id)}
+      >
+        <FontAwesomeIcon icon={faHeart} />
+      </button> */}
+      <button
+        className={`absolute top-2 right-2 text-2xl text-lightBeige text-shadow hover:text-darkGreen hover:scale-110 transform transition-transform duration-200 cursor-pointer ${isFavorite ? "text-red-500" : ""}`}
+        onClick={() => onFavoriteClick(venue.id)}
+      >
         <FontAwesomeIcon icon={faHeart} />
       </button>
       <div className="p-4">
