@@ -34,7 +34,7 @@ function Venues() {
   };
 
   return (
-    <main
+    <div
       id="venueContainer"
       className="bg-beige py-8 lg:px-8  max-w-96 px-3 sm:max-w-2xl sm:px-4 md:max-w-3xl md:px-6 lg:max-w-6xl mx-auto"
     >
@@ -74,7 +74,7 @@ function Venues() {
           </div>
         </>
       )}
-    </main>
+    </div>
   );
 }
 
