@@ -40,13 +40,20 @@ export default function VenueCard({ venue, isFavorite, onFavoriteClick }) {
 
   return (
     <div className="bg-lightBeige rounded-sm shadow-lg relative">
-      <Link to={`/venue/${venue.id}`}>
-        <img
-          src={venue.media[0]?.url || "src/images/home-beach.jpg"}
-          alt={venue.media[0]?.alt || "Beautiful home at the beach"}
-          className="rounded-t-sm w-full h-56 object-cover object-center cursor-pointer"
-        />
-      </Link>
+      {venue.media.length > 0 ? (
+        <Link to={`/venue/${venue.id}`}>
+          <img
+            src={venue.media[0]?.url}
+            alt={venue.media[0]?.alt || "Venue image"}
+            className="rounded-t-sm w-full h-56 object-cover object-center cursor-pointer"
+          />
+        </Link>
+      ) : (
+        <div className="rounded-t-sm w-full h-56 object-cover object-center cursor-pointer bg-gray-300 flex items-center justify-center">
+          <span className="text-gray-700">No image available</span>
+        </div>
+      )}
+
       {/* <button
       className={`absolute top-2 right-2 text-2xl text-lightBeige text-shadow hover:text-darkGreen hover:scale-110 transform transition-transform duration-200 cursor-pointer ${isFavorite ? "text-red-500" : ""}`}
         onClick={() => handleFavoriteClick(venue.id)}
@@ -54,7 +61,7 @@ export default function VenueCard({ venue, isFavorite, onFavoriteClick }) {
         <FontAwesomeIcon icon={faHeart} />
       </button> */}
       <button
-        className={`absolute top-2 right-2 text-2xl text-lightBeige text-shadow hover:text-darkGreen hover:scale-110 transform transition-transform duration-200 cursor-pointer ${isFavorite ? "text-red-500" : ""}`}
+        className={`absolute top-2 right-2 text-2xl text-lightBeige text-shadow hover:scale-110 transform transition-transform duration-200 cursor-pointer ${isFavorite ? "text-lightGreen hover:none" : ""}`}
         onClick={() => onFavoriteClick(venue.id)}
       >
         <FontAwesomeIcon icon={faHeart} />

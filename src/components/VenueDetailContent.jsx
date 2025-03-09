@@ -56,12 +56,16 @@ export default function VenueDetailContent({ venue }) {
             </div>
           ))}
         </Carousel>
-      ) : (
+      ) : media.length === 1 ? (
         <img
-          src={media[0]?.url}
-          alt={media[0]?.alt || "Beautiful home at the beach"}
+          src={media[0].url}
+          alt={media[0].alt || "Image not found."}
           className="mt-3 w-full h-60 sm:h-72 object-cover rounded-sm"
         />
+      ) : (
+        <div className="mt-3 w-full h-60 sm:h-72 bg-gray-300 flex items-center justify-center rounded-sm">
+          <span className="text-gray-700 text-light">No image available</span>
+        </div>
       )}
       <div className="mt-3 bg-lightBeige rounded-sm shadow-sm p-5">
         <div className="flex justify-between">
