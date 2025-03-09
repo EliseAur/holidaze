@@ -1,5 +1,13 @@
 import { createBrowserRouter } from "react-router-dom";
-import { Home, Login, Register, VenueDetail, Venues, Account } from "../pages";
+import {
+  Home,
+  Login,
+  Register,
+  VenueDetail,
+  Venues,
+  Account,
+  Favorites,
+} from "../pages";
 import { HomeLayout, BgPalmsLayout, MainLayout } from "../layouts";
 
 const router = createBrowserRouter([
@@ -63,6 +71,16 @@ const router = createBrowserRouter([
       {
         path: "/account",
         element: <Account />,
+      },
+    ],
+  },
+  {
+    path: "/favorites",
+    element: <MainLayout />,
+    children: [
+      {
+        path: "/favorites",
+        element: <Favorites />,
       },
     ],
   },
