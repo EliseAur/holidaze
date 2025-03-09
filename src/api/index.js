@@ -3,5 +3,12 @@ import { fetchData } from "./fetchData";
 import { fetchLatestVenues } from "./fetchVenues";
 import { fetchAllVenues } from "./fetchVenues";
 import { fetchVenueDetails } from "./fetchVenueDetails";
+import { fetchFavorites } from "./fetchFavorites";
 
-export { fetchLatestVenues, fetchAllVenues, fetchData, fetchVenueDetails };
+export {
+  fetchLatestVenues,
+  fetchAllVenues,
+  fetchData,
+  fetchVenueDetails,
+  fetchFavorites,
+};

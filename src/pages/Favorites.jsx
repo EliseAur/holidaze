@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { VenueCard } from "../components";
-import { fetchVenueDetails } from "../api";
+import { fetchFavorites } from "../api/fetchFavorites";
 import { useFavorites } from "../hooks/useFavorites";
 
 export default function Favorites() {
@@ -9,18 +9,8 @@ export default function Favorites() {
   const [favoriteVenues, setFavoriteVenues] = useState([]);
 
   useEffect(() => {
-    // Retrieve favorites from local storage
-    const storedFavoriteIds =
-      JSON.parse(localStorage.getItem("favorites")) || [];
-
-    // Fetch venue details for each ID
     const fetchFavoriteVenues = async () => {
-      const fetchedVenues = await Promise.all(
-        storedFavoriteIds.map(async (id) => {
-          const venue = await fetchVenueDetails(id);
-          return venue;
-        }),
-      );
+      const fetchedVenues = await fetchFavorites();
       setFavoriteVenues(fetchedVenues);
     };
 

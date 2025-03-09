@@ -1,9 +1,18 @@
 export async function fetchData(url) {
+  const token = localStorage.getItem("token");
+  const apiKey = "4b610d11-d5e1-4d4d-a3fb-82542f6e858e"; // Hardcoded API key
+
+  if (!token) {
+    throw new Error("No token found");
+  }
+
   try {
     const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+        "X-Noroff-API-Key": apiKey,
       },
     });
 

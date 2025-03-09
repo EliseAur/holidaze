@@ -16,12 +16,11 @@ export default function Login() {
       const result = await authLogin(email, password);
 
       // Store the token in local storage
-      if (result.data && result.data.accessToken) {
-        localStorage.setItem("token", result.data.accessToken);
-        handleLogin();
-        navigate("/");
+      if (result.data && result.data.accessToken && result.data.name) {
+        handleLogin(result.data.accessToken, result.data.name);
+        navigate("/account");
       } else {
-        console.error("Token not found in the response");
+        console.error("Token or name not found in the response");
       }
     } catch (error) {
       console.error("Error logging in:", error);
