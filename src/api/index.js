@@ -1,14 +1,15 @@
-// import { fetchProductDetails } from "./fetchProductDetails";
-import { fetchData } from "./fetchData";
 import { fetchLatestVenues } from "./fetchVenues";
 import { fetchAllVenues } from "./fetchVenues";
 import { fetchVenueDetails } from "./fetchVenueDetails";
+import { fetchProfile } from "./fetchProfile";
+import { fetchBooking } from "./fetchBookings";
 import { fetchFavorites } from "./fetchFavorites";
 
 export {
   fetchLatestVenues,
   fetchAllVenues,
-  fetchData,
   fetchVenueDetails,
+  fetchProfile,
+  fetchBooking,
   fetchFavorites,
 };

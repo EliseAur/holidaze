@@ -1,6 +1,6 @@
-import { fetchData } from "./fetchData";
+import { apiFetch } from "./apiFetch";
 
 export async function fetchVenueDetails(id) {
-  const url = `https://v2.api.noroff.dev/holidaze/venues/${id}?_owner=true&_bookings=true`;
-  return await fetchData(url);
+  const endpoint = `/venues/${id}?_owner=true&_bookings=true`;
+  return await apiFetch(endpoint);
 }

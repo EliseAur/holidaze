@@ -1,4 +1,4 @@
-import { fetchData } from "./index";
+import { apiFetch } from "./apiFetch";
 
 export async function fetchProfile() {
   const userName = localStorage.getItem("userName");
@@ -6,14 +6,14 @@ export async function fetchProfile() {
     throw new Error("No user name found");
   }
 
-  const url = `https://v2.api.noroff.dev/holidaze/profiles/${userName}?_bookings=true&_venues=true`;
-  const data = await fetchData(url);
+  const endpoint = `/profiles/${userName}?_bookings=true&_venues=true`;
+  const data = await apiFetch(endpoint);
 
   if (!data || typeof data !== "object") {
     throw new Error("Data is not an object");
   }
 
-  console.log("Fetched profile:", data);
+  console.log(`Fetched profile ${userName}:`, data);
 
   return data;
 }
