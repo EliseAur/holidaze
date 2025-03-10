@@ -4,6 +4,9 @@ import { fetchProfile } from "../api/fetchProfile";
 import { fetchFavorites } from "../api";
 import { useFavorites } from "../hooks/useFavorites";
 import { Link } from "react-router-dom";
+// import Slider from "react-slick";
+// import "slick-carousel/slick/slick.css";
+// import "slick-carousel/slick/slick-theme.css";
 
 export default function Account() {
   const [profile, setProfile] = useState(null);
@@ -45,8 +48,34 @@ export default function Account() {
     return <div>Error: {error}</div>;
   }
 
+  // const settings = {
+  //   dots: true,
+  //   infinite: true,
+  //   speed: 500,
+  //   slidesToShow: 3,
+  //   slidesToScroll: 1,
+  //   responsive: [
+  //     {
+  //       breakpoint: 1024,
+  //       settings: {
+  //         slidesToShow: 2,
+  //         slidesToScroll: 1,
+  //         infinite: true,
+  //         dots: true,
+  //       },
+  //     },
+  //     {
+  //       breakpoint: 600,
+  //       settings: {
+  //         slidesToShow: 1,
+  //         slidesToScroll: 1,
+  //       },
+  //     },
+  //   ],
+  // };
+
   return (
-    <div className="profile-page max-w-[1200px] mx-auto p-4">
+    <div className="profile-page max-w-[1200px] mx-auto p-2 lg:p-4">
       {/* <h1 className="text-3xl font-black italic">Profile</h1> */}
       {profile && (
         <div>
@@ -122,14 +151,15 @@ export default function Account() {
                 <p>No bookings available.</p>
               )}
             </div>
-            <div className="mt-3 bg-lightBeige rounded-sm shadow-sm p-5">
+            <div className="py-8 lg:px-8 sm:max-w-2xl md:max-w-3xl md:px-6 lg:max-w-6xl mx-auto rounded-sm shadow-sm bg-lightBeige mt-5">
+              {/* <div className=""> */}
               <h3 className="text-xl font-black">Favorites</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 mt-10">
+                {/* <div className=""> */}
                 {favoriteVenues.length > 0 ? (
                   favoriteVenues.map((venue) => (
                     <div key={venue.id} className="mt-3">
                       <VenueCard
-                        // key={venue.id}
                         venue={venue}
                         isFavorite={true}
                         onFavoriteClick={handleFavoriteClick}
@@ -152,6 +182,21 @@ export default function Account() {
                     </p>
                   </div>
                 )}
+                {/* {/* {favoriteVenues.length > 0 ? (
+                  <Slider {...settings}>
+                    {favoriteVenues.map((venue) => (
+                      <div key={venue.id} className="p-3">
+                        <VenueCard
+                          venue={venue}
+                          isFavorite={true}
+                          onFavoriteClick={handleFavoriteClick}
+                        />
+                      </div>
+                    ))}
+                  </Slider>
+                ) : (
+                  <p>No favorite venues available.</p>
+                )} */}
               </div>
             </div>
           </div>
