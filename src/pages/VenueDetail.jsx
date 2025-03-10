@@ -1,19 +1,24 @@
 import { useState, useEffect } from "react";
-// import { useParams, useOutletContext } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { fetchVenueDetails } from "../api";
 import { VenueDetailContent, LoadingSpinner } from "../components";
-// import { ErrorMessage } from "../components";
+import { fetchBooking } from "../api";
+import { differenceInDays } from "date-fns";
 
 function VenueDetail() {
   const { id } = useParams();
   const [venue, setVenue] = useState(null);
   const [error, setError] = useState(null);
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(null);
+  const [guests, setGuests] = useState(1);
+  const [totalPrice, setTotalPrice] = useState(0);
 
   useEffect(() => {
     async function loadVenue() {
       try {
         const product = await fetchVenueDetails(id);
+        console.log("Venue details with api fetch:", product);
         setVenue(product);
       } catch (error) {
         setError({
@@ -27,26 +32,54 @@ function VenueDetail() {
     loadVenue();
   }, [id]);
 
-  // const handleAddToCart = (product) => {
-  //   console.log("Add to Cart:", product);
-  //   addToCart({ ...product, quantity: 1 });
-  // };
+  const handleDateChange = (dates) => {
+    const [start, end] = dates;
+    setStartDate(start);
+    setEndDate(end);
+
+    if (start && end) {
+      const nights = differenceInDays(end, start);
+      setTotalPrice(nights * venue.price);
+    }
+  };
+
+  const handleBooking = async () => {
+    const bookingData = {
+      dateFrom: startDate.toISOString(),
+      dateTo: endDate.toISOString(),
+      guests: Number(guests),
+      venueId: venue.id,
+    };
+
+    try {
+      const result = await fetchBooking(bookingData);
+      console.log("Booking successful:", result);
+    } catch (error) {
+      console.error("Error booking:", error);
+    }
+  };
 
   if (error) {
-    return console.log("Error fetching venue:", error);
-    // <ErrorMessage
-    //   message={error.message}
-    //   status={error.status}
-    //   statusCode={error.statusCode}
-    // />
+    console.log("Error fetching venue:", error);
+    return null;
   }
 
   if (!venue) {
-    // return <div>Loading...</div>;
     return <LoadingSpinner />;
   }
 
-  return <VenueDetailContent venue={venue} />;
+  return (
+    <VenueDetailContent
+      venue={venue}
+      startDate={startDate}
+      endDate={endDate}
+      guests={guests}
+      totalPrice={totalPrice}
+      handleDateChange={handleDateChange}
+      handleBooking={handleBooking}
+      setGuests={setGuests}
+    />
+  );
 }
 
 export default VenueDetail;
