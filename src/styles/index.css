@@ -121,22 +121,6 @@ body {
   border: var(--border-datepicker);
 }
 
-/* Main slide up effect */
-@keyframes slideUp {
-  from {
-    transform: translateY(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-.slide-up {
-  animation: slideUp 0.5s ease-out forwards;
-}
-
 /* Loading spinner */
 .loader {
   border-top-color: var(--color-darkerGreen);
