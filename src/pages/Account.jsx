@@ -1,12 +1,8 @@
 import { useState, useEffect } from "react";
 import { VenueCard } from "../components";
-import { fetchProfile } from "../api/fetchProfile";
-import { fetchFavorites } from "../api";
+import { fetchProfile, fetchFavorites } from "../api";
 import { useFavorites } from "../hooks/useFavorites";
 import { Link } from "react-router-dom";
-// import Slider from "react-slick";
-// import "slick-carousel/slick/slick.css";
-// import "slick-carousel/slick/slick-theme.css";
 
 export default function Account() {
   const [profile, setProfile] = useState(null);
@@ -48,32 +44,6 @@ export default function Account() {
     return <div>Error: {error}</div>;
   }
 
-  // const settings = {
-  //   dots: true,
-  //   infinite: true,
-  //   speed: 500,
-  //   slidesToShow: 3,
-  //   slidesToScroll: 1,
-  //   responsive: [
-  //     {
-  //       breakpoint: 1024,
-  //       settings: {
-  //         slidesToShow: 2,
-  //         slidesToScroll: 1,
-  //         infinite: true,
-  //         dots: true,
-  //       },
-  //     },
-  //     {
-  //       breakpoint: 600,
-  //       settings: {
-  //         slidesToShow: 1,
-  //         slidesToScroll: 1,
-  //       },
-  //     },
-  //   ],
-  // };
-
   return (
     <div className="profile-page max-w-[1200px] mx-auto p-2 lg:p-4">
       {/* <h1 className="text-3xl font-black italic">Profile</h1> */}
@@ -88,7 +58,6 @@ export default function Account() {
               />
             )}
             {profile.avatar && (
-              // <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
               <div className="absolute inset-0 flex flex-col items-center justify-center font-bold">
                 <img
                   src={profile.avatar.url}
@@ -182,21 +151,6 @@ export default function Account() {
                     </p>
                   </div>
                 )}
-                {/* {/* {favoriteVenues.length > 0 ? (
-                  <Slider {...settings}>
-                    {favoriteVenues.map((venue) => (
-                      <div key={venue.id} className="p-3">
-                        <VenueCard
-                          venue={venue}
-                          isFavorite={true}
-                          onFavoriteClick={handleFavoriteClick}
-                        />
-                      </div>
-                    ))}
-                  </Slider>
-                ) : (
-                  <p>No favorite venues available.</p>
-                )} */}
               </div>
             </div>
           </div>
