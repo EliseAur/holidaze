@@ -38,7 +38,7 @@ export default function VenueCard({ venue, isFavorite, onFavoriteClick }) {
       </button>
       <div className="px-3 pt-2 pb-4">
         <Link to={`/venue/${venue.id}`}>
-          <h2 className="text-xl font-black hover:underline hover:decoration-2 truncate p-1">
+          <h2 className="text-lg md:text-xl font-black underline hover:underline hover:decoration-2 truncate p-1">
             {venue.name}
           </h2>
         </Link>
@@ -75,11 +75,11 @@ export default function VenueCard({ venue, isFavorite, onFavoriteClick }) {
           <div className="space-x-3 flex flex-grow justify-between text-xl p-1">
             <Link
               to={`/venue/${venue.id}`}
-              className=" text-sm bg-lightGreen text-black font-bold py-1 px-4 rounded-sm shadow-custom-dark hover:bg-darkGreen text-left"
+              className="text-sm bg-lightGreen text-black font-bold py-1 px-4 rounded-sm shadow-custom-dark hover:bg-darkGreen w-full text-center"
             >
               View
             </Link>
-            <div className="min-w-[114px] flex space-x-3 ">
+            <div className="md:min-w-[114px] flex flex-grow  justify-between space-x-2 text-lg">
               <span title={venue.meta.wifi ? "Wifi available" : "No wifi"}>
                 <FontAwesomeIcon
                   icon={faWifi}

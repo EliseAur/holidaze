@@ -142,13 +142,13 @@ export default function Account() {
                 </div>
               )}
             </section>
-            <section className="mt-3 py-5 px-6">
+            <section className="mt-3 py-5 sm:px-6">
               <h2 className="text-xl font-black">Bookings</h2>
               <p className="text-black">
                 Here you can see all your bookings. You can also cancel them if
                 needed.
               </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-3 ">
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-3 ">
                 {bookingsToShow.length > 0 ? (
                   bookingsToShow.map((booking) => {
                     const nights = differenceInDays(
@@ -172,32 +172,32 @@ export default function Account() {
                         )}
                         <div className="p-3">
                           <Link to={`/venue/${booking.venue.id}`}>
-                            <h4 className="text-xl font-black hover:underline hover:decoration-2 truncate">
+                            <h4 className="xs:text-lg sm:text-xl font-black underline hover:underline hover:decoration-2 truncate">
                               {booking.venue.name}
                             </h4>
                           </Link>
-                          <p>
+                          <p className="text-sm mt-1">
                             <span className="font-bold">Dates: </span>
                             {format(
                               new Date(booking.dateFrom),
                               "dd.MM.yy",
                             )} - {format(new Date(booking.dateTo), "dd.MM.yy")}
                           </p>
-                          <p>
+                          <p className="text-sm mt-1">
                             <span className="font-bold">Nights: </span>
                             {nights}
                           </p>
-                          <p>
+                          <p className="text-sm mt-1">
                             <span className="font-bold">Guests: </span>
                             {booking.guests}
                           </p>
-                          <p>
+                          <p className="text-sm mt-1">
                             <span className="font-bold">Total price: </span>
                             {totalPrice}$
                           </p>
                           <Link
                             to={`/venue/${booking.venue.id}`}
-                            className="bg-black text-beige text-center font-bold py-2 px-4 rounded mt-2 shadow-custom-dark hover:bg-gray-900 block cursor-pointer"
+                            className="text-sm bg-lightGreen text-black text-center font-bold py-1 rounded mt-2 shadow-custom-dark hover:bg-darkGreen block cursor-pointer"
                           >
                             Venue Details
                           </Link>
@@ -219,7 +219,7 @@ export default function Account() {
               )}
             </section>
             <hr />
-            <section className="mt-3 py-5 px-6">
+            <section className="mt-3 py-5 sm:px-6">
               <h3 className="text-xl font-black">Favorites</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-3 ">
                 {favoritesToShow.length > 0 ? (
