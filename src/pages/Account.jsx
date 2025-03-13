@@ -3,6 +3,8 @@ import { VenueCard } from "../components";
 import { fetchProfile, fetchFavorites } from "../api";
 import { useFavorites } from "../hooks/useFavorites";
 import { Link } from "react-router-dom";
+import { format, differenceInDays } from "date-fns";
+import { useMediaQuery } from "react-responsive";
 
 export default function Account() {
   const [profile, setProfile] = useState(null);
@@ -11,6 +13,13 @@ export default function Account() {
   const [showModal, setShowModal] = useState(false);
   const { favorites, handleFavoriteClick } = useFavorites(true);
   const [favoriteVenues, setFavoriteVenues] = useState([]);
+  const [showAllBookings, setShowAllBookings] = useState(false);
+  const [showAllFavorites, setShowAllFavorites] = useState(false);
+
+  const isXs = useMediaQuery({ maxWidth: 575 });
+  const isSm = useMediaQuery({ minWidth: 576, maxWidth: 767 });
+  const isMd = useMediaQuery({ minWidth: 768, maxWidth: 991 });
+  const isLg = useMediaQuery({ minWidth: 992 });
 
   useEffect(() => {
     const getProfile = async () => {
@@ -44,9 +53,38 @@ export default function Account() {
     return <div>Error: {error}</div>;
   }
 
+  let bookingsToShow;
+  if (showAllBookings) {
+    bookingsToShow = profile.bookings;
+  } else if (isXs) {
+    bookingsToShow = profile.bookings.slice(0, 2);
+  } else if (isSm) {
+    bookingsToShow = profile.bookings.slice(0, 2);
+  } else if (isMd) {
+    bookingsToShow = profile.bookings.slice(0, 3);
+  } else if (isLg) {
+    bookingsToShow = profile.bookings.slice(0, 4);
+  } else {
+    bookingsToShow = profile.bookings.slice(0, 4); // Default to 4
+  }
+
+  let favoritesToShow;
+  if (showAllFavorites) {
+    favoritesToShow = favoriteVenues;
+  } else if (isXs) {
+    favoritesToShow = favoriteVenues.slice(0, 2);
+  } else if (isSm) {
+    favoritesToShow = favoriteVenues.slice(0, 2);
+  } else if (isMd) {
+    favoritesToShow = favoriteVenues.slice(0, 3);
+  } else if (isLg) {
+    favoritesToShow = favoriteVenues.slice(0, 4);
+  } else {
+    favoritesToShow = favoriteVenues.slice(0, 4); // Default to 4
+  }
+
   return (
     <div className="profile-page max-w-[1200px] mx-auto p-2 lg:p-4">
-      {/* <h1 className="text-3xl font-black italic">Profile</h1> */}
       {profile && (
         <div>
           <div className="profile-header relative">
@@ -72,7 +110,7 @@ export default function Account() {
             )}
           </div>
           <div className="profile-details mt-3">
-            <div className="mt-3 bg-lightBeige rounded-sm shadow-sm p-5">
+            <section className="mt-3 bg-lightBeige rounded-sm shadow-sm p-5">
               <h3 className="text-xl font-bold">Venues</h3>
               {profile.venueManager ? (
                 profile.venues.length > 0 ? (
@@ -103,36 +141,94 @@ export default function Account() {
                   </button>
                 </div>
               )}
-            </div>
-            <div className="mt-3 bg-lightBeige rounded-sm shadow-sm p-5">
-              <h3 className="text-xl font-black">Bookings</h3>
-              {profile.bookings.length > 0 ? (
-                profile.bookings.map((booking) => (
-                  <div key={booking.id} className="booking-card">
-                    <h4>{booking.venue.name}</h4>
-                    <p>
-                      From: {booking.dateFrom} To: {booking.dateTo}
-                    </p>
-                    <p>Guests: {booking.guests}</p>
-                  </div>
-                ))
-              ) : (
-                <p>No bookings available.</p>
+            </section>
+            <section className="mt-3 py-5 px-6">
+              <h2 className="text-xl font-black">Bookings</h2>
+              <p className="text-black">
+                Here you can see all your bookings. You can also cancel them if
+                needed.
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-3 ">
+                {bookingsToShow.length > 0 ? (
+                  bookingsToShow.map((booking) => {
+                    const nights = differenceInDays(
+                      new Date(booking.dateTo),
+                      new Date(booking.dateFrom),
+                    );
+                    const totalPrice = booking.venue.price * nights;
+                    return (
+                      <div
+                        key={booking.id}
+                        className="booking-card bg-lightBeige rounded-sm shadow-lg mt-2 hover:shadow-custom-dark"
+                      >
+                        {booking.venue.media.length > 0 && (
+                          <Link to={`/venue/${booking.venue.id}`}>
+                            <img
+                              src={booking.venue.media[0].url}
+                              alt={booking.venue.media[0].alt || "Venue image"}
+                              className="venue-image w-full h-32 object-cover rounded-t-sm"
+                            />
+                          </Link>
+                        )}
+                        <div className="p-3">
+                          <Link to={`/venue/${booking.venue.id}`}>
+                            <h4 className="text-xl font-black hover:underline hover:decoration-2 truncate">
+                              {booking.venue.name}
+                            </h4>
+                          </Link>
+                          <p>
+                            <span className="font-bold">Dates: </span>
+                            {format(
+                              new Date(booking.dateFrom),
+                              "dd.MM.yy",
+                            )} - {format(new Date(booking.dateTo), "dd.MM.yy")}
+                          </p>
+                          <p>
+                            <span className="font-bold">Nights: </span>
+                            {nights}
+                          </p>
+                          <p>
+                            <span className="font-bold">Guests: </span>
+                            {booking.guests}
+                          </p>
+                          <p>
+                            <span className="font-bold">Total price: </span>
+                            {totalPrice}$
+                          </p>
+                          <Link
+                            to={`/venue/${booking.venue.id}`}
+                            className="bg-black text-beige text-center font-bold py-2 px-4 rounded mt-2 shadow-custom-dark hover:bg-gray-900 block cursor-pointer"
+                          >
+                            Venue Details
+                          </Link>
+                        </div>
+                      </div>
+                    );
+                  })
+                ) : (
+                  <p>No bookings available.</p>
+                )}
+              </div>
+              {profile.bookings.length > 2 && (
+                <button
+                  onClick={() => setShowAllBookings(!showAllBookings)}
+                  className="bg-black text-beige font-bold py-2 px-4 rounded mt-8 shadow-custom-dark hover:bg-gray-900 block cursor-pointer w-[170px] mx-auto"
+                >
+                  {showAllBookings ? "Show less bookings" : "View all bookings"}
+                </button>
               )}
-            </div>
-            <div className="py-8 lg:px-8 sm:max-w-2xl md:max-w-3xl md:px-6 lg:max-w-6xl mx-auto rounded-sm shadow-sm bg-lightBeige mt-5">
-              {/* <div className=""> */}
+            </section>
+            <hr />
+            <section className="mt-3 py-5 px-6">
               <h3 className="text-xl font-black">Favorites</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 mt-10">
-                {/* <div className=""> */}
-                {favoriteVenues.length > 0 ? (
-                  favoriteVenues.map((venue) => (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-3 ">
+                {favoritesToShow.length > 0 ? (
+                  favoritesToShow.map((venue) => (
                     <div key={venue.id} className="mt-3">
                       <VenueCard
                         venue={venue}
                         isFavorite={true}
                         onFavoriteClick={handleFavoriteClick}
-                        additionalClass="m-3"
                       />
                     </div>
                   ))
@@ -152,7 +248,17 @@ export default function Account() {
                   </div>
                 )}
               </div>
-            </div>
+              {favoriteVenues.length > 2 && (
+                <button
+                  onClick={() => setShowAllFavorites(!showAllFavorites)}
+                  className="bg-black text-beige font-bold py-2 px-4 rounded mt-8 shadow-custom-dark hover:bg-gray-900 block cursor-pointer w-[170px] mx-auto"
+                >
+                  {showAllFavorites
+                    ? "Show less favorites"
+                    : "View all favorites"}
+                </button>
+              )}
+            </section>
           </div>
         </div>
       )}
