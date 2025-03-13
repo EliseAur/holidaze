@@ -1,4 +1,5 @@
 import { apiFetch } from "./apiFetch";
+import { API_HOLIDAZE_BASE } from "./apiConfig";
 
 export async function fetchProfile() {
   const userName = localStorage.getItem("userName");
@@ -6,7 +7,7 @@ export async function fetchProfile() {
     throw new Error("No user name found");
   }
 
-  const endpoint = `/profiles/${userName}?_bookings=true&_venues=true`;
+  const endpoint = `${API_HOLIDAZE_BASE}/profiles/${userName}?_bookings=true&_venues=true`;
   const data = await apiFetch(endpoint);
 
   if (!data || typeof data !== "object") {

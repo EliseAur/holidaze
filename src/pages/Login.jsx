@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { authLogin } from "../auth/authLogin";
+import { authLogin } from "../api/authLogin";
 import { useAuth } from "../context/useAuth";
 
 export default function Login() {
@@ -14,10 +14,11 @@ export default function Login() {
 
     try {
       const result = await authLogin(email, password);
+      console.log("Login response:", result); // Log the entire response
 
       // Store the token in local storage
-      if (result.data && result.data.accessToken && result.data.name) {
-        handleLogin(result.data.accessToken, result.data.name);
+      if (result && result.accessToken && result.name) {
+        handleLogin(result.accessToken, result.name);
         navigate("/account");
       } else {
         console.error("Token or name not found in the response");

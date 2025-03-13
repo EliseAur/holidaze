@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { SwitchField } from "../components";
+import { authRegister } from "../api/authRegister";
 
 export default function Register() {
   const [email, setEmail] = useState("");
@@ -22,32 +23,14 @@ export default function Register() {
     };
 
     // Log the user object
-    console.log("User registration data:", user);
-
-    const url = "https://v2.api.noroff.dev/auth/register";
+    // console.log("User registration data:", user);
 
     try {
-      const response = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-Noroff-API-Key": "4b610d11-d5e1-4d4d-a3fb-82542f6e858e", // Replace with your actual API key
-        },
-        body: JSON.stringify(user),
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-        console.log("Registration data:", result);
-        console.log("stringify JSON:", JSON.stringify(result));
-        navigate("/login");
-      } else {
-        const errorData = await response.json();
-        console.error("Error registering:", errorData);
-        throw new Error("An error occurred when registering");
-      }
+      const result = await authRegister(user);
+      console.log("Registration response:", result);
+      navigate("/login");
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error registering:", error);
     }
   };
 
