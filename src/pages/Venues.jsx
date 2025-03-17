@@ -18,7 +18,13 @@ function Venues() {
       setLoading(true);
       try {
         const newVenues = await fetchAllVenues(page);
-        setVenues((prevVenues) => [...prevVenues, ...newVenues]); // Append new venues to the existing list
+        setVenues((prevVenues) => {
+          if (page === 1) {
+            return newVenues; // For the first page, return only newVenues
+          } else {
+            return [...prevVenues, ...newVenues]; // Append new venues to the existing list for subsequent pages
+          }
+        }); // Append new venues to the existing list
       } catch (error) {
         console.error("Error fetching ALL venues:", error);
       } finally {
@@ -45,9 +51,6 @@ function Venues() {
       ) : (
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
-            {/* {venues.map((venue) => (
-              <VenueCard key={venue.id} venue={venue} />
-            ))} */}
             {venues.map((venue, index) => (
               <VenueCard
                 key={`${venue.id}-${index}`}

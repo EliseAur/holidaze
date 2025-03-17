@@ -1,8 +1,8 @@
 import { apiFetch } from "./apiFetch";
 import { API_HOLIDAZE_BASE } from "./apiConfig";
 
-export async function fetchLatestVenues() {
-  const endpoint = `${API_HOLIDAZE_BASE}/venues?limit=9&sort=created&sortOrder=desc`;
+export async function fetchLatestVenues(limit = 12) {
+  const endpoint = `${API_HOLIDAZE_BASE}/venues?limit=${limit}&sort=created&sortOrder=desc`;
   const data = await apiFetch(endpoint);
 
   if (!Array.isArray(data)) {
@@ -15,7 +15,7 @@ export async function fetchLatestVenues() {
 }
 
 export async function fetchAllVenues(page = 1, limit = 12) {
-  const endpoint = `${API_HOLIDAZE_BASE}/venues?sort=created&sortOrder=desc&limit=${limit}&page=${page}`;
+  const endpoint = `${API_HOLIDAZE_BASE}/venues?limit=${limit}&sort=created&sortOrder=desc&page=${page}`;
   const data = await apiFetch(endpoint);
 
   if (!Array.isArray(data)) {
