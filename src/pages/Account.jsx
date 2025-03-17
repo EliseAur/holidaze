@@ -7,6 +7,8 @@ import { format, differenceInDays } from "date-fns";
 import { useMediaQuery } from "react-responsive";
 import { ProfileUpdateForm } from "../components";
 import { Modal } from "../components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 
 export default function Account() {
   const [profile, setProfile] = useState(null);
@@ -89,50 +91,107 @@ export default function Account() {
   }
 
   return (
-    <div className="profile-page mx-auto">
+    <div className="profile-page ">
       {profile && (
         <div>
-          <div className="profile-header relative">
-            {profile.banner && (
-              <img
-                src={profile.banner.url}
-                alt={profile.banner.alt || "Banner"}
-                className="profile-banner shadow-sm w-full h-56 object-cover"
-              />
-            )}
-            {profile.avatar && (
-              <div className="absolute inset-0 flex flex-col items-center justify-center font-bold">
-                <img
-                  src={profile.avatar.url}
-                  alt={profile.avatar.alt || "Avatar"}
-                  className="profile-avatar w-24 h-24 rounded-full border-4 border-lightBeige shadow-custom-dark"
-                />
-                <h2 className=" text-lightBeige text-shadow mt-2 text-lg">
-                  {profile.name}
-                </h2>
-                <p className="text-lightBeige text-shadow">{profile.email}</p>
-                <button
-                  onClick={openModal}
-                  className="bg-lightGreen text-sm shadow-custom-dark text-black font-bold px-4 py-1 rounded mt-2 inline-block hover:bg-darkGreen"
-                >
-                  Edit profile
-                </button>
-                <Modal isOpen={isModalOpen} onClose={closeModal}>
-                  <ProfileUpdateForm
-                    onClose={closeModal}
-                    onUpdate={getProfile}
+          <div className="bg-darkerGreen">
+            <div className="bg-darkerGreen max-w-[1279px] mx-auto border-t-3 xl:border-t-0 border-lightBeige ">
+              <div className="profile-header relative">
+                {profile.banner && (
+                  <img
+                    src={profile.banner.url}
+                    alt={profile.banner.alt || "Banner"}
+                    className="profile-banner shadow-sm w-full h-38 object-cover"
                   />
-                </Modal>
+                )}
+                {profile.avatar && (
+                  <div className=" inset-0 absolute flex flex-col top-20 right-1/2 sm:right-1/2 transform max-w-[190px] pl-4 text-lightBeige">
+                    <img
+                      src={profile.avatar.url}
+                      alt={profile.avatar.alt || "Avatar"}
+                      className="profile-avatar w-28 h-28 rounded-full border-4 border-lightBeige shadow-custom-dark "
+                    />
+                    <div>
+                      <h2 className="font-bold text-md text-left">
+                        {profile.name}
+                      </h2>
+                      <p className="text-sm text-left">{profile.email}</p>
+                    </div>
+                  </div>
+                )}
               </div>
-            )}
+              <div className="bg-darkerGreen shadow-sm border-t-3 border-lightBeige pt-25 pb-4 px-4 text-sm flex justify-between items-center flex-grow">
+                <div className="flex flex-col flex-grow max-w-[200px] sm:max-w-[340px] pr-4">
+                  <div>
+                    <span className="font-bold text-lightBeige">
+                      About me:{" "}
+                    </span>
+                    <span className="text-lightBeige"> {profile.bio}</span>
+                  </div>
+                  <div className="text-black">
+                    <button
+                      onClick={openModal}
+                      className="bg-lightGreen text-xs sm:text-sm shadow-custom-dark text-black font-bold px-4 py-1 rounded mt-2 inline-block hover:bg-darkGreen w-full"
+                    >
+                      <FontAwesomeIcon icon={faPenToSquare} className="mr-2" />
+                      Edit profile
+                    </button>
+                    <Modal isOpen={isModalOpen} onClose={closeModal}>
+                      <ProfileUpdateForm
+                        onClose={closeModal}
+                        onUpdate={getProfile}
+                      />
+                    </Modal>
+                  </div>
+                </div>
+                <div className="flex flex-col sm:flex-row ml-auto mt-auto text-md sm:text-lg sm:space-x-4 underline border-l-3 pl-5 border-lightBeige text-lightBeige">
+                  <Link
+                    to="/account"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      document
+                        .getElementById("hosting")
+                        .scrollIntoView({ behavior: "smooth" });
+                    }}
+                    className="hover:decoration-2 cursor-pointer sm:mt-0 flex-grow"
+                  >
+                    Hosting
+                  </Link>
+                  <Link
+                    to="/account"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      document
+                        .getElementById("bookings")
+                        .scrollIntoView({ behavior: "smooth" });
+                    }}
+                    className="hover:decoration-2 cursor-pointer mt-4 sm:mt-0 flex-grow"
+                  >
+                    Bookings
+                  </Link>
+                  <Link
+                    to="/account"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      document
+                        .getElementById("favorites")
+                        .scrollIntoView({ behavior: "smooth" });
+                    }}
+                    className="hover:decoration-2 cursor-pointer mt-4 mb-4 sm:mt-0 sm:mb-0 flex-grow"
+                  >
+                    Favorites
+                  </Link>
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="bg-darkerGreen text-lightBeige p-4">
-            <p className="font-black">About me:</p>
-            <p>{profile.bio}</p>
-          </div>
+
           <div className="profile-details mt-3 px-2 sm:px-6">
-            <section className="mt-3 py-5 ">
-              <h3 className="text-xl font-bold">Venues</h3>
+            <section
+              id="hosting"
+              className="mt-3 py-5 max-w-[1279px] mx-auto xl:px-4"
+            >
+              <h3 className="text-xl font-bold">Hosting</h3>
               {profile.venueManager ? (
                 profile.venues.length > 0 ? (
                   profile.venues.map((venue) => (
@@ -149,7 +208,16 @@ export default function Account() {
                     </div>
                   ))
                 ) : (
-                  <p>No venues available.</p>
+                  <>
+                    <p>You are not currently hosting any venues.</p>
+                    <p>Do something about that.</p>
+                    <button
+                      onClick={openModal}
+                      className="bg-lightGreen shadow-custom-dark text-black font-bold px-4 py-2 rounded mt-4 inline-block hover:bg-darkGreen"
+                    >
+                      + Add a venue
+                    </button>
+                  </>
                 )
               ) : (
                 <div>
@@ -166,13 +234,16 @@ export default function Account() {
             </section>
             <hr />
 
-            <section className="mt-3 py-5">
+            <section
+              id="bookings"
+              className="mt-3 py-5 max-w-[1279px] mx-auto xl:px-4"
+            >
               <h2 className="text-xl font-black">Bookings</h2>
               <p className="text-black">
                 Here you can see all your bookings. You can also cancel them if
                 needed.
               </p>
-              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-2 sm:gap-3 ">
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-2 sm:gap-3">
                 {bookingsToShow.length > 0 ? (
                   bookingsToShow.map((booking) => {
                     const nights = differenceInDays(
@@ -243,7 +314,10 @@ export default function Account() {
               )}
             </section>
             <hr />
-            <section className="mt-3 py-5">
+            <section
+              id="favorites"
+              className="mt-3 py-5 max-w-[1279px] mx-auto xl:px-4"
+            >
               <h3 className="text-xl font-black">Favorites</h3>
               <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-2 sm:gap-3 ">
                 {favoritesToShow.length > 0 ? (
