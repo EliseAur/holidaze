@@ -148,7 +148,7 @@ export default function Account() {
                 Here you can see all your bookings. You can also cancel them if
                 needed.
               </p>
-              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-3 ">
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-2 sm:gap-3 ">
                 {bookingsToShow.length > 0 ? (
                   bookingsToShow.map((booking) => {
                     const nights = differenceInDays(
@@ -166,7 +166,7 @@ export default function Account() {
                             <img
                               src={booking.venue.media[0].url}
                               alt={booking.venue.media[0].alt || "Venue image"}
-                              className="venue-image w-full h-32 object-cover rounded-t-sm"
+                              className="venue-image w-full h-40 sm:h-56 object-cover rounded-t-sm"
                             />
                           </Link>
                         )}
@@ -221,7 +221,7 @@ export default function Account() {
             <hr />
             <section className="mt-3 py-5 sm:px-6">
               <h3 className="text-xl font-black">Favorites</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-3 ">
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-2 sm:gap-3 ">
                 {favoritesToShow.length > 0 ? (
                   favoritesToShow.map((venue) => (
                     <div key={venue.id} className="mt-3">
@@ -233,7 +233,7 @@ export default function Account() {
                     </div>
                   ))
                 ) : (
-                  <div>
+                  <div className="col-span-2">
                     <p>No favorite venues yet..</p>
                     <p className="">
                       <span>Check out our </span>

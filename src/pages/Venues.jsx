@@ -42,15 +42,15 @@ function Venues() {
   return (
     <div
       id="venueContainer"
-      className="bg-beige py-8 lg:px-8  max-w-96 px-3 sm:max-w-2xl sm:px-4 md:max-w-3xl md:px-6 lg:max-w-6xl mx-auto"
+      className="bg-beige py-8 lg:px-8  max-w-5xl px-1 sm:max-w-2xl sm:px-3 md:max-w-3xl md:px-6 lg:max-w-6xl mx-auto"
     >
-      <h2 className="text-3xl font-black italic">All venues</h2>
+      <h2 className="text-3xl font-black italic mx-2 sm:mx-0">All venues</h2>
       <FilterVenues />
       {loading && page === 1 ? (
         <LoadingSpinner />
       ) : (
         <>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 mt-10">
             {venues.map((venue, index) => (
               <VenueCard
                 key={`${venue.id}-${index}`}
