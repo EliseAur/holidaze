@@ -128,6 +128,8 @@ export default function Register() {
             label="I want to register as a host"
             checked={venueManager}
             onChange={setVenueManager}
+            textColor="text-beige"
+            textShadow="text-shadow"
           />
         </div>
         <button

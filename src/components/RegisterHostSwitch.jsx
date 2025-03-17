@@ -1,7 +1,13 @@
 import { Switch } from "@headlessui/react";
 import PropTypes from "prop-types";
 
-export default function SwitchField({ label, checked, onChange }) {
+export default function SwitchField({
+  label,
+  checked,
+  onChange,
+  textColor,
+  textShadow,
+}) {
   return (
     <div className="flex items-center">
       <Switch
@@ -16,7 +22,9 @@ export default function SwitchField({ label, checked, onChange }) {
             pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200`}
         />
       </Switch>
-      <label className="text-md text-beige font-bold text-left ml-2 text-shadow">
+      <label
+        className={`text-md font-bold text-left ml-2 ${textShadow} ${textColor}`}
+      >
         {label}
       </label>
     </div>
@@ -27,4 +35,6 @@ SwitchField.propTypes = {
   label: PropTypes.string.isRequired,
   checked: PropTypes.bool.isRequired,
   onChange: PropTypes.func.isRequired,
+  textColor: PropTypes.string,
+  textShadow: PropTypes.string,
 };

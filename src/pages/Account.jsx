@@ -5,34 +5,39 @@ import { useFavorites } from "../hooks/useFavorites";
 import { Link } from "react-router-dom";
 import { format, differenceInDays } from "date-fns";
 import { useMediaQuery } from "react-responsive";
+import { ProfileUpdateForm } from "../components";
+import { Modal } from "../components";
 
 export default function Account() {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [showModal, setShowModal] = useState(false);
   const { favorites, handleFavoriteClick } = useFavorites(true);
   const [favoriteVenues, setFavoriteVenues] = useState([]);
   const [showAllBookings, setShowAllBookings] = useState(false);
   const [showAllFavorites, setShowAllFavorites] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
   const isXs = useMediaQuery({ maxWidth: 575 });
   const isSm = useMediaQuery({ minWidth: 576, maxWidth: 767 });
   const isMd = useMediaQuery({ minWidth: 768, maxWidth: 991 });
   const isLg = useMediaQuery({ minWidth: 992 });
 
-  useEffect(() => {
-    const getProfile = async () => {
-      try {
-        const profileData = await fetchProfile();
-        setProfile(profileData);
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const getProfile = async () => {
+    try {
+      const profileData = await fetchProfile();
+      setProfile(profileData);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     getProfile();
   }, []);
 
@@ -84,7 +89,7 @@ export default function Account() {
   }
 
   return (
-    <div className="profile-page max-w-[1200px] mx-auto p-2 lg:p-4">
+    <div className="profile-page mx-auto">
       {profile && (
         <div>
           <div className="profile-header relative">
@@ -92,7 +97,7 @@ export default function Account() {
               <img
                 src={profile.banner.url}
                 alt={profile.banner.alt || "Banner"}
-                className="profile-banner rounded-sm shadow-sm w-full h-48 object-cover"
+                className="profile-banner shadow-sm w-full h-56 object-cover"
               />
             )}
             {profile.avatar && (
@@ -100,17 +105,33 @@ export default function Account() {
                 <img
                   src={profile.avatar.url}
                   alt={profile.avatar.alt || "Avatar"}
-                  className="profile-avatar w-24 h-24 rounded-full border-4 border-white shadow-custom-dark"
+                  className="profile-avatar w-24 h-24 rounded-full border-4 border-lightBeige shadow-custom-dark"
                 />
                 <h2 className=" text-lightBeige text-shadow mt-2 text-lg">
                   {profile.name}
                 </h2>
                 <p className="text-lightBeige text-shadow">{profile.email}</p>
+                <button
+                  onClick={openModal}
+                  className="bg-lightGreen text-sm shadow-custom-dark text-black font-bold px-4 py-1 rounded mt-2 inline-block hover:bg-darkGreen"
+                >
+                  Edit profile
+                </button>
+                <Modal isOpen={isModalOpen} onClose={closeModal}>
+                  <ProfileUpdateForm
+                    onClose={closeModal}
+                    onUpdate={getProfile}
+                  />
+                </Modal>
               </div>
             )}
           </div>
-          <div className="profile-details mt-3">
-            <section className="mt-3 bg-lightBeige rounded-sm shadow-sm p-5">
+          <div className="bg-darkerGreen text-lightBeige p-4">
+            <p className="font-black">About me:</p>
+            <p>{profile.bio}</p>
+          </div>
+          <div className="profile-details mt-3 px-2 sm:px-6">
+            <section className="mt-3 py-5 ">
               <h3 className="text-xl font-bold">Venues</h3>
               {profile.venueManager ? (
                 profile.venues.length > 0 ? (
@@ -133,16 +154,19 @@ export default function Account() {
               ) : (
                 <div>
                   <p>You are not registered as a host.</p>
+                  <p>Edit profile to register.</p>
                   <button
-                    onClick={() => setShowModal(true)}
+                    onClick={openModal}
                     className="bg-lightGreen shadow-custom-dark text-black font-bold px-4 py-2 rounded mt-4 inline-block hover:bg-darkGreen"
                   >
-                    Register as a Host
+                    Edit profile
                   </button>
                 </div>
               )}
             </section>
-            <section className="mt-3 py-5 sm:px-6">
+            <hr />
+
+            <section className="mt-3 py-5">
               <h2 className="text-xl font-black">Bookings</h2>
               <p className="text-black">
                 Here you can see all your bookings. You can also cancel them if
@@ -219,7 +243,7 @@ export default function Account() {
               )}
             </section>
             <hr />
-            <section className="mt-3 py-5 sm:px-6">
+            <section className="mt-3 py-5">
               <h3 className="text-xl font-black">Favorites</h3>
               <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-2 sm:gap-3 ">
                 {favoritesToShow.length > 0 ? (
@@ -259,30 +283,6 @@ export default function Account() {
                 </button>
               )}
             </section>
-          </div>
-        </div>
-      )}
-
-      {showModal && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center pb-40"
-          style={{ backgroundColor: "rgba(0, 0, 0, 0.87)" }}
-        >
-          <div className="bg-beige p-6 rounded-sm shadow-lg">
-            <h2 className="text-xl font-black mb-2">Register as a Host</h2>
-            <p>To register as a host, please click the link below:</p>
-            <Link
-              to="/register-host"
-              className="bg-lightGreen shadow-custom-dark text-black font-bold px-4 py-2 rounded mt-4 inline-block"
-            >
-              Register as a Host
-            </Link>
-            <button
-              onClick={() => setShowModal(false)}
-              className="mt-4 ml-4 text-black cursor-pointer underline hover:text-blue-700"
-            >
-              I am not ready yet
-            </button>
           </div>
         </div>
       )}

@@ -18,6 +18,8 @@ import Footer from "./Footer";
 import FooterWithNoBg from "./FooterWithNoBg";
 import SwitchField from "./registerHostSwitch";
 import LoadingSpinner from "./LoadingSpinner";
+import ProfileUpdateForm from "./ProfileUpdateForm";
+import Modal from "./Modal";
 
 export {
   Header,
@@ -38,4 +40,6 @@ export {
   LogoutAccountBtnMobile,
   LoginRegWideScreen,
   LoginRegMobile,
+  ProfileUpdateForm,
+  Modal,
 };
