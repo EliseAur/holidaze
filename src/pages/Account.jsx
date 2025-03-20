@@ -133,7 +133,7 @@ export default function Account() {
                   <div className="text-black">
                     <button
                       onClick={openModal}
-                      className="bg-lightGreen text-xs sm:text-sm shadow-custom-dark text-black font-bold px-4 py-1 rounded mt-2 inline-block hover:bg-darkGreen w-full"
+                      className="bg-black text-xs sm:text-sm text-white font-bold px-4 py-2 rounded mt-2 inline-block hover:bg-gray-900"
                     >
                       <FontAwesomeIcon icon={faPenToSquare} className="mr-2" />
                       Edit profile
@@ -146,7 +146,7 @@ export default function Account() {
                     </Modal>
                   </div>
                 </div>
-                <div className="flex flex-col sm:flex-row ml-auto mt-auto text-md sm:text-lg sm:space-x-4 underline border-l-3 pl-5 border-black text-black font-black">
+                <div className="flex flex-col sm:flex-row ml-auto mt-auto text-md sm:text-lg sm:space-x-4 underline border-l-1 pl-5 border-black text-black font-black">
                   <Link
                     to="/account"
                     onClick={(e) => {
@@ -215,7 +215,7 @@ export default function Account() {
                     <p>Do something about that.</p>
                     <button
                       onClick={openModal}
-                      className="bg-lightGreen shadow-custom-dark text-black font-bold px-4 py-2 rounded mt-4 inline-block hover:bg-darkGreen"
+                      className="bg-lightGreen shadow-custom-dark text-black font-bold px-4 py-2 rounded mt-2 inline-block hover:bg-darkGreen"
                     >
                       + Add a venue
                     </button>
@@ -227,7 +227,7 @@ export default function Account() {
                   <p>Edit profile to register.</p>
                   <button
                     onClick={openModal}
-                    className="bg-lightGreen shadow-custom-dark text-black font-bold px-4 py-2 rounded mt-4 inline-block hover:bg-darkGreen"
+                    className="bg-lightGreen shadow-custom-dark text-black font-bold px-4 py-2 rounded mt-2 inline-block hover:bg-darkGreen"
                   >
                     <FontAwesomeIcon icon={faPenToSquare} className="mr-2" />
                     Edit profile
@@ -241,11 +241,8 @@ export default function Account() {
               className=" py-3 max-w-[1279px] mx-auto xl:px-4"
             >
               <h2 className="text-xl font-black">Bookings</h2>
-              <p className="text-black">
-                Here you can see all your bookings. You can also cancel them if
-                needed.
-              </p>
-              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-2 sm:gap-3">
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-2 sm:gap-3">
                 {bookingsToShow.length > 0 ? (
                   bookingsToShow.map((booking) => {
                     const nights = differenceInDays(
@@ -303,7 +300,15 @@ export default function Account() {
                     );
                   })
                 ) : (
-                  <p>No bookings available.</p>
+                  <div>
+                    <p>No bookings available.</p>
+                    <Link
+                      to="/venues"
+                      className="bg-lightGreen shadow-custom-dark text-black font-bold px-4 py-2 rounded hover:bg-darkGreen mt-2 inline-block cursor-pointer"
+                    >
+                      Browse venues
+                    </Link>
+                  </div>
                 )}
               </div>
               {profile.bookings.length > 2 && (
@@ -321,7 +326,7 @@ export default function Account() {
               className=" pt-3 pb-6 mb-4 max-w-[1279px] mx-auto xl:px-4"
             >
               <h3 className="text-xl font-black">Favorites</h3>
-              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-2 sm:gap-3 ">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-2 sm:gap-3 ">
                 {favoritesToShow.length > 0 ? (
                   favoritesToShow.map((venue) => (
                     <div key={venue.id} className="mt-3">
