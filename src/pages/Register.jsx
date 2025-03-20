@@ -7,7 +7,7 @@ export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-  const [avatarurl, setAvatarurl] = useState("");
+  // const [avatarurl, setAvatarurl] = useState("");
   const [venueManager, setVenueManager] = useState(false);
   const navigate = useNavigate();
 
@@ -18,7 +18,7 @@ export default function Register() {
       name,
       email,
       password,
-      avatarurl,
+      // avatarurl,
       venueManager,
     };
 
@@ -105,7 +105,7 @@ export default function Register() {
           </div>
 
           {/* Avatar input */}
-          <div>
+          {/* <div>
             <label
               htmlFor="avatar"
               className="block text-sm text-beige text-shadow"
@@ -120,8 +120,7 @@ export default function Register() {
               className="px-2 py-1 border border-darkBeige bg-lightBeige rounded-sm shadow-custom-dark w-full focus:border-lightGreen focus:border-2 focus:ring-lightGreen focus:outline-none"
               placeholder="Must be a valid URL"
             />
-            {/* <p className="text-red-600 text-sm">{errors.avatar?.message}</p> */}
-          </div>
+          </div> */}
 
           {/* Venue Manager toggle */}
           <SwitchField
