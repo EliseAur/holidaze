@@ -2,6 +2,31 @@ import { useState, useEffect } from "react";
 import { updateProfile } from "../api/updateProfile";
 import { fetchProfile } from "../api/fetchProfile";
 import { SwitchField } from "./index";
+import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+
+const ProfileUpdateSchema = yup.object({
+  bio: yup.string().max(20, "Bio must be less than 21 characters"),
+  avatar: yup.object({
+    url: yup
+      .string()
+      .url("Must be a valid URL")
+      .typeError("Must be a valid URL"),
+    alt: yup
+      .string()
+      .max(49, "Description must be less than 50 characters")
+      .typeError("Description must be less than 20 characters"),
+  }),
+  banner: yup.object({
+    url: yup
+      .string()
+      .url("Must be a valid URL")
+      .typeError("Must be a valid URL"),
+    alt: yup.string().max(49, "Description must be less than 50 characters"),
+  }),
+  venueManager: yup.boolean(),
+});
 
 export default function ProfileUpdateForm({ onClose, onUpdate }) {
   const [profile, setProfile] = useState({
@@ -17,140 +42,170 @@ export default function ProfileUpdateForm({ onClose, onUpdate }) {
     venueManager: false,
   });
 
+  const {
+    register,
+    handleSubmit,
+    control,
+    setValue,
+    setError,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(ProfileUpdateSchema),
+    defaultValues: profile,
+    mode: "onChange",
+  });
+
   useEffect(() => {
     async function getProfile() {
       try {
         const profileData = await fetchProfile();
         setProfile(profileData);
+        // Set form values
+        Object.keys(profileData).forEach((key) => {
+          setValue(key, profileData[key]);
+        });
       } catch (error) {
         console.error("Error fetching profile:", error);
       }
     }
 
     getProfile();
-  }, []);
+  }, [setValue]);
 
-  const handleChange = (e) => {
-    const { name, value, checked } = e.target;
-    if (name === "venueManager") {
-      setProfile((prevProfile) => ({
-        ...prevProfile,
-        [name]: checked,
-      }));
-    } else if (name.startsWith("avatar.") || name.startsWith("banner.")) {
-      const [key, subKey] = name.split(".");
-      setProfile((prevProfile) => ({
-        ...prevProfile,
-        [key]: {
-          ...prevProfile[key],
-          [subKey]: value,
-        },
-      }));
-    } else {
-      setProfile((prevProfile) => ({
-        ...prevProfile,
-        [name]: value,
-      }));
-    }
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const onSubmit = async (data) => {
     try {
-      const updatedProfile = await updateProfile(profile);
+      const updatedProfile = await updateProfile(data);
       console.log("Profile updated successfully:", updatedProfile);
       onUpdate(); // Call the callback function to update the account page
       onClose(); // Close the modal after successful update
     } catch (error) {
       console.error("Error updating profile:", error);
+      if (error.message.includes("Image is not accessible")) {
+        if (data.avatar.url === error.message.split(": ")[1]) {
+          setError("avatar.url", {
+            type: "manual",
+            message:
+              "Image is not accessible, please double check the image address",
+          });
+        } else if (data.banner.url === error.message.split(": ")[1]) {
+          setError("banner.url", {
+            type: "manual",
+            message:
+              "Image is not accessible, please double check the image address",
+          });
+        } else {
+          setError("avatar.url", {
+            type: "manual",
+            message:
+              "Image is not accessible, please double check the image address",
+          });
+          setError("banner.url", {
+            type: "manual",
+            message:
+              "Image is not accessible, please double check the image address",
+          });
+        }
+      }
     }
   };
 
-  const handleSwitchChange = (checked) => {
-    setProfile((prevProfile) => ({
-      ...prevProfile,
-      venueManager: checked,
-    }));
-  };
-
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <div>
-        <label className="block text-sm text-black font-bold">Bio:</label>
+        <label htmlFor="bio" className="block text-sm text-black font-bold">
+          Bio:
+        </label>
         <textarea
-          name="bio"
-          value={profile.bio}
-          onChange={handleChange}
+          {...register("bio")}
+          id="bio"
           className="px-2 py-1 border border-darkBeige bg-lightBeige rounded-sm shadow-custom-dark w-full focus:border-black focus:border-2 focus:ring-black focus:outline-none"
           placeholder="Tell us about yourself"
         />
+        <p className="text-red-600 text-sm font-bold m-1">
+          {errors.bio?.message}
+        </p>
       </div>
       <div className="mt-2">
-        <label className="block text-sm text-black font-bold">
+        <label htmlFor="avatar" className="block text-sm text-black font-bold">
           Profile image
         </label>
         <input
+          id="avatar"
           type="url"
-          name="avatar.url"
-          value={profile.avatar.url}
-          onChange={handleChange}
+          {...register("avatar.url")}
           className="px-2 py-1 border border-darkBeige bg-lightBeige rounded-sm shadow-custom-dark w-full focus:border-black focus:border-2 focus:ring-black focus:outline-none"
           placeholder="Must be a valid URL"
         />
-        {/* <p className="text-red-600 text-sm">{errors.avatar?.message}</p> */}
+        <p className="text-red-600 text-sm font-bold m-1">
+          {errors.avatar?.url?.message}
+        </p>
       </div>
       <div className="mt-2">
-        <label className="block text-sm text-black font-bold">
+        <label
+          htmlFor="avatar-alt"
+          className="block text-sm text-black font-bold"
+        >
           Profile image description
         </label>
         <input
+          id="avatar-alt"
           type="text"
-          name="avatar.alt"
-          value={profile.avatar.alt}
-          onChange={handleChange}
+          {...register("avatar.alt")}
           className="px-2 py-1 border border-darkBeige bg-lightBeige rounded-sm shadow-custom-dark w-full focus:border-black focus:border-2 focus:ring-black focus:outline-none"
           placeholder="Short description of profile image"
         />
-        {/* <p className="text-red-600 text-sm">{errors.avatar?.message}</p> */}
+        <p className="text-red-600 text-sm font-bold m-1">
+          {errors.avatar?.alt?.message}
+        </p>
       </div>
       <div className="mt-2">
-        <label className="block text-sm text-black font-bold">
+        <label htmlFor="banner" className="block text-sm text-black font-bold">
           Profile banner/ background image
         </label>
         <input
+          id="banner"
           type="url"
-          name="banner.url"
-          value={profile.banner.url}
-          onChange={handleChange}
+          {...register("banner.url")}
           className="px-2 py-1 border border-darkBeige bg-lightBeige rounded-sm shadow-custom-dark w-full focus:border-black focus:border-2 focus:ring-black focus:outline-none"
           placeholder="Must be a valid URL"
         />
-        {/* <p className="text-red-600 text-sm">{errors.avatar?.message}</p> */}
+        <p className="text-red-600 text-sm font-bold m-1">
+          {errors.banner?.url?.message}
+        </p>
       </div>
       <div className="mt-2">
-        <label className="block text-sm text-black font-bold">
+        <label
+          htmlFor="banner-alt"
+          className="block text-sm text-black font-bold"
+        >
           Banner image description
         </label>
         <input
+          id="banner-alt"
           type="text"
-          name="banner.alt"
-          value={profile.banner.alt}
-          onChange={handleChange}
+          {...register("banner.alt")}
           className="px-2 py-1 border border-darkBeige bg-lightBeige rounded-sm shadow-custom-dark w-full focus:border-black focus:border-2 focus:ring-black focus:outline-none"
           placeholder="Short description of profile banner image"
         />
-        {/* <p className="text-red-600 text-sm">{errors.avatar?.message}</p> */}
+        <p className="text-red-600 text-sm font-bold m-1">
+          {errors.banner?.alt?.message}
+        </p>
       </div>
       <div className="mt-3 text-black">
-        <SwitchField
-          label="I want to register as a host"
-          checked={profile.venueManager}
-          onChange={handleSwitchChange}
-          textColor="text-black"
-          textShadow=""
+        <Controller
+          name="venueManager"
+          control={control}
+          render={({ field }) => (
+            <SwitchField
+              label="I want to register as a host"
+              checked={field.value}
+              onChange={field.onChange}
+              textColor="text-black"
+              textShadow=""
+            />
+          )}
         />
       </div>
-
       <button
         type="submit"
         className="bg-lightGreen shadow-custom-dark text-black font-bold px-4 py-2 rounded mt-4 inline-block hover:bg-darkGreen cursor-pointer"
