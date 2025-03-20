@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
 
+// Custom hook to manage favorites
+//  retrieves favorites from local storage and provides a function to handle favorite clicks.
+
 export function useFavorites(isLoggedIn) {
   const [favorites, setFavorites] = useState(() => {
     const savedFavorites = localStorage.getItem("favorites");

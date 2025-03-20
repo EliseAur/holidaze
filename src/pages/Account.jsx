@@ -45,8 +45,12 @@ export default function Account() {
 
   useEffect(() => {
     const fetchFavoriteVenues = async () => {
-      const fetchedVenues = await fetchFavorites();
-      setFavoriteVenues(fetchedVenues);
+      try {
+        const fetchedVenues = await fetchFavorites();
+        setFavoriteVenues(fetchedVenues);
+      } catch (error) {
+        console.error("Error fetching favorite venues:", error);
+      }
     };
 
     fetchFavoriteVenues();
@@ -94,25 +98,25 @@ export default function Account() {
     <div className="profile-page ">
       {profile && (
         <div>
-          <div className="bg-darkerGreen">
-            <div className="bg-darkerGreen max-w-[1279px] mx-auto border-t-3 xl:border-t-0 border-lightBeige ">
+          <div className="bg-beige">
+            <div className="bg-darkerGreen max-w-[1279px] mx-auto border-lightBeige xl:rounded-2xl xl:mt-4">
               <div className="profile-header relative">
                 {profile.banner && (
                   <img
                     src={profile.banner.url}
                     alt={profile.banner.alt || "Banner"}
-                    className="profile-banner shadow-sm w-full h-38 object-cover"
+                    className="profile-banner w-full h-38 object-cover xl:rounded-t-2xl"
                   />
                 )}
                 {profile.avatar && (
-                  <div className=" inset-0 absolute flex flex-col top-20 right-1/2 sm:right-1/2 transform max-w-[190px] pl-4 text-lightBeige">
+                  <div className=" inset-0 absolute flex flex-col top-20 right-1/2 sm:right-1/2 transform max-w-[190px] pl-4 text-black">
                     <img
                       src={profile.avatar.url}
                       alt={profile.avatar.alt || "Avatar"}
-                      className="profile-avatar w-28 h-28 rounded-full border-4 border-lightBeige shadow-custom-dark "
+                      className="profile-avatar w-28 h-28 rounded-full border-2 border-lightBeige shadow-custom-dark "
                     />
                     <div>
-                      <h2 className="font-bold text-md text-left">
+                      <h2 className="font-black text-lg text-left">
                         {profile.name}
                       </h2>
                       <p className="text-sm text-left">{profile.email}</p>
@@ -120,13 +124,11 @@ export default function Account() {
                   </div>
                 )}
               </div>
-              <div className="bg-darkerGreen shadow-sm border-t-3 border-lightBeige pt-25 pb-4 px-4 text-sm flex justify-between items-center flex-grow">
+              <div className="bg-lightBeige shadow-sm  pt-25 pb-4 px-4 text-sm flex justify-between items-center flex-grow xl:rounded-b-2xl">
                 <div className="flex flex-col flex-grow max-w-[200px] sm:max-w-[340px] pr-4">
                   <div>
-                    <span className="font-bold text-lightBeige">
-                      About me:{" "}
-                    </span>
-                    <span className="text-lightBeige"> {profile.bio}</span>
+                    <span className="font-black text-black">Bio: </span>
+                    <span className="text-black"> {profile.bio}</span>
                   </div>
                   <div className="text-black">
                     <button
@@ -144,7 +146,7 @@ export default function Account() {
                     </Modal>
                   </div>
                 </div>
-                <div className="flex flex-col sm:flex-row ml-auto mt-auto text-md sm:text-lg sm:space-x-4 underline border-l-3 pl-5 border-lightBeige text-lightBeige">
+                <div className="flex flex-col sm:flex-row ml-auto mt-auto text-md sm:text-lg sm:space-x-4 underline border-l-3 pl-5 border-black text-black font-black">
                   <Link
                     to="/account"
                     onClick={(e) => {
@@ -191,7 +193,7 @@ export default function Account() {
               id="hosting"
               className="mt-3 py-5 max-w-[1279px] mx-auto xl:px-4"
             >
-              <h3 className="text-xl font-bold">Hosting</h3>
+              <h3 className="text-xl font-black">Hosting</h3>
               {profile.venueManager ? (
                 profile.venues.length > 0 ? (
                   profile.venues.map((venue) => (
@@ -227,16 +229,16 @@ export default function Account() {
                     onClick={openModal}
                     className="bg-lightGreen shadow-custom-dark text-black font-bold px-4 py-2 rounded mt-4 inline-block hover:bg-darkGreen"
                   >
+                    <FontAwesomeIcon icon={faPenToSquare} className="mr-2" />
                     Edit profile
                   </button>
                 </div>
               )}
+              <hr className="mt-10" />
             </section>
-            <hr />
-
             <section
               id="bookings"
-              className="mt-3 py-5 max-w-[1279px] mx-auto xl:px-4"
+              className=" py-3 max-w-[1279px] mx-auto xl:px-4"
             >
               <h2 className="text-xl font-black">Bookings</h2>
               <p className="text-black">
@@ -312,11 +314,11 @@ export default function Account() {
                   {showAllBookings ? "Show less bookings" : "View all bookings"}
                 </button>
               )}
+              <hr className="mt-10" />
             </section>
-            <hr />
             <section
               id="favorites"
-              className="mt-3 py-5 max-w-[1279px] mx-auto xl:px-4"
+              className=" pt-3 pb-6 mb-4 max-w-[1279px] mx-auto xl:px-4"
             >
               <h3 className="text-xl font-black">Favorites</h3>
               <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-2 sm:gap-3 ">
