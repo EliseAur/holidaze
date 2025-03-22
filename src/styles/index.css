@@ -105,9 +105,9 @@ body {
   border-color: black;
 }
 
-.react-datepicker__day--selected {
+/* .react-datepicker__day--selected {
   background-color: var(--color-blue-400);
-}
+}  */
 
 .react-datepicker__day:not([aria-disabled="true"]):hover {
   background-color: var(--color-blue-100);
@@ -119,6 +119,15 @@ body {
 
 .border-datepicker {
   border: var(--border-datepicker);
+}
+
+.react-datepicker__day--today {
+  text-decoration: underline;
+  color: black;
+}
+
+.booked-date {
+  color: white !important;
 }
 
 /* Loading spinner */
