@@ -5,10 +5,11 @@ import { useFavorites } from "../hooks/useFavorites";
 import { Link } from "react-router-dom";
 import { format, differenceInDays } from "date-fns";
 import { useMediaQuery } from "react-responsive";
-import { ProfileUpdateForm } from "../components";
+import { ProfileUpdateForm, VenueCreateForm } from "../components";
 import { Modal } from "../components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+// import VenueCreateForm from "../components/VenueCreateForm";
 
 export default function Account() {
   const [profile, setProfile] = useState(null);
@@ -145,6 +146,20 @@ export default function Account() {
                       />
                     </Modal>
                   </div>
+                  {/* <div className="text-black">
+                    <button
+                      onClick={openModal}
+                      className="bg-lightGreen shadow-custom-dark text-black font-bold px-4 py-2 rounded mt-2 inline-block hover:bg-darkGreen"
+                    >
+                      + Add a venue
+                    </button>
+                    <Modal isOpen={isModalOpen} onClose={closeModal}>
+                      <VenueCreateForm
+                        onClose={closeModal}
+                        onUpdate={getProfile}
+                      />
+                    </Modal>
+                  </div> */}
                 </div>
                 <div className="flex flex-col sm:flex-row ml-auto mt-auto text-md sm:text-lg sm:space-x-4 underline border-l-1 pl-5 border-black text-black font-black">
                   <Link
@@ -196,29 +211,67 @@ export default function Account() {
               <h3 className="text-xl font-black">Hosting</h3>
               {profile.venueManager ? (
                 profile.venues.length > 0 ? (
-                  profile.venues.map((venue) => (
-                    <div key={venue.id} className="venue-card mt-4">
-                      <h4 className="text-lg font-semibold">{venue.name}</h4>
-                      <p className="text-gray-600">{venue.description}</p>
-                      {venue.media.length > 0 && (
-                        <img
-                          src={venue.media[0].url}
-                          alt={venue.media[0].alt || "Venue image"}
-                          className="venue-image w-full h-32 object-cover mt-2"
+                  // profile.venues.map((venue) => (
+                  //   <div key={venue.id} className="venue-card mt-4">
+                  //     <h4 className="text-lg font-semibold">{venue.name}</h4>
+                  //     <p className="text-gray-600">{venue.description}</p>
+                  //     {venue.media.length > 0 && (
+                  //       <img
+                  //         src={venue.media[0].url}
+                  //         alt={venue.media[0].alt || "Venue image"}
+                  //         className="venue-image w-full h-32 object-cover mt-2"
+                  //       />
+                  //     )}
+                  //   </div>
+                  // ))
+                  <>
+                    {profile.venues.map((venue) => (
+                      <div key={venue.id} className="venue-card mt-4">
+                        <h4 className="text-lg font-semibold">{venue.name}</h4>
+                        <p className="text-gray-600">{venue.description}</p>
+                        {venue.media.length > 0 && (
+                          <img
+                            src={venue.media[0].url}
+                            alt={venue.media[0].alt || "Venue image"}
+                            className="venue-image w-full h-32 object-cover mt-2"
+                          />
+                        )}
+                      </div>
+                    ))}
+                    <div className="text-black mt-4">
+                      <button
+                        onClick={openModal}
+                        className="bg-lightGreen shadow-custom-dark text-black font-bold px-4 py-2 rounded mt-2 inline-block hover:bg-darkGreen"
+                      >
+                        + Add a venue
+                      </button>
+                      <Modal isOpen={isModalOpen} onClose={closeModal}>
+                        <VenueCreateForm
+                          onClose={closeModal}
+                          onUpdate={getProfile}
                         />
-                      )}
+                      </Modal>
                     </div>
-                  ))
+                  </>
                 ) : (
                   <>
                     <p>You are not currently hosting any venues.</p>
                     <p>Do something about that.</p>
-                    <button
-                      onClick={openModal}
-                      className="bg-lightGreen shadow-custom-dark text-black font-bold px-4 py-2 rounded mt-2 inline-block hover:bg-darkGreen"
-                    >
-                      + Add a venue
-                    </button>
+
+                    <div className="text-black">
+                      <button
+                        onClick={openModal}
+                        className="bg-lightGreen shadow-custom-dark text-black font-bold px-4 py-2 rounded mt-2 inline-block hover:bg-darkGreen"
+                      >
+                        + Add a venue
+                      </button>
+                      <Modal isOpen={isModalOpen} onClose={closeModal}>
+                        <VenueCreateForm
+                          onClose={closeModal}
+                          onUpdate={getProfile}
+                        />
+                      </Modal>
+                    </div>
                   </>
                 )
               ) : (

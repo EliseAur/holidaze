@@ -19,6 +19,7 @@ import FooterWithNoBg from "./FooterWithNoBg";
 import SwitchField from "./registerHostSwitch";
 import LoadingSpinner from "./LoadingSpinner";
 import ProfileUpdateForm from "./ProfileUpdateForm";
+import VenueCreateForm from "./VenueCreateForm";
 import Modal from "./Modal";
 
 export {
@@ -41,5 +42,6 @@ export {
   LoginRegWideScreen,
   LoginRegMobile,
   ProfileUpdateForm,
+  VenueCreateForm,
   Modal,
 };
