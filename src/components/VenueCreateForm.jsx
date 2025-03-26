@@ -1,6 +1,4 @@
-// import { useState, useEffect } from "react";
 import { createVenue } from "../api/createVenue";
-// import { fetchProfile } from "../api/fetchProfile";
 import { SwitchField } from "./index";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -13,21 +11,49 @@ const VenueCreateSchema = yup.object({
     .min(20, "Description must be more than 20 characters")
     .required(),
 
-  media: yup.array().of(
-    yup.object({
-      url: yup
-        .string()
-        .url("Must be a valid URL")
-        .required("URL is required")
-        .typeError("Must be a valid URL"),
-      alt: yup
-        .string()
-        .max(49, "Description must be less than 50 characters")
-        .typeError("Description must be less than 50 characters"),
-    }),
-  ),
-  price: yup.number().required(),
-  maxGuests: yup.number().required(),
+  media: yup
+    .array()
+    .of(
+      yup.lazy((value, { index }) => {
+        if (index === 0) {
+          return yup.object({
+            url: yup
+              .string()
+              .url("Must be a valid URL")
+              .required("URL is required")
+              .typeError("Must be a valid URL"),
+            alt: yup
+              .string()
+              .max(49, "Description must be less than 50 characters")
+              .typeError("Description must be less than 50 characters"),
+          });
+        } else {
+          return yup.object({
+            url: yup
+              .string()
+              .url("Must be a valid URL")
+              .nullable()
+              .notRequired()
+              .typeError("Must be a valid URL"),
+            alt: yup
+              .string()
+              .max(49, "Description must be less than 50 characters")
+              .typeError("Description must be less than 50 characters"),
+          });
+        }
+      }),
+    )
+    .length(4, "You must provide exactly 4 images"),
+  price: yup
+    .number()
+    .min(1, "Price must be at least 1")
+    .required("You must enter a price per night")
+    .typeError("Price must be a number"),
+  maxGuests: yup
+    .number()
+    .min(1, "Must be at least 1")
+    .required("You must enter the maximum number of guests")
+    .typeError("Must be a number"),
   // rating: yup.number().required(),
   meta: yup.object({
     wifi: yup.boolean(),
@@ -45,30 +71,6 @@ const VenueCreateSchema = yup.object({
 });
 
 export default function VenueCreateForm({ onClose, onUpdate }) {
-  // const [venue, setVenue] = useState({
-  //   name: "",
-  //   description: "",
-  //   media: {
-  //     url: "",
-  //     alt: "",
-  //   },
-  //   price: 0,
-  //   maxGuests: 0,
-  //   rating: 0,
-  //   meta: {
-  //     wifi: false,
-  //     parking: false,
-  //     breakfast: false,
-  //     pets: false,
-  //   },
-  //   location: {
-  //     adress: "",
-  //     city: "",
-  //     zip: "",
-  //     country: "",
-  //     continent: "",
-  //   },
-  // });
   const {
     register,
     handleSubmit,
@@ -81,10 +83,10 @@ export default function VenueCreateForm({ onClose, onUpdate }) {
       name: "",
       description: "",
       media: [
-        {
-          url: "",
-          alt: "",
-        },
+        { url: "", alt: "" },
+        { url: "", alt: "" },
+        { url: "", alt: "" },
+        { url: "", alt: "" },
       ],
       price: 0,
       maxGuests: 0,
@@ -105,63 +107,26 @@ export default function VenueCreateForm({ onClose, onUpdate }) {
     mode: "onChange",
   });
 
-  // const {
-  //   register,
-  //   handleSubmit,
-  //   control,
-  //   // setValue,
-  //   setError,
-  //   formState: { errors },
-  // } = useForm({
-  //   resolver: yupResolver(VenueCreateSchema),
-  //   defaultValues: venue,
-  //   mode: "onChange",
-  // });
-
-  // useEffect(() => {
-  //   async function getProfile() {
-  //     try {
-  //       const profileData = await fetchProfile();
-  //       setProfile(profileData);
-  //       // Set form values
-  //       Object.keys(profileData).forEach((key) => {
-  //         setValue(key, profileData[key]);
-  //       });
-  //     } catch (error) {
-  //       console.error("Error fetching profile:", error);
-  //     }
-  //   }
-
-  //   getProfile();
-  // }, [setValue]);
-
-  // const onSubmit = async (data) => {
-  //   console.log("Form data:", data); // Debugging: Log form data
-  //   try {
-  //     const newVenue = await createVenue(data);
-  //     console.log("Venue created successfully:", newVenue);
-  //     onUpdate(); // Call the callback function to update the account page
-  //     onClose(); // Close the modal after successful creation
-  //   } catch (error) {
-  //     console.error("Error creating venue:", error);
-  //     if (error.message.includes("Image URL must be a valid URL")) {
-  //       // if (data.avatar.url === error.message.split(": ")[1]) {
-  //         // setError("media.url", {
-  //         //   type: "manual",
-  //         //   message:
-  //         //     "Image is not accessible, please double check the image address",
-  //         // });
-  //         setError("media[0].url", {
-  //           type: "manual",
-  //           message: "Image URL must be a valid URL",
-  //         });
-  //       }
-  //     }
-  //   }
-  // };
-
   const onSubmit = async (data) => {
-    console.log("Form data:", data); // Debugging: Log form data
+    console.log("Form data before processing:", data); // Debugging: Log form data
+
+    // Check if the first image URL is empty and set an error if it is
+    if (!data.media[0].url) {
+      setError("media.0.url", {
+        type: "manual",
+        message: "URL is required for the first image.",
+      });
+      return;
+    }
+
+    // Remove URLs for images 2, 3, and 4 if they are empty or invalid
+    data.media = data.media.filter((media, index) => {
+      if (index > 0 && (!media.url || media.url === "")) {
+        return false;
+      }
+      return true;
+    });
+
     try {
       const newVenue = await createVenue(data);
       console.log("Venue created successfully:", newVenue);
@@ -169,17 +134,71 @@ export default function VenueCreateForm({ onClose, onUpdate }) {
       onClose(); // Close the modal after successful creation
     } catch (error) {
       console.error("Error creating venue:", error);
-      if (error.message.includes("Image URL must be valid URL")) {
-        setError("media[0].url", {
+
+      const errorMessage = error.message;
+
+      const imageUrl = error.imageUrl;
+
+      if (errorMessage.includes("Image is not accessible")) {
+        if (imageUrl) {
+          const imageIndex = data.media.findIndex(
+            (media) => media.url === imageUrl,
+          );
+          if (imageIndex !== -1) {
+            setError(`media.${imageIndex}.url`, {
+              type: "manual",
+              message:
+                "Image is not accessible, please double check the image address",
+            });
+          } else {
+            setError("form", {
+              type: "manual",
+              message:
+                "Image is not accessible, please double check the image address",
+            });
+          }
+        } else {
+          setError("form", {
+            type: "manual",
+            message:
+              "Image is not accessible, please double check the image address",
+          });
+        }
+      } else if (errorMessage.includes("Failed to create venue")) {
+        if (imageUrl) {
+          const imageIndex = data.media.findIndex(
+            (media) => media.url === imageUrl,
+          );
+          if (imageIndex !== -1) {
+            setError(`media.${imageIndex}.url`, {
+              type: "manual",
+              message: "Please double check the image address.",
+            });
+          } else {
+            setError("form", {
+              type: "manual",
+              message:
+                "Failed to create venue. Please check the provided data.",
+            });
+          }
+        } else {
+          setError("form", {
+            type: "manual",
+            message: "Failed to create venue. Please check the provided data.",
+          });
+        }
+      } else {
+        setError("form", {
           type: "manual",
-          message: "Image URL must be a valid URL",
+          message: "An unknown error occurred. Please try again.",
         });
       }
     }
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} className="p-5">
+      <h2 className="text-2xl font-black text-black mb-3">Create a venue</h2>
       <div>
         <label htmlFor="name" className="block text-sm text-black font-bold">
           Name:
@@ -212,44 +231,50 @@ export default function VenueCreateForm({ onClose, onUpdate }) {
         </p>
       </div>
       <div className="mt-2">
-        <label
-          htmlFor="media-url"
-          className="block text-sm text-black font-bold"
-        >
-          Media URL:
-        </label>
-        <input
-          {...register("media.0.url")}
-          id="media-url"
-          type="url"
-          className="px-2 py-1 border border-darkBeige bg-lightBeige rounded-sm shadow-custom-dark w-full focus:border-black focus:border-2 focus:ring-black focus:outline-none"
-          placeholder="Media URL"
-        />
-        <p className="text-red-600 text-sm font-bold m-1">
-          {errors.media?.[0]?.url?.message}
-        </p>
-      </div>
-      <div className="mt-2">
-        <label
-          htmlFor="media-alt"
-          className="block text-sm text-black font-bold"
-        >
-          Media Alt Text:
-        </label>
-        <input
-          {...register("media.alt")}
-          id="media-alt"
-          type="text"
-          className="px-2 py-1 border border-darkBeige bg-lightBeige rounded-sm shadow-custom-dark w-full focus:border-black focus:border-2 focus:ring-black focus:outline-none"
-          placeholder="Media Alt Text"
-        />
-        <p className="text-red-600 text-sm font-bold m-1">
-          {errors.media?.alt?.message}
-        </p>
+        <h3 className="text-lg font-black">Images</h3>
+        <p>You need to add at least one image</p>
+        {[0, 1, 2, 3].map((index) => (
+          <div key={index} className="mt-2">
+            <label
+              htmlFor={`media-url-${index}`}
+              className="block text-sm text-black font-bold"
+            >
+              {index + 1}) Image
+            </label>
+            <input
+              {...register(`media.${index}.url`)}
+              id={`media-url-${index}`}
+              type="url"
+              className="px-2 py-1 border border-darkBeige bg-lightBeige rounded-sm shadow-custom-dark w-full focus:border-black focus:border-2 focus:ring-black focus:outline-none"
+              placeholder={`https://valid-url`}
+            />
+            <p className="text-red-600 text-sm font-bold m-1">
+              {errors.media?.[index]?.url?.message}
+            </p>
+            <div className="pl-4 mt-2">
+              <label
+                htmlFor={`media-alt-${index}`}
+                className="block text-xs text-black font-bold"
+              >
+                Image description:
+              </label>
+              <input
+                {...register(`media.${index}.alt`)}
+                id={`media-alt-${index}`}
+                type="text"
+                className="px-2 py-1 border border-darkBeige bg-lightBeige rounded-sm shadow-custom-dark w-full focus:border-black focus:border-2 focus:ring-black focus:outline-none"
+                placeholder={`Description`}
+              />
+              <p className="text-red-600 text-sm font-bold m-1">
+                {errors.media?.[index]?.alt?.message}
+              </p>
+            </div>
+          </div>
+        ))}
       </div>
       <div className="mt-2">
         <label htmlFor="price" className="block text-sm text-black font-bold">
-          Price:
+          Price/night in USD:
         </label>
         <input
           {...register("price")}
@@ -289,7 +314,7 @@ export default function VenueCreateForm({ onClose, onUpdate }) {
           control={control}
           render={({ field }) => (
             <SwitchField
-              label="Wifi"
+              label=""
               checked={field.value}
               onChange={field.onChange}
               textColor="text-black"
@@ -439,6 +464,11 @@ export default function VenueCreateForm({ onClose, onUpdate }) {
       >
         Create Venue
       </button>
+      {errors.form && (
+        <p className="text-red-600 text-sm font-bold m-1">
+          {errors.form.message}
+        </p>
+      )}
     </form>
   );
 }

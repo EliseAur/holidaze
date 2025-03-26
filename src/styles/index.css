@@ -8,6 +8,8 @@
   --color-lightGreen: #aaff9f;
   --color-darkGreen: #7cd870;
   --color-darkerGreen: #1a201d;
+  --color-lighterGreen: #c1eebb;
+  --color-lightGrey: #eae5dc;
   --shadow-custom-dark: 0 3px 6px rgba(0, 0, 0, 0.5);
   --drop-shadow: drop-shadow(3px 3px 3px rgba(0, 0, 0, 1));
   --border-datepicker: 1px solid #aeaeae;

@@ -7,7 +7,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
 const ProfileUpdateSchema = yup.object({
-  bio: yup.string().max(20, "Bio must be less than 21 characters"),
+  bio: yup.string().max(80, "Bio must be less than 80 characters"),
   avatar: yup.object({
     url: yup
       .string()
@@ -110,7 +110,8 @@ export default function ProfileUpdateForm({ onClose, onUpdate }) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} className="p-5">
+      <h2 className="text-2xl font-black text-black mb-3">Update Profile</h2>
       <div>
         <label htmlFor="bio" className="block text-sm text-black font-bold">
           Bio:

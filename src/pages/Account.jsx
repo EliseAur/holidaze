@@ -1,15 +1,19 @@
 import { useState, useEffect } from "react";
-import { VenueCard } from "../components";
+// import { VenueCard } from "../components";
 import { fetchProfile, fetchFavorites } from "../api";
 import { useFavorites } from "../hooks/useFavorites";
 import { Link } from "react-router-dom";
 import { format, differenceInDays } from "date-fns";
 import { useMediaQuery } from "react-responsive";
-import { ProfileUpdateForm, VenueCreateForm } from "../components";
-import { Modal } from "../components";
+import {
+  VenueCard,
+  ProfileUpdateForm,
+  VenueCreateForm,
+  Modal,
+} from "../components";
+// import { Modal } from "../components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
-// import VenueCreateForm from "../components/VenueCreateForm";
 
 export default function Account() {
   const [profile, setProfile] = useState(null);
@@ -17,12 +21,17 @@ export default function Account() {
   const [error, setError] = useState(null);
   const { favorites, handleFavoriteClick } = useFavorites(true);
   const [favoriteVenues, setFavoriteVenues] = useState([]);
+  const [showAllVenues, setShowAllVenues] = useState(false);
   const [showAllBookings, setShowAllBookings] = useState(false);
   const [showAllFavorites, setShowAllFavorites] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  const [isVenueModalOpen, setIsVenueModalOpen] = useState(false);
 
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+  const openProfileModal = () => setIsProfileModalOpen(true);
+  const closeProfileModal = () => setIsProfileModalOpen(false);
+
+  const openVenueModal = () => setIsVenueModalOpen(true);
+  const closeVenueModal = () => setIsVenueModalOpen(false);
 
   const isXs = useMediaQuery({ maxWidth: 575 });
   const isSm = useMediaQuery({ minWidth: 576, maxWidth: 767 });
@@ -65,6 +74,21 @@ export default function Account() {
     return <div>Error: {error}</div>;
   }
 
+  let venuesToShow;
+  if (showAllVenues) {
+    venuesToShow = profile.venues;
+  } else if (isXs) {
+    venuesToShow = profile.venues.slice(0, 2);
+  } else if (isSm) {
+    venuesToShow = profile.venues.slice(0, 2);
+  } else if (isMd) {
+    venuesToShow = profile.venues.slice(0, 3);
+  } else if (isLg) {
+    venuesToShow = profile.venues.slice(0, 4);
+  } else {
+    venuesToShow = profile.venues.slice(0, 4); // Default to 4
+  }
+
   let bookingsToShow;
   if (showAllBookings) {
     bookingsToShow = profile.bookings;
@@ -99,14 +123,14 @@ export default function Account() {
     <div className="profile-page ">
       {profile && (
         <div>
-          <div className="bg-beige">
-            <div className="bg-darkerGreen max-w-[1279px] mx-auto border-lightBeige xl:rounded-2xl xl:mt-4">
+          <div className="bg-lightGrey shadow-sm">
+            <div className="max-w-[1279px] mx-auto xl:rounded-2xl p-2 xl:p-4">
               <div className="profile-header relative">
                 {profile.banner && (
                   <img
                     src={profile.banner.url}
                     alt={profile.banner.alt || "Banner"}
-                    className="profile-banner w-full h-38 object-cover xl:rounded-t-2xl"
+                    className="profile-banner w-full h-38 object-cover rounded-t-2xl"
                   />
                 )}
                 {profile.avatar && (
@@ -117,51 +141,40 @@ export default function Account() {
                       className="profile-avatar w-28 h-28 rounded-full border-2 border-lightBeige shadow-custom-dark "
                     />
                     <div>
-                      <h2 className="font-black text-lg text-left">
+                      <h1 className="font-black text-lg text-left">
                         {profile.name}
-                      </h2>
+                      </h1>
                       <p className="text-sm text-left">{profile.email}</p>
                     </div>
                   </div>
                 )}
               </div>
-              <div className="bg-lightBeige shadow-sm  pt-25 pb-4 px-4 text-sm flex justify-between items-center flex-grow xl:rounded-b-2xl">
-                <div className="flex flex-col flex-grow max-w-[200px] sm:max-w-[340px] pr-4">
+              <div className="bg-lightBeige pt-18 sm:pt-10 md:pt-25 pb-4 px-4 text-sm flex justify-between items-center flex-grow rounded-b-2xl shadow-sm">
+                <div className="flex flex-col flex-grow max-w-[200px] sm:max-w-[340px] pr-4 mt-auto">
                   <div>
                     <span className="font-black text-black">Bio: </span>
                     <span className="text-black"> {profile.bio}</span>
                   </div>
                   <div className="text-black">
                     <button
-                      onClick={openModal}
-                      className="bg-black text-xs sm:text-sm text-white font-bold px-4 py-2 rounded mt-2 inline-block hover:bg-gray-900"
+                      onClick={openProfileModal}
+                      className="bg-black text-xs sm:text-sm text-white font-bold px-4 py-2 rounded mt-2 inline-block hover:bg-gray-900 shadow-custom-dark"
                     >
                       <FontAwesomeIcon icon={faPenToSquare} className="mr-2" />
                       Edit profile
                     </button>
-                    <Modal isOpen={isModalOpen} onClose={closeModal}>
+                    <Modal
+                      isOpen={isProfileModalOpen}
+                      onClose={closeProfileModal}
+                    >
                       <ProfileUpdateForm
-                        onClose={closeModal}
+                        onClose={closeProfileModal}
                         onUpdate={getProfile}
                       />
                     </Modal>
                   </div>
-                  {/* <div className="text-black">
-                    <button
-                      onClick={openModal}
-                      className="bg-lightGreen shadow-custom-dark text-black font-bold px-4 py-2 rounded mt-2 inline-block hover:bg-darkGreen"
-                    >
-                      + Add a venue
-                    </button>
-                    <Modal isOpen={isModalOpen} onClose={closeModal}>
-                      <VenueCreateForm
-                        onClose={closeModal}
-                        onUpdate={getProfile}
-                      />
-                    </Modal>
-                  </div> */}
                 </div>
-                <div className="flex flex-col sm:flex-row ml-auto mt-auto text-md sm:text-lg sm:space-x-4 underline border-l-1 pl-5 border-black text-black font-black">
+                <div className="flex flex-col md:flex-row ml-auto mt-auto text-md lg:text-lg sm:space-x-4 underline border-l-1 pl-3 sm:pl-5 border-black text-black font-bold">
                   <Link
                     to="/account"
                     onClick={(e) => {
@@ -170,7 +183,7 @@ export default function Account() {
                         .getElementById("hosting")
                         .scrollIntoView({ behavior: "smooth" });
                     }}
-                    className="hover:decoration-2 cursor-pointer sm:mt-0 flex-grow"
+                    className="hover:decoration-2 cursor-pointer md:my-0 md:pt-3 flex-grow"
                   >
                     Hosting
                   </Link>
@@ -182,7 +195,7 @@ export default function Account() {
                         .getElementById("bookings")
                         .scrollIntoView({ behavior: "smooth" });
                     }}
-                    className="hover:decoration-2 cursor-pointer mt-4 sm:mt-0 flex-grow"
+                    className="hover:decoration-2 cursor-pointer mt-4 md:my-0 md:pt-3 flex-grow"
                   >
                     Bookings
                   </Link>
@@ -194,104 +207,107 @@ export default function Account() {
                         .getElementById("favorites")
                         .scrollIntoView({ behavior: "smooth" });
                     }}
-                    className="hover:decoration-2 cursor-pointer mt-4 mb-4 sm:mt-0 sm:mb-0 flex-grow"
+                    className="hover:decoration-2 cursor-pointer my-4 md:my-0 md:mb-0 md:pt-3 flex-grow"
                   >
                     Favorites
                   </Link>
+
+                  {profile.venueManager && (
+                    <div className="text-black">
+                      <button
+                        onClick={openVenueModal}
+                        className="bg-lightGreen shadow-custom-dark text-black text-xs sm:text-sm font-bold px-1 sm:px-4 py-2 rounded inline-block hover:bg-darkGreen"
+                      >
+                        + Add venue
+                      </button>
+                      <Modal
+                        isOpen={isVenueModalOpen}
+                        onClose={closeVenueModal}
+                      >
+                        <VenueCreateForm
+                          onClose={closeVenueModal}
+                          onUpdate={getProfile}
+                        />
+                      </Modal>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
           </div>
-
           <div className="profile-details mt-3 px-2 sm:px-6">
             <section
               id="hosting"
-              className="mt-3 py-5 max-w-[1279px] mx-auto xl:px-4"
+              className="mt-3 pt-5 pb-3 max-w-[1279px] px-2 mx-auto xl:px-8"
             >
-              <h3 className="text-xl font-black">Hosting</h3>
-              {profile.venueManager ? (
-                profile.venues.length > 0 ? (
-                  // profile.venues.map((venue) => (
-                  //   <div key={venue.id} className="venue-card mt-4">
-                  //     <h4 className="text-lg font-semibold">{venue.name}</h4>
-                  //     <p className="text-gray-600">{venue.description}</p>
-                  //     {venue.media.length > 0 && (
-                  //       <img
-                  //         src={venue.media[0].url}
-                  //         alt={venue.media[0].alt || "Venue image"}
-                  //         className="venue-image w-full h-32 object-cover mt-2"
-                  //       />
-                  //     )}
-                  //   </div>
-                  // ))
-                  <>
-                    {profile.venues.map((venue) => (
-                      <div key={venue.id} className="venue-card mt-4">
-                        <h4 className="text-lg font-semibold">{venue.name}</h4>
-                        <p className="text-gray-600">{venue.description}</p>
-                        {venue.media.length > 0 && (
-                          <img
-                            src={venue.media[0].url}
-                            alt={venue.media[0].alt || "Venue image"}
-                            className="venue-image w-full h-32 object-cover mt-2"
+              <h2 className="text-xl font-black">Hosting</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-2 sm:gap-3">
+                {profile.venueManager ? (
+                  venuesToShow.length > 0 ? (
+                    <>
+                      {venuesToShow.map((venue) => (
+                        <div key={venue.id} className="mt-3">
+                          <VenueCard
+                            venue={venue}
+                            isFavorite={false}
+                            onFavoriteClick={handleFavoriteClick}
                           />
-                        )}
-                      </div>
-                    ))}
-                    <div className="text-black mt-4">
-                      <button
-                        onClick={openModal}
-                        className="bg-lightGreen shadow-custom-dark text-black font-bold px-4 py-2 rounded mt-2 inline-block hover:bg-darkGreen"
-                      >
-                        + Add a venue
-                      </button>
-                      <Modal isOpen={isModalOpen} onClose={closeModal}>
-                        <VenueCreateForm
-                          onClose={closeModal}
-                          onUpdate={getProfile}
-                        />
-                      </Modal>
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <p>You are not currently hosting any venues.</p>
-                    <p>Do something about that.</p>
+                        </div>
+                      ))}
+                    </>
+                  ) : (
+                    <div className="flex flex-col col-span-full">
+                      <p>You are not currently hosting any venues.</p>
+                      <p>Do something about that.</p>
 
-                    <div className="text-black">
-                      <button
-                        onClick={openModal}
-                        className="bg-lightGreen shadow-custom-dark text-black font-bold px-4 py-2 rounded mt-2 inline-block hover:bg-darkGreen"
-                      >
-                        + Add a venue
-                      </button>
-                      <Modal isOpen={isModalOpen} onClose={closeModal}>
-                        <VenueCreateForm
-                          onClose={closeModal}
-                          onUpdate={getProfile}
-                        />
-                      </Modal>
+                      <div className="text-black">
+                        <button
+                          onClick={openVenueModal}
+                          className="bg-lightGreen shadow-custom-dark text-black font-bold px-4 py-2 rounded mt-2 inline-block hover:bg-darkGreen"
+                        >
+                          + Add a venue
+                        </button>
+                        <Modal
+                          isOpen={isVenueModalOpen}
+                          onClose={closeVenueModal}
+                        >
+                          <VenueCreateForm
+                            onClose={closeVenueModal}
+                            onUpdate={getProfile}
+                          />
+                        </Modal>
+                      </div>
                     </div>
-                  </>
-                )
-              ) : (
-                <div>
-                  <p>You are not registered as a host.</p>
-                  <p>Edit profile to register.</p>
-                  <button
-                    onClick={openModal}
-                    className="bg-lightGreen shadow-custom-dark text-black font-bold px-4 py-2 rounded mt-2 inline-block hover:bg-darkGreen"
-                  >
-                    <FontAwesomeIcon icon={faPenToSquare} className="mr-2" />
-                    Edit profile
-                  </button>
-                </div>
+                  )
+                ) : (
+                  <div>
+                    <p>You are not registered as a host.</p>
+                    <p>Edit profile to register.</p>
+                    <button
+                      onClick={openProfileModal}
+                      className="bg-lightGreen shadow-custom-dark text-black font-bold px-4 py-2 rounded mt-2 inline-block hover:bg-darkGreen"
+                    >
+                      <FontAwesomeIcon icon={faPenToSquare} className="mr-2" />
+                      Edit profile
+                    </button>
+                  </div>
+                )}
+              </div>
+              {profile.venueManager && profile.venues.length > 2 && (
+                <button
+                  onClick={() => setShowAllVenues(!showAllVenues)}
+                  className="bg-black text-beige font-bold py-2 px-4 rounded mt-8 shadow-custom-dark hover:bg-gray-900 block cursor-pointer mx-auto"
+                >
+                  {showAllVenues
+                    ? "Show less venues"
+                    : "View all venues you host"}
+                </button>
               )}
-              <hr className="mt-10" />
+              <hr className="mt-6" />
             </section>
             <section
               id="bookings"
-              className=" py-3 max-w-[1279px] mx-auto xl:px-4"
+              className=" py-3 max-w-[1279px] px-2 mx-auto xl:px-8"
             >
               <h2 className="text-xl font-black">Bookings</h2>
 
@@ -353,14 +369,18 @@ export default function Account() {
                     );
                   })
                 ) : (
-                  <div>
-                    <p>No bookings available.</p>
-                    <Link
-                      to="/venues"
-                      className="bg-lightGreen shadow-custom-dark text-black font-bold px-4 py-2 rounded hover:bg-darkGreen mt-2 inline-block cursor-pointer"
-                    >
-                      Browse venues
-                    </Link>
+                  <div className="col-span-2">
+                    <p>You have no bookings yet.</p>
+                    <p className="">
+                      <span>Check out our </span>
+                      <Link
+                        to="/venues"
+                        className=" font-bold decoration-2 underline"
+                      >
+                        venues
+                      </Link>
+                      <span> and get your first booking today!</span>
+                    </p>
                   </div>
                 )}
               </div>
@@ -372,13 +392,13 @@ export default function Account() {
                   {showAllBookings ? "Show less bookings" : "View all bookings"}
                 </button>
               )}
-              <hr className="mt-10" />
+              <hr className="mt-6" />
             </section>
             <section
               id="favorites"
-              className=" pt-3 pb-6 mb-4 max-w-[1279px] mx-auto xl:px-4"
+              className=" pt-3 pb-6 mb-4 max-w-[1279px] px-2 mx-auto xl:px-8"
             >
-              <h3 className="text-xl font-black">Favorites</h3>
+              <h2 className="text-xl font-black">Favorites</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-2 sm:gap-3 ">
                 {favoritesToShow.length > 0 ? (
                   favoritesToShow.map((venue) => (
