@@ -11,6 +11,7 @@ import {
   faStar,
   faMapMarkerAlt,
   faUserGroup,
+  faSackDollar,
 } from "@fortawesome/free-solid-svg-icons";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -22,6 +23,7 @@ import {
   parseISO,
   isSameDay,
   isToday,
+  format,
 } from "date-fns";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext"; // Import your AuthContext
@@ -53,7 +55,7 @@ export default function VenueDetailContent({
   } = venue;
 
   const { isLoggedIn } = useContext(AuthContext); // Use context to get authentication status
-
+  const userName = localStorage.getItem("userName");
   // Extract booked dates
   const bookedDates = bookings.flatMap((booking) =>
     eachDayOfInterval({
@@ -135,7 +137,7 @@ export default function VenueDetailContent({
         {/* Features and Contact flex-box */}
         <div className="flex flex-col sm:flex-row justify-between items-stretch">
           <div className="min-w-[258.3px] w-full bg-lightBeige rounded-sm shadow-sm p-5 mt-3 sm:mr-1">
-            <h2 className="text-lg font-black">Features</h2>
+            <h2 className="text-lg font-black">Facilities</h2>
             <div className="flex flex-row mt-1">
               <div className="bg-black rounded-full w-[22px] h-[22px] flex items-center justify-center">
                 <div>
@@ -227,98 +229,161 @@ export default function VenueDetailContent({
         </div>
         {/* Datepicker and select/buttons flexbox */}
         <div className="flex flex-col sm:flex-row justify-between bg-lightBeige rounded-sm shadow-sm mt-3 mb-5 p-5 pb-8">
-          <div className="h-full min-w-[258.3px]">
-            <h2 className="text-lg font-black">Book</h2>
-            <DatePicker
-              selected={startDate}
-              onChange={handleDateChange}
-              startDate={startDate}
-              endDate={endDate}
-              selectsRange
-              inline
-              locale="en-GB"
-              minDate={new Date()} // Prevent booking dates in the past
-              excludeDates={bookedDates} // Disable booked dates
-              dayClassName={getDayClassName} // Apply custom CSS class to booked dates
-            />
-            <div className="flex text-xs ml-1">
-              <div className="flex items-center mr-2">
-                <span className="w-4 h-4 bg-white inline-block rounded-sm border-datepicker mr-1"></span>
-                <span>Available</span>
-              </div>
-              <div className="flex items-center mr-2">
-                <span className="w-4 h-4 bg-darkBeige inline-block rounded-sm border-datepicker mr-1"></span>
-                <span>Unavailable</span>
-              </div>
-              <div className="flex items-center">
-                <span className="w-4 h-4 bg-blue-300 inline-block rounded-sm border-datepicker mr-1"></span>
-                <span>Selected</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="min-w-[258.3px] mt-5 sm:mt-0 sm:ml-6">
-            <div className="">
-              <h2 className="font-black text-lg">Summary</h2>
-              <p className="mt-1 sm:mt-4">
-                <span className="font-bold">Price:</span> {price}$/night
-              </p>
-            </div>
-            <div className="mt-3 max-w-[242.3px]">
-              <label className="block">
-                <span className="font-bold">Guests</span>
-                <select
-                  name="guests"
-                  value={guests}
-                  onChange={(e) => setGuests(Number(e.target.value))}
-                  className="form-select block w-full bg-white px-2 py-1 rounded-sm shadow-sm  text-sm"
-                >
-                  <option value="1">1 guest</option>
-                  <option value="2">2 guests</option>
-                  <option value="3">3 guests</option>
-                  <option value="4">4 guests</option>
-                  <option value="5">More than 4 guests</option>
-                </select>
-              </label>
-            </div>
-            <div className="mt-3">
-              <p>
-                <span className="font-bold">Nights: </span>
-                {differenceInDays(endDate, startDate)}
-              </p>
-              <p className="text-">
-                <span className="font-bold">Total: </span> {totalPrice}$
-              </p>
-            </div>
-            <div className="mt-6 max-w-[242.3px]">
-              {isLoggedIn ? (
-                <button
-                  onClick={handleBooking}
-                  className="bg-lightGreen text-black font-bold py-1.5 rounded-sm hover:bg-darkGreen shadow-custom-dark text-center mb-2 cursor-pointer block w-full"
-                >
-                  Book Now
-                </button>
+          {userName === owner.name ? (
+            <div className="h-full w-full">
+              <h2 className="text-lg font-black">Upcoming Bookings</h2>
+              {bookings.length > 0 ? (
+                bookings.map((booking) => (
+                  <div
+                    key={booking.id}
+                    className=" rounded-sm shadow-sm p-4 mt-3 hover:shadow-custom-dark"
+                  >
+                    <p>
+                      <span className="font-bold">Booking by:</span>{" "}
+                      {booking.customer.name}
+                    </p>
+                    <p>
+                      <span className="font-bold">Email:</span>{" "}
+                      {booking.customer.email}
+                    </p>
+                    <p className="text-sm mt-1">
+                      <span className="font-bold">Guests: </span>
+                      {booking.guests}
+                    </p>
+                    <p className="text-sm mt-1">
+                      <span className="font-bold">Dates: </span>
+                      {format(new Date(booking.dateFrom), "dd.MM.yy")} -{" "}
+                      {format(new Date(booking.dateTo), "dd.MM.yy")}
+                    </p>
+                    <p className="text-sm mt-1">
+                      <span className="font-bold">Nights: </span>
+                      {differenceInDays(
+                        new Date(booking.dateTo),
+                        new Date(booking.dateFrom),
+                      )}
+                    </p>
+                    <p className="text-sm mt-1">
+                      <span className="font-bold">
+                        <FontAwesomeIcon
+                          icon={faSackDollar}
+                          className="mr-1 text-green-500"
+                        />
+                        Your Take:
+                      </span>{" "}
+                      {price *
+                        differenceInDays(
+                          new Date(booking.dateTo),
+                          new Date(booking.dateFrom),
+                        )}
+                      $
+                    </p>
+                  </div>
+                ))
               ) : (
-                <>
-                  <p className="text-xs mb-1">
-                    Login or register to book your next stay
-                  </p>
-                  <Link
-                    to="/login"
-                    className="bg-lightGreen text-black font-bold py-1.5 rounded-sm hover:bg-darkGreen shadow-custom-dark text-center mb-2 cursor-pointer block"
-                  >
-                    Login
-                  </Link>
-                  <Link
-                    to="/register"
-                    className="bg-black text-white font-bold py-1.5 rounded-sm hover:bg-gray-900 shadow-custom-dark text-center cursor-pointer block"
-                  >
-                    Register
-                  </Link>
-                </>
+                <p>No upcoming bookings available.</p>
               )}
             </div>
-          </div>
+          ) : (
+            <div className="h-full min-w-[258.3px]">
+              <h2 className="text-lg font-black">Book</h2>
+              <DatePicker
+                selected={startDate}
+                onChange={handleDateChange}
+                startDate={startDate}
+                endDate={endDate}
+                selectsRange
+                inline
+                locale="en-GB"
+                minDate={new Date()} // Prevent booking dates in the past
+                excludeDates={bookedDates} // Disable booked dates
+                dayClassName={getDayClassName} // Apply custom CSS class to booked dates
+              />
+              <div className="flex text-xs ml-1">
+                <div className="flex items-center mr-2">
+                  <span className="w-4 h-4 bg-white inline-block rounded-sm border-datepicker mr-1"></span>
+                  <span>Available</span>
+                </div>
+                <div className="flex items-center mr-2">
+                  <span className="w-4 h-4 bg-darkBeige inline-block rounded-sm border-datepicker mr-1"></span>
+                  <span>Unavailable</span>
+                </div>
+                <div className="flex items-center">
+                  <span className="w-4 h-4 bg-blue-300 inline-block rounded-sm border-datepicker mr-1"></span>
+                  <span>Selected</span>
+                </div>
+              </div>
+            </div>
+          )}
+          {userName === owner.name ? null : (
+            <div className="min-w-[258.3px] mt-5 sm:mt-0 sm:ml-6">
+              <div className="">
+                <h2 className="font-black text-lg">Summary</h2>
+                <p className="mt-1 sm:mt-4">
+                  <span className="font-bold">Price:</span> {price}$/night
+                </p>
+              </div>
+              <div className="mt-3 max-w-[242.3px]">
+                <label className="block">
+                  <span className="font-bold">Guests</span>
+                  <select
+                    name="guests"
+                    value={guests}
+                    onChange={(e) => setGuests(Number(e.target.value))}
+                    className="form-select block w-full bg-white px-2 py-1 rounded-sm shadow-sm  text-sm"
+                  >
+                    <option value="1">1 guest</option>
+                    <option value="2">2 guests</option>
+                    <option value="3">3 guests</option>
+                    <option value="4">4 guests</option>
+                    <option value="5">More than 4 guests</option>
+                  </select>
+                </label>
+              </div>
+              <div className="mt-3">
+                <p>
+                  {/* <span className="font-bold">Nights: </span>
+                {differenceInDays(endDate, startDate)} */}
+                  <span className="font-bold">Nights: </span>
+                  {startDate &&
+                  endDate &&
+                  differenceInDays(endDate, startDate) > 0
+                    ? differenceInDays(endDate, startDate)
+                    : "Invalid dates"}
+                </p>
+                <p className="text-">
+                  <span className="font-bold">Total: </span> {totalPrice}$
+                </p>
+              </div>
+              <div className="mt-6 max-w-[242.3px]">
+                {isLoggedIn ? (
+                  <button
+                    onClick={handleBooking}
+                    className="bg-lightGreen text-black font-bold py-1.5 rounded-sm hover:bg-darkGreen shadow-custom-dark text-center mb-2 cursor-pointer block w-full"
+                  >
+                    Book Now
+                  </button>
+                ) : (
+                  <>
+                    <p className="text-xs mb-1">
+                      Login or register to book your next stay
+                    </p>
+                    <Link
+                      to="/login"
+                      className="bg-lightGreen text-black font-bold py-1.5 rounded-sm hover:bg-darkGreen shadow-custom-dark text-center mb-2 cursor-pointer block"
+                    >
+                      Login
+                    </Link>
+                    <Link
+                      to="/register"
+                      className="bg-black text-white font-bold py-1.5 rounded-sm hover:bg-gray-900 shadow-custom-dark text-center cursor-pointer block"
+                    >
+                      Register
+                    </Link>
+                  </>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -358,8 +423,13 @@ VenueDetailContent.propTypes = {
     }).isRequired,
     bookings: PropTypes.arrayOf(
       PropTypes.shape({
+        id: PropTypes.string.isRequired,
         dateFrom: PropTypes.string.isRequired,
         dateTo: PropTypes.string.isRequired,
+        customer: PropTypes.shape({
+          name: PropTypes.string.isRequired,
+          email: PropTypes.string.isRequired,
+        }).isRequired,
       }),
     ).isRequired,
   }).isRequired,
