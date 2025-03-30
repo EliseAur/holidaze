@@ -10,7 +10,7 @@ import {
 
 export default function FilterVenues() {
   return (
-    <div className="mt-5 mx-2 sm:mx-0">
+    <div className="mt-5 px-2">
       <h2 className="text-xl font-bold mb-2">
         <FontAwesomeIcon icon={faSliders} className="mr-2" />
         Filter Venues
