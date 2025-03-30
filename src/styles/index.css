@@ -13,6 +13,12 @@
   --shadow-custom-dark: 0 3px 6px rgba(0, 0, 0, 0.5);
   --drop-shadow: drop-shadow(3px 3px 3px rgba(0, 0, 0, 1));
   --border-datepicker: 1px solid #aeaeae;
+  /* Gradient background */
+  --gradient-gradientGreen: linear-gradient(
+    to bottom right,
+    var(--color-darkerGreen),
+    var(--color-lighterGreen)
+  );
 }
 
 html,

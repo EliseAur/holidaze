@@ -21,7 +21,7 @@ export default function VenueCard({ venue, isFavorite, onFavoriteClick }) {
           <img
             src={venue.media[0]?.url}
             alt={venue.media[0]?.alt || "Venue image"}
-            className="rounded-t-sm w-full h-40 sm:h-56 object-cover object-center cursor-pointer"
+            className="rounded-t-sm w-full h-50 sm:h-56 object-cover object-center cursor-pointer"
           />
         </Link>
       ) : (
@@ -36,14 +36,14 @@ export default function VenueCard({ venue, isFavorite, onFavoriteClick }) {
       >
         <FontAwesomeIcon icon={faHeart} />
       </button>
-      <div className="p-1 sm:p-2 sm:pt-1 md:px-3">
+      <div className="p-3 sm:p-2 sm:pt-1 md:px-3">
         <Link to={`/venue/${venue.id}`}>
-          <h2 className="text-sm sm:text-lg md:text-xl font-black underline hover:underline hover:decoration-2 truncate p-1 cursor-pointer">
+          <h2 className="px-2 text-sm sm:text-lg md:text-xl font-black underline hover:underline hover:decoration-2 truncate p-1 cursor-pointer">
             {venue.name}
           </h2>
         </Link>
         <div
-          className="text-sm flex-col sm:flex-row sm:flex-grow flex sm:justify-between p-1"
+          className="px-2 text-sm flex-col sm:flex-row sm:flex-grow flex sm:justify-between p-1"
           title={`${venue.location.country} - ${venue.location.city}`}
         >
           <span className="flex-grow truncate">
@@ -54,7 +54,7 @@ export default function VenueCard({ venue, isFavorite, onFavoriteClick }) {
             {venue.location.country} - {venue.location.city}
           </span>
         </div>
-        <div className="text-sm flex-grow flex justify-between p-1">
+        <div className="px-2 py1 text-sm flex-grow flex justify-between">
           <div className="flex-grow ">
             <span className="font-bold">
               <FontAwesomeIcon
@@ -72,7 +72,7 @@ export default function VenueCard({ venue, isFavorite, onFavoriteClick }) {
             <span>{venue.rating}</span>
           </span>
         </div>
-        <div className="text-sm flex w-full justify-between p-1">
+        <div className="px-2 py-1 text-sm flex w-full justify-between">
           <div className="min-w-[80px] max-w-[86px] sm:max-w-[90px] flex flex-grow  justify-between space-x-0 sm:space-x-2 text-sm sm:text-md">
             <span title={venue.meta.wifi ? "Wifi available" : "No wifi"}>
               <FontAwesomeIcon

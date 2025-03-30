@@ -1,19 +1,20 @@
 import { useState, useEffect } from "react";
-// import { VenueCard } from "../components";
 import { fetchProfile, fetchFavorites } from "../api";
 import { useFavorites } from "../hooks/useFavorites";
 import { Link } from "react-router-dom";
 import { format, differenceInDays } from "date-fns";
 import { useMediaQuery } from "react-responsive";
 import {
+  LoadingSpinner,
   VenueCard,
   ProfileUpdateForm,
   VenueCreateForm,
   Modal,
 } from "../components";
-// import { Modal } from "../components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+// Import the placeholder image
+import placeholderImage from "../images/placeholder-profile-img.jpg";
 
 export default function Account() {
   const [profile, setProfile] = useState(null);
@@ -67,7 +68,7 @@ export default function Account() {
   }, [favorites]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <LoadingSpinner />;
   }
 
   if (error) {
@@ -75,33 +76,48 @@ export default function Account() {
   }
 
   let venuesToShow;
+  const sortedVenues = profile.venues.slice().sort(
+    (a, b) => new Date(b.created) - new Date(a.created), // Sort by created date (descending)
+  );
+
   if (showAllVenues) {
-    venuesToShow = profile.venues;
+    venuesToShow = sortedVenues; // Show all sorted venues
   } else if (isXs) {
-    venuesToShow = profile.venues.slice(0, 2);
+    venuesToShow = sortedVenues.slice(0, 2); // Show top 2 for extra small screens
   } else if (isSm) {
-    venuesToShow = profile.venues.slice(0, 2);
+    venuesToShow = sortedVenues.slice(0, 2); // Show top 2 for small screens
   } else if (isMd) {
-    venuesToShow = profile.venues.slice(0, 3);
+    venuesToShow = sortedVenues.slice(0, 3); // Show top 3 for medium screens
   } else if (isLg) {
-    venuesToShow = profile.venues.slice(0, 4);
+    venuesToShow = sortedVenues.slice(0, 4); // Show top 4 for large screens
   } else {
-    venuesToShow = profile.venues.slice(0, 4); // Default to 4
+    venuesToShow = sortedVenues.slice(0, 4); // Default to top 4
   }
 
   let bookingsToShow;
+
+  // Sort bookings by dateFrom (earliest first)
+  const sortedBookings = profile.bookings
+    .slice() // Create a shallow copy to avoid mutating the original array
+    .sort((a, b) => new Date(a.dateFrom) - new Date(b.dateFrom)); // Sort by dateFrom (ascending)
+
+  // Optionally filter out past bookings
+  const upcomingBookings = sortedBookings.filter(
+    (booking) => new Date(booking.dateFrom) >= new Date(), // Only include bookings with dateFrom in the future
+  );
+
   if (showAllBookings) {
-    bookingsToShow = profile.bookings;
+    bookingsToShow = upcomingBookings; // Show all upcoming bookings
   } else if (isXs) {
-    bookingsToShow = profile.bookings.slice(0, 2);
+    bookingsToShow = upcomingBookings.slice(0, 2); // Show top 2 for extra small screens
   } else if (isSm) {
-    bookingsToShow = profile.bookings.slice(0, 2);
+    bookingsToShow = upcomingBookings.slice(0, 2); // Show top 2 for small screens
   } else if (isMd) {
-    bookingsToShow = profile.bookings.slice(0, 3);
+    bookingsToShow = upcomingBookings.slice(0, 3); // Show top 3 for medium screens
   } else if (isLg) {
-    bookingsToShow = profile.bookings.slice(0, 4);
+    bookingsToShow = upcomingBookings.slice(0, 4); // Show top 4 for large screens
   } else {
-    bookingsToShow = profile.bookings.slice(0, 4); // Default to 4
+    bookingsToShow = upcomingBookings.slice(0, 4); // Default to top 4
   }
 
   let favoritesToShow;
@@ -123,34 +139,59 @@ export default function Account() {
     <div className="profile-page ">
       {profile && (
         <div>
-          <div className="bg-lightGrey shadow-sm">
-            <div className="max-w-[1279px] mx-auto xl:rounded-2xl p-2 xl:p-4">
+          <div className="bg-beige">
+            <div className=" xl:rounded-2xl p-2 sm:max-w-[1279px] mx-auto sm:px-8 xl:px-2">
               <div className="profile-header relative">
-                {profile.banner && (
-                  <img
-                    src={profile.banner.url}
-                    alt={profile.banner.alt || "Banner"}
-                    className="profile-banner w-full h-38 object-cover rounded-t-2xl"
-                  />
-                )}
-                {profile.avatar && (
-                  <div className=" inset-0 absolute flex flex-col top-20 right-1/2 sm:right-1/2 transform max-w-[190px] pl-4 text-black">
+                {profile.banner &&
+                profile.banner.url.includes(
+                  "https://images.unsplash.com/photo-1579547945413-497e1b99dac0?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&q=80&h=500&w=1500",
+                ) ? (
+                  <div
+                    className="profile-banner w-full h-38 rounded-t-2xl"
+                    style={{ background: "var(--gradient-gradientGreen)" }}
+                  ></div>
+                ) : (
+                  profile.banner && (
                     <img
-                      src={profile.avatar.url}
-                      alt={profile.avatar.alt || "Avatar"}
-                      className="profile-avatar w-28 h-28 rounded-full border-2 border-lightBeige shadow-custom-dark "
+                      src={profile.banner.url}
+                      alt={profile.banner.alt || "Profile banner"}
+                      className="profile-banner w-full h-38 object-cover rounded-t-2xl"
                     />
-                    <div>
-                      <h1 className="font-black text-lg text-left">
-                        {profile.name}
-                      </h1>
-                      <p className="text-sm text-left">{profile.email}</p>
-                    </div>
-                  </div>
+                  )
                 )}
+                <div className="inset-0 absolute flex flex-col top-20 right-1/2 sm:right-1/2 transform max-w-[190px] pl-4 text-black">
+                  <div className="w-28 h-28 rounded-full">
+                    <img
+                      src={
+                        profile.avatar &&
+                        profile.avatar.url.includes(
+                          "https://images.unsplash.com/photo-1579547945413-497e1b99dac0?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&q=80&h=400&w=400",
+                        )
+                          ? placeholderImage
+                          : profile.avatar.url
+                      }
+                      alt={
+                        profile.avatar &&
+                        profile.avatar.url.includes(
+                          "https://images.unsplash.com/photo-1579547945413-497e1b99dac0?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&q=80&h=400&w=400",
+                        )
+                          ? "Profile placeholder image"
+                          : profile.avatar.alt || "Profile placeholder image"
+                      }
+                      className="w-28 h-28 rounded-full border-2 border-lightBeige shadow-custom-dark"
+                    />
+                  </div>
+                  <div>
+                    <h1 className="font-black text-lg text-left mt-2">
+                      {profile.name}
+                    </h1>
+                    <p className="text-sm text-left">{profile.email}</p>
+                  </div>
+                </div>
               </div>
-              <div className="bg-lightBeige pt-18 sm:pt-10 md:pt-25 pb-4 px-4 text-sm flex justify-between items-center flex-grow rounded-b-2xl shadow-sm">
-                <div className="flex flex-col flex-grow max-w-[200px] sm:max-w-[340px] pr-4 mt-auto">
+
+              <div className="bg-lightBeige pt-20 sm:pt-12 md:pt-28 pb-4 px-4 text-sm flex justify-between items-center flex-grow rounded-b-2xl shadow-sm">
+                <div className="flex flex-col flex-grow max-w-[220px] sm:max-w-[340px] pr-4 mt-auto">
                   <div>
                     <span className="font-black text-black">Bio: </span>
                     <span className="text-black"> {profile.bio}</span>
@@ -238,7 +279,7 @@ export default function Account() {
           <div className="profile-details mt-3 px-2 sm:px-6">
             <section
               id="hosting"
-              className="mt-3 pt-5 pb-3 max-w-[1279px] px-2 mx-auto xl:px-8"
+              className="mt-3 pt-5 pb-3 max-w-[360px] sm:max-w-[1279px] px-4 mx-auto"
             >
               <h2 className="text-xl font-black">Hosting</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-2 sm:gap-3">
@@ -307,9 +348,9 @@ export default function Account() {
             </section>
             <section
               id="bookings"
-              className=" py-3 max-w-[1279px] px-2 mx-auto xl:px-8"
+              className=" py-3 max-w-[360px] sm:max-w-[1279px] px-4 mx-auto"
             >
-              <h2 className="text-xl font-black">Bookings</h2>
+              <h2 className="text-xl font-black">Upcoming bookings</h2>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-2 sm:gap-3">
                 {bookingsToShow.length > 0 ? (
@@ -329,7 +370,7 @@ export default function Account() {
                             <img
                               src={booking.venue.media[0].url}
                               alt={booking.venue.media[0].alt || "Venue image"}
-                              className="venue-image w-full h-40 sm:h-56 object-cover rounded-t-sm"
+                              className="venue-image w-full h-50 sm:h-56 object-cover rounded-t-sm"
                             />
                           </Link>
                         )}
@@ -384,7 +425,7 @@ export default function Account() {
                   </div>
                 )}
               </div>
-              {profile.bookings.length > 2 && (
+              {upcomingBookings.length > 2 && (
                 <button
                   onClick={() => setShowAllBookings(!showAllBookings)}
                   className="bg-black text-beige font-bold py-2 px-4 rounded mt-8 shadow-custom-dark hover:bg-gray-900 block cursor-pointer w-[170px] mx-auto"
@@ -396,7 +437,7 @@ export default function Account() {
             </section>
             <section
               id="favorites"
-              className=" pt-3 pb-6 mb-4 max-w-[1279px] px-2 mx-auto xl:px-8"
+              className=" pt-3 pb-6 mb-4 max-w-[360px] sm:max-w-[1279px] px-4 mx-auto"
             >
               <h2 className="text-xl font-black">Favorites</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-2 sm:gap-3 ">
