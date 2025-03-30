@@ -26,12 +26,12 @@ function Home() {
   return (
     <main
       id="venueContainer"
-      className="bg-beige py-8 lg:px-8  max-w- px-3 sm:max-w-2xl sm:px-4 md:max-w-3xl md:px-6 lg:max-w-6xl mx-auto"
+      className="bg-beige py-8 lg:px-8 px-1 sm:px-3 md:px-6 mx-auto sm:max-w-[1279px]"
     >
-      <h2 className="text-3xl font-black italic">Latest venues</h2>
-      <p className="font-bold text-lg">Find your next getaway</p>
+      <h2 className="text-3xl font-black italic px-2 sm:mx-0">Latest venues</h2>
+      <p className="font-bold text-lg px-2 sm:mx-0">Find your next getaway</p>
       <FilterVenues />
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
+      <div className="px-2 mx-auto max-w-[360px] sm:max-w-[1279px] grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mt-10">
         {venues.map((venue) => (
           <VenueCard
             key={venue.id}
