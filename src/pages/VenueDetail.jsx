@@ -4,6 +4,7 @@ import { fetchVenueDetails } from "../api";
 import { VenueDetailContent, LoadingSpinner } from "../components";
 import { fetchBooking } from "../api";
 import { differenceInDays } from "date-fns";
+import { Modal, BookingConfirmation } from "../components";
 
 function VenueDetail() {
   const { id } = useParams();
@@ -13,13 +14,17 @@ function VenueDetail() {
   const [endDate, setEndDate] = useState(null);
   const [guests, setGuests] = useState(1);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
+
+  const openBookingModal = () => setIsBookingModalOpen(true);
+  const closeBookingModal = () => setIsBookingModalOpen(false);
 
   useEffect(() => {
     async function loadVenue() {
       try {
-        const product = await fetchVenueDetails(id);
-        console.log("Venue details with api fetch:", product);
-        setVenue(product);
+        const venue = await fetchVenueDetails(id);
+        console.log("Venue details with api fetch:", venue);
+        setVenue(venue);
       } catch (error) {
         setError({
           message: error.message,
@@ -54,6 +59,7 @@ function VenueDetail() {
     try {
       const result = await fetchBooking(bookingData);
       console.log("Booking successful:", result);
+      openBookingModal(); // Open the modal
     } catch (error) {
       console.error("Error booking:", error);
     }
@@ -69,16 +75,25 @@ function VenueDetail() {
   }
 
   return (
-    <VenueDetailContent
-      venue={venue}
-      startDate={startDate}
-      endDate={endDate}
-      guests={guests}
-      totalPrice={totalPrice}
-      handleDateChange={handleDateChange}
-      handleBooking={handleBooking}
-      setGuests={setGuests}
-    />
+    <>
+      {venue && (
+        <VenueDetailContent
+          venue={venue}
+          startDate={startDate}
+          endDate={endDate}
+          guests={guests}
+          totalPrice={totalPrice}
+          handleDateChange={handleDateChange}
+          handleBooking={handleBooking}
+          setGuests={setGuests}
+          isBookingModalOpen={isBookingModalOpen}
+          closeBookingModal={closeBookingModal}
+        />
+      )}
+      <Modal isOpen={isBookingModalOpen} onClose={closeBookingModal}>
+        <BookingConfirmation onClose={closeBookingModal} />
+      </Modal>
+    </>
   );
 }
 

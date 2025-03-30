@@ -21,6 +21,7 @@ import LoadingSpinner from "./LoadingSpinner";
 import ProfileUpdateForm from "./ProfileUpdateForm";
 import VenueCreateForm from "./VenueCreateForm";
 import Modal from "./Modal";
+import BookingConfirmation from "./BookingConformation";
 
 export {
   Header,
@@ -44,4 +45,5 @@ export {
   ProfileUpdateForm,
   VenueCreateForm,
   Modal,
+  BookingConfirmation,
 };
