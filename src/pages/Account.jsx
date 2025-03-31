@@ -7,14 +7,13 @@ import { useMediaQuery } from "react-responsive";
 import {
   LoadingSpinner,
   VenueCard,
-  ProfileUpdateForm,
+  // ProfileUpdateForm,
   VenueCreateForm,
   Modal,
+  ProfileCard,
 } from "../components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
-// Import the placeholder image
-import placeholderImage from "../images/placeholder-profile-img.jpg";
 
 export default function Account() {
   const [profile, setProfile] = useState(null);
@@ -139,15 +138,26 @@ export default function Account() {
     <div className="profile-page ">
       {profile && (
         <div>
-          <div className="bg-beige">
-            <div className=" xl:rounded-2xl p-2 sm:max-w-[1279px] mx-auto sm:px-8 xl:px-2">
+          <ProfileCard
+            profile={profile}
+            openProfileModal={openProfileModal}
+            closeProfileModal={closeProfileModal}
+            isProfileModalOpen={isProfileModalOpen}
+            openVenueModal={openVenueModal}
+            closeVenueModal={closeVenueModal}
+            isVenueModalOpen={isVenueModalOpen}
+            getProfile={getProfile}
+          />
+          ;
+          {/* <div className="bg-lightBeige shadow-md">
+            <div className="xl:rounded-2xl sm:max-w-[1279px] mx-auto sm:px-8 xl:px-2">
               <div className="profile-header relative">
                 {profile.banner &&
                 profile.banner.url.includes(
                   "https://images.unsplash.com/photo-1579547945413-497e1b99dac0?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&q=80&h=500&w=1500",
                 ) ? (
                   <div
-                    className="profile-banner w-full h-38 rounded-t-2xl"
+                    className="profile-banner w-full h-38 md:h-46 sm:rounded-b-2xl shadow-sm"
                     style={{ background: "var(--gradient-gradientGreen)" }}
                   ></div>
                 ) : (
@@ -155,12 +165,12 @@ export default function Account() {
                     <img
                       src={profile.banner.url}
                       alt={profile.banner.alt || "Profile banner"}
-                      className="profile-banner w-full h-38 object-cover rounded-t-2xl"
+                      className="profile-banner w-full h-38 md:h-44 object-cover rounded-t-2xl"
                     />
                   )
                 )}
-                <div className="inset-0 absolute flex flex-col top-20 right-1/2 sm:right-1/2 transform max-w-[190px] pl-4 text-black">
-                  <div className="w-28 h-28 rounded-full">
+                <div className="inset-0 absolute flex flex-col top-20 md:top-24 right-1/2 sm:right-1/2 transform max-w-[340px] pl-4 text-black md:ml-5">
+                  <div className="w-28 h-28 md:w-32 md:h-32 rounded-full">
                     <img
                       src={
                         profile.avatar &&
@@ -178,7 +188,7 @@ export default function Account() {
                           ? "Profile placeholder image"
                           : profile.avatar.alt || "Profile placeholder image"
                       }
-                      className="w-28 h-28 rounded-full border-2 border-lightBeige shadow-custom-dark"
+                      className="w-28 h-28 md:w-32 md:h-32 rounded-full border-2 border-lightBeige shadow-custom-dark"
                     />
                   </div>
                   <div>
@@ -186,36 +196,21 @@ export default function Account() {
                       {profile.name}
                     </h1>
                     <p className="text-sm text-left">{profile.email}</p>
+                    <div className="mt-5">
+                      <span className="font-black text-black text-sm">
+                        Bio:{" "}
+                      </span>
+                      <span className="text-black text-sm italic">
+                        {" "}
+                        {profile.bio}
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-lightBeige pt-20 sm:pt-12 md:pt-28 pb-4 px-4 text-sm flex justify-between items-center flex-grow rounded-b-2xl shadow-sm">
-                <div className="flex flex-col flex-grow max-w-[220px] sm:max-w-[340px] pr-4 mt-auto">
-                  <div>
-                    <span className="font-black text-black">Bio: </span>
-                    <span className="text-black"> {profile.bio}</span>
-                  </div>
-                  <div className="text-black">
-                    <button
-                      onClick={openProfileModal}
-                      className="bg-black text-xs sm:text-sm text-white font-bold px-4 py-2 rounded mt-2 inline-block hover:bg-gray-900 shadow-custom-dark"
-                    >
-                      <FontAwesomeIcon icon={faPenToSquare} className="mr-2" />
-                      Edit profile
-                    </button>
-                    <Modal
-                      isOpen={isProfileModalOpen}
-                      onClose={closeProfileModal}
-                    >
-                      <ProfileUpdateForm
-                        onClose={closeProfileModal}
-                        onUpdate={getProfile}
-                      />
-                    </Modal>
-                  </div>
-                </div>
-                <div className="flex flex-col md:flex-row ml-auto mt-auto text-md lg:text-lg sm:space-x-4 underline border-l-1 pl-3 sm:pl-5 border-black text-black font-bold">
+              <div className="bg-lightBeige lg:pt-30 py-7 px-4 text-sm flex justify-between items-center flex-grow rounded-b-2xl">
+                <div className="flex flex-col lg:flex-row text-md lg:text-lg sm:space-x-4 underline border-l-1 pl-3 sm:pl-5 lg:mr-5 ml-auto border-black text-black font-bold">
                   <Link
                     to="/account"
                     onClick={(e) => {
@@ -224,7 +219,7 @@ export default function Account() {
                         .getElementById("hosting")
                         .scrollIntoView({ behavior: "smooth" });
                     }}
-                    className="hover:decoration-2 cursor-pointer md:my-0 md:pt-3 flex-grow"
+                    className="hover:decoration-2 cursor-pointer md:my-0 lg:pt-3 flex-grow"
                   >
                     Hosting
                   </Link>
@@ -248,16 +243,34 @@ export default function Account() {
                         .getElementById("favorites")
                         .scrollIntoView({ behavior: "smooth" });
                     }}
-                    className="hover:decoration-2 cursor-pointer my-4 md:my-0 md:mb-0 md:pt-3 flex-grow"
+                    className="hover:decoration-2 cursor-pointer mt-4 mb-1 md:my-0 md:mb-0 md:pt-3 flex-grow"
                   >
                     Favorites
                   </Link>
+                  <div className="text-black">
+                    <button
+                      onClick={openProfileModal}
+                      className="bg-black text-xs sm:text-sm text-white font-bold px-4 py-2 rounded my-2 inline-block hover:bg-gray-900 shadow-custom-dark w-full sm:max-w-[124px]"
+                    >
+                      <FontAwesomeIcon icon={faPenToSquare} className="mr-2" />
+                      Edit profile
+                    </button>
+                    <Modal
+                      isOpen={isProfileModalOpen}
+                      onClose={closeProfileModal}
+                    >
+                      <ProfileUpdateForm
+                        onClose={closeProfileModal}
+                        onUpdate={getProfile}
+                      />
+                    </Modal>
+                  </div>
 
                   {profile.venueManager && (
                     <div className="text-black">
                       <button
                         onClick={openVenueModal}
-                        className="bg-lightGreen shadow-custom-dark text-black text-xs sm:text-sm font-bold px-1 sm:px-4 py-2 rounded inline-block hover:bg-darkGreen"
+                        className="bg-lightGreen shadow-custom-dark text-black text-xs sm:text-sm font-bold px-4 py-2 my-2 rounded inline-block hover:bg-darkGreen w-full sm:max-w-[124px]"
                       >
                         + Add venue
                       </button>
@@ -275,7 +288,7 @@ export default function Account() {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
           <div className="profile-details mt-3 px-2 sm:px-6">
             <section
               id="hosting"
