@@ -62,12 +62,12 @@ export default function ProfileCard({
               />
             </div>
             <div>
-              <div className="flex items-center">
+              <div className="flex flex-col sm:flex-row sm:items-center">
                 <h1 className="font-black text-lg text-left mt-2 inline-block">
                   {profile.name}
                 </h1>
                 {profile.venueManager && (
-                  <p className="text-black text-xs italic font-bold ml-1 pt-2">
+                  <p className="text-black text-xs italic font-bold sm:ml-1 -mt-1 mb-1 sm:my-0 sm:pt-2">
                     <FontAwesomeIcon
                       icon={faCertificate}
                       className="text-darkGreen"
@@ -76,9 +76,7 @@ export default function ProfileCard({
                   </p>
                 )}
               </div>
-
               <p className="text-sm text-left font-bold">{profile.email}</p>
-
               <div className="mt-5">
                 <span className="font-black text-black text-sm">Bio: </span>
                 <span className="text-black text-sm italic break-words">
@@ -88,7 +86,6 @@ export default function ProfileCard({
             </div>
           </div>
         </div>
-
         <div className="bg-lightBeige lg:pt-30 py-9 sm:py-6 lg:pb-7 px-4 text-sm flex justify-between items-center flex-grow rounded-b-2xl">
           <div className="flex flex-col lg:flex-row text-md lg:text-lg sm:space-x-4 underline border-l-1 pl-3 sm:pl-5 lg:mr-5 ml-auto border-black text-black font-bold">
             <Link

@@ -12,7 +12,9 @@ const ProfileUpdateSchema = yup.object({
     url: yup
       .string()
       .url("Must be a valid URL")
-      .typeError("Must be a valid URL"),
+      .typeError("Must be a valid URL")
+      .notRequired()
+      .nullable(),
   }),
   banner: yup.object({
     url: yup
@@ -66,13 +68,28 @@ export default function ProfileUpdateForm({ onClose, onUpdate }) {
   }, [setValue]);
 
   const onSubmit = async (data) => {
+    if (!data.avatar.url) {
+      setError("avatar.url", {
+        type: "manual",
+        message: "You must add a url for profile image",
+      });
+      return;
+    }
+
+    if (!data.banner.url) {
+      setError("banner.url", {
+        type: "manual",
+        message: "You must add a url for your banner image",
+      });
+      return;
+    }
     try {
       const updatedProfile = await updateProfile(data);
       console.log("Profile updated successfully:", updatedProfile);
       onUpdate(); // Call the callback function to update the account page
       onClose(); // Close the modal after successful update
     } catch (error) {
-      console.error("Error updating profile:", error);
+      console.error("1) Error updating profile:", error);
       if (error.message.includes("Image is not accessible")) {
         if (data.avatar.url === error.message.split(": ")[1]) {
           setError("avatar.url", {
