@@ -22,10 +22,6 @@ const VenueCreateSchema = yup.object({
               .url("Must be a valid URL")
               .required("URL is required")
               .typeError("Must be a valid URL"),
-            alt: yup
-              .string()
-              .max(49, "Description must be less than 50 characters")
-              .typeError("Description must be less than 50 characters"),
           });
         } else {
           return yup.object({
@@ -54,7 +50,6 @@ const VenueCreateSchema = yup.object({
     .min(1, "Must be at least 1")
     .required("You must enter the maximum number of guests")
     .typeError("Must be a number"),
-  // rating: yup.number().required(),
   meta: yup.object({
     wifi: yup.boolean(),
     parking: yup.boolean(),
@@ -82,12 +77,7 @@ export default function VenueCreateForm({ onClose, onUpdate }) {
     defaultValues: {
       name: "",
       description: "",
-      media: [
-        { url: "", alt: "" },
-        { url: "", alt: "" },
-        { url: "", alt: "" },
-        { url: "", alt: "" },
-      ],
+      media: [{ url: "" }, { url: "" }, { url: "" }, { url: "" }],
       price: 0,
       maxGuests: 0,
       meta: {
@@ -197,7 +187,10 @@ export default function VenueCreateForm({ onClose, onUpdate }) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="p-5">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="p-3 sm:p-5 font-bold text-sm"
+    >
       <h2 className="text-2xl font-black text-black mb-3">Create a venue</h2>
       <div>
         <label htmlFor="name" className="block text-sm text-black font-bold">
@@ -223,7 +216,7 @@ export default function VenueCreateForm({ onClose, onUpdate }) {
         <textarea
           {...register("description")}
           id="description"
-          className="px-2 py-1 border border-darkBeige bg-lightBeige rounded-sm shadow-custom-dark w-full focus:border-black focus:border-2 focus:ring-black focus:outline-none"
+          className="px-2 py-1 border border-darkBeige bg-lightBeige rounded-sm shadow-custom-dark w-full focus:border-black focus:border-2 focus:ring-black focus:outline-none h-30"
           placeholder="Venue description"
         />
         <p className="text-red-600 text-sm font-bold m-1">
@@ -232,7 +225,7 @@ export default function VenueCreateForm({ onClose, onUpdate }) {
       </div>
       <div className="mt-2">
         <h3 className="text-lg font-black">Images</h3>
-        <p>You need to add at least one image</p>
+        <p>* You need to add at least one image</p>
         {[0, 1, 2, 3].map((index) => (
           <div key={index} className="mt-2">
             <label
@@ -251,134 +244,121 @@ export default function VenueCreateForm({ onClose, onUpdate }) {
             <p className="text-red-600 text-sm font-bold m-1">
               {errors.media?.[index]?.url?.message}
             </p>
-            <div className="pl-4 mt-2">
-              <label
-                htmlFor={`media-alt-${index}`}
-                className="block text-xs text-black font-bold"
-              >
-                Image description:
-              </label>
-              <input
-                {...register(`media.${index}.alt`)}
-                id={`media-alt-${index}`}
-                type="text"
-                className="px-2 py-1 border border-darkBeige bg-lightBeige rounded-sm shadow-custom-dark w-full focus:border-black focus:border-2 focus:ring-black focus:outline-none"
-                placeholder={`Description`}
-              />
-              <p className="text-red-600 text-sm font-bold m-1">
-                {errors.media?.[index]?.alt?.message}
-              </p>
-            </div>
           </div>
         ))}
       </div>
-      <div className="mt-2">
-        <label htmlFor="price" className="block text-sm text-black font-bold">
-          Price/night in USD:
-        </label>
-        <input
-          {...register("price")}
-          id="price"
-          type="number"
-          className="px-2 py-1 border border-darkBeige bg-lightBeige rounded-sm shadow-custom-dark w-full focus:border-black focus:border-2 focus:ring-black focus:outline-none"
-          placeholder="Price per night"
-        />
-        <p className="text-red-600 text-sm font-bold m-1">
-          {errors.price?.message}
-        </p>
+      <div className="flex mt-3">
+        <div className="mt-2 mr-2 flex-grow">
+          <label htmlFor="price" className="block text-sm text-black font-bold">
+            Price/night in USD:
+          </label>
+          <input
+            {...register("price")}
+            id="price"
+            type="number"
+            className="px-2 py-1 border border-darkBeige bg-lightBeige rounded-sm shadow-custom-dark w-full focus:border-black focus:border-2 focus:ring-black focus:outline-none"
+            placeholder="Price per night"
+          />
+          <p className="text-red-600 text-sm font-bold m-1">
+            {errors.price?.message}
+          </p>
+        </div>
+        <div className="mt-2 flex-grow">
+          <label
+            htmlFor="maxGuests"
+            className="block text-sm text-black font-bold"
+          >
+            Max Guests:
+          </label>
+          <input
+            {...register("maxGuests")}
+            id="maxGuests"
+            type="number"
+            className="px-2 py-1 border border-darkBeige bg-lightBeige rounded-sm shadow-custom-dark w-full focus:border-black focus:border-2 focus:ring-black focus:outline-none"
+            placeholder="Maximum number of guests"
+          />
+          <p className="text-red-600 text-sm font-bold m-1">
+            {errors.maxGuests?.message}
+          </p>
+        </div>
       </div>
-      <div className="mt-2">
-        <label
-          htmlFor="maxGuests"
-          className="block text-sm text-black font-bold"
-        >
-          Max Guests:
-        </label>
-        <input
-          {...register("maxGuests")}
-          id="maxGuests"
-          type="number"
-          className="px-2 py-1 border border-darkBeige bg-lightBeige rounded-sm shadow-custom-dark w-full focus:border-black focus:border-2 focus:ring-black focus:outline-none"
-          placeholder="Maximum number of guests"
-        />
-        <p className="text-red-600 text-sm font-bold m-1">
-          {errors.maxGuests?.message}
-        </p>
-      </div>
-      <div className="mt-2">
-        <label htmlFor="wifi" className="block text-sm text-black font-bold">
-          Wifi:
-        </label>
-        <Controller
-          name="meta.wifi"
-          control={control}
-          render={({ field }) => (
-            <SwitchField
-              label=""
-              checked={field.value}
-              onChange={field.onChange}
-              textColor="text-black"
-              textShadow=""
-            />
-          )}
-        />
-      </div>
-      <div className="mt-2">
-        <label htmlFor="parking" className="block text-sm text-black font-bold">
-          Parking:
-        </label>
-        <Controller
-          name="meta.parking"
-          control={control}
-          render={({ field }) => (
-            <SwitchField
-              label="Parking"
-              checked={field.value}
-              onChange={field.onChange}
-              textColor="text-black"
-              textShadow=""
-            />
-          )}
-        />
-      </div>
-      <div className="mt-2">
-        <label
-          htmlFor="breakfast"
-          className="block text-sm text-black font-bold"
-        >
-          Breakfast:
-        </label>
-        <Controller
-          name="meta.breakfast"
-          control={control}
-          render={({ field }) => (
-            <SwitchField
-              label="Breakfast"
-              checked={field.value}
-              onChange={field.onChange}
-              textColor="text-black"
-              textShadow=""
-            />
-          )}
-        />
-      </div>
-      <div className="mt-2">
-        <label htmlFor="pets" className="block text-sm text-black font-bold">
-          Pets:
-        </label>
-        <Controller
-          name="meta.pets"
-          control={control}
-          render={({ field }) => (
-            <SwitchField
-              label="Pets"
-              checked={field.value}
-              onChange={field.onChange}
-              textColor="text-black"
-              textShadow=""
-            />
-          )}
-        />
+      <div className="flex mt-3">
+        <div className="mt-2 flex-grow">
+          <label htmlFor="wifi" className="block text-sm text-black font-bold">
+            Wifi
+          </label>
+          <Controller
+            name="meta.wifi"
+            control={control}
+            render={({ field }) => (
+              <SwitchField
+                label=""
+                checked={field.value}
+                onChange={field.onChange}
+                textColor="text-black"
+                textShadow=""
+              />
+            )}
+          />
+        </div>
+        <div className="mt-2 flex-grow">
+          <label
+            htmlFor="parking"
+            className="block text-sm text-black font-bold"
+          >
+            Parking
+          </label>
+          <Controller
+            name="meta.parking"
+            control={control}
+            render={({ field }) => (
+              <SwitchField
+                label=""
+                checked={field.value}
+                onChange={field.onChange}
+                textColor="text-black"
+                textShadow=""
+              />
+            )}
+          />
+        </div>
+        <div className="mt-2 flex-grow">
+          <label
+            htmlFor="breakfast"
+            className="block text-sm text-black font-bold"
+          >
+            Breakfast
+          </label>
+          <Controller
+            name="meta.breakfast"
+            control={control}
+            render={({ field }) => (
+              <SwitchField
+                checked={field.value}
+                onChange={field.onChange}
+                textColor="text-black"
+                textShadow=""
+              />
+            )}
+          />
+        </div>
+        <div className="mt-2">
+          <label htmlFor="pets" className="block text-sm text-black font-bold">
+            Pets
+          </label>
+          <Controller
+            name="meta.pets"
+            control={control}
+            render={({ field }) => (
+              <SwitchField
+                checked={field.value}
+                onChange={field.onChange}
+                textColor="text-black"
+                textShadow=""
+              />
+            )}
+          />
+        </div>
       </div>
       <div className="mt-2">
         <label htmlFor="address" className="block text-sm text-black font-bold">
@@ -395,68 +375,75 @@ export default function VenueCreateForm({ onClose, onUpdate }) {
           {errors.location?.address?.message}
         </p>
       </div>
-      <div className="mt-2">
-        <label htmlFor="city" className="block text-sm text-black font-bold">
-          City:
-        </label>
-        <input
-          {...register("location.city")}
-          id="city"
-          type="text"
-          className="px-2 py-1 border border-darkBeige bg-lightBeige rounded-sm shadow-custom-dark w-full focus:border-black focus:border-2 focus:ring-black focus:outline-none"
-          placeholder="City"
-        />
-        <p className="text-red-600 text-sm font-bold m-1">
-          {errors.location?.city?.message}
-        </p>
+      <div className="flex">
+        <div className="mt-2 mr-2 flex-grow">
+          <label htmlFor="city" className="block text-sm text-black font-bold">
+            City:
+          </label>
+          <input
+            {...register("location.city")}
+            id="city"
+            type="text"
+            className="px-2 py-1 border border-darkBeige bg-lightBeige rounded-sm shadow-custom-dark w-full focus:border-black focus:border-2 focus:ring-black focus:outline-none"
+            placeholder="City"
+          />
+          <p className="text-red-600 text-sm font-bold m-1">
+            {errors.location?.city?.message}
+          </p>
+        </div>
+        <div className="mt-2 flex-grow">
+          <label htmlFor="zip" className="block text-sm text-black font-bold">
+            Zip Code:
+          </label>
+          <input
+            {...register("location.zip")}
+            id="zip"
+            type="text"
+            className="px-2 py-1 border border-darkBeige bg-lightBeige rounded-sm shadow-custom-dark w-full focus:border-black focus:border-2 focus:ring-black focus:outline-none"
+            placeholder="Zip Code"
+          />
+          <p className="text-red-600 text-sm font-bold m-1">
+            {errors.location?.zip?.message}
+          </p>
+        </div>
       </div>
-      <div className="mt-2">
-        <label htmlFor="zip" className="block text-sm text-black font-bold">
-          Zip Code:
-        </label>
-        <input
-          {...register("location.zip")}
-          id="zip"
-          type="text"
-          className="px-2 py-1 border border-darkBeige bg-lightBeige rounded-sm shadow-custom-dark w-full focus:border-black focus:border-2 focus:ring-black focus:outline-none"
-          placeholder="Zip Code"
-        />
-        <p className="text-red-600 text-sm font-bold m-1">
-          {errors.location?.zip?.message}
-        </p>
-      </div>
-      <div className="mt-2">
-        <label htmlFor="country" className="block text-sm text-black font-bold">
-          Country:
-        </label>
-        <input
-          {...register("location.country")}
-          id="country"
-          type="text"
-          className="px-2 py-1 border border-darkBeige bg-lightBeige rounded-sm shadow-custom-dark w-full focus:border-black focus:border-2 focus:ring-black focus:outline-none"
-          placeholder="Country"
-        />
-        <p className="text-red-600 text-sm font-bold m-1">
-          {errors.location?.country?.message}
-        </p>
-      </div>
-      <div className="mt-2">
-        <label
-          htmlFor="continent"
-          className="block text-sm text-black font-bold"
-        >
-          Continent:
-        </label>
-        <input
-          {...register("location.continent")}
-          id="continent"
-          type="text"
-          className="px-2 py-1 border border-darkBeige bg-lightBeige rounded-sm shadow-custom-dark w-full focus:border-black focus:border-2 focus:ring-black focus:outline-none"
-          placeholder="Continent"
-        />
-        <p className="text-red-600 text-sm font-bold m-1">
-          {errors.location?.continent?.message}
-        </p>
+      <div className="flex">
+        <div className="mt-2 mr-2 flex-grow">
+          <label
+            htmlFor="country"
+            className="block text-sm text-black font-bold"
+          >
+            Country:
+          </label>
+          <input
+            {...register("location.country")}
+            id="country"
+            type="text"
+            className="px-2 py-1 border border-darkBeige bg-lightBeige rounded-sm shadow-custom-dark w-full focus:border-black focus:border-2 focus:ring-black focus:outline-none"
+            placeholder="Country"
+          />
+          <p className="text-red-600 text-sm font-bold m-1">
+            {errors.location?.country?.message}
+          </p>
+        </div>
+        <div className="mt-2 flex-grow">
+          <label
+            htmlFor="continent"
+            className="block text-sm text-black font-bold"
+          >
+            Continent:
+          </label>
+          <input
+            {...register("location.continent")}
+            id="continent"
+            type="text"
+            className="px-2 py-1 border border-darkBeige bg-lightBeige rounded-sm shadow-custom-dark w-full focus:border-black focus:border-2 focus:ring-black focus:outline-none"
+            placeholder="Continent"
+          />
+          <p className="text-red-600 text-sm font-bold m-1">
+            {errors.location?.continent?.message}
+          </p>
+        </div>
       </div>
       <button
         type="submit"

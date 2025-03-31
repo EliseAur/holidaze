@@ -13,17 +13,12 @@ const ProfileUpdateSchema = yup.object({
       .string()
       .url("Must be a valid URL")
       .typeError("Must be a valid URL"),
-    alt: yup
-      .string()
-      .max(49, "Description must be less than 50 characters")
-      .typeError("Description must be less than 20 characters"),
   }),
   banner: yup.object({
     url: yup
       .string()
       .url("Must be a valid URL")
       .typeError("Must be a valid URL"),
-    alt: yup.string().max(49, "Description must be less than 50 characters"),
   }),
   venueManager: yup.boolean(),
 });
@@ -33,11 +28,9 @@ export default function ProfileUpdateForm({ onClose, onUpdate }) {
     bio: "",
     avatar: {
       url: "",
-      alt: "",
     },
     banner: {
       url: "",
-      alt: "",
     },
     venueManager: false,
   });
@@ -110,7 +103,7 @@ export default function ProfileUpdateForm({ onClose, onUpdate }) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="p-5">
+    <form onSubmit={handleSubmit(onSubmit)} className="p-5 text-sm">
       <h2 className="text-2xl font-black text-black mb-3">Update Profile</h2>
       <div>
         <label htmlFor="bio" className="block text-sm text-black font-bold">
@@ -119,7 +112,7 @@ export default function ProfileUpdateForm({ onClose, onUpdate }) {
         <textarea
           {...register("bio")}
           id="bio"
-          className="px-2 py-1 border border-darkBeige bg-lightBeige rounded-sm shadow-custom-dark w-full focus:border-black focus:border-2 focus:ring-black focus:outline-none"
+          className="px-2 py-1 border border-darkBeige bg-lightBeige rounded-sm shadow-custom-dark w-full focus:border-black focus:border-2 focus:ring-black focus:outline-none h-30"
           placeholder="Tell us about yourself"
         />
         <p className="text-red-600 text-sm font-bold m-1">
@@ -142,24 +135,6 @@ export default function ProfileUpdateForm({ onClose, onUpdate }) {
         </p>
       </div>
       <div className="mt-2">
-        <label
-          htmlFor="avatar-alt"
-          className="block text-sm text-black font-bold"
-        >
-          Profile image description
-        </label>
-        <input
-          id="avatar-alt"
-          type="text"
-          {...register("avatar.alt")}
-          className="px-2 py-1 border border-darkBeige bg-lightBeige rounded-sm shadow-custom-dark w-full focus:border-black focus:border-2 focus:ring-black focus:outline-none"
-          placeholder="Short description of profile image"
-        />
-        <p className="text-red-600 text-sm font-bold m-1">
-          {errors.avatar?.alt?.message}
-        </p>
-      </div>
-      <div className="mt-2">
         <label htmlFor="banner" className="block text-sm text-black font-bold">
           Profile banner/ background image
         </label>
@@ -174,35 +149,22 @@ export default function ProfileUpdateForm({ onClose, onUpdate }) {
           {errors.banner?.url?.message}
         </p>
       </div>
-      <div className="mt-2">
+      <div className="my-6 text-black">
         <label
-          htmlFor="banner-alt"
-          className="block text-sm text-black font-bold"
+          htmlFor="venueManager"
+          className="block text-lg text-black font-black"
         >
-          Banner image description
+          Register as a host?
         </label>
-        <input
-          id="banner-alt"
-          type="text"
-          {...register("banner.alt")}
-          className="px-2 py-1 border border-darkBeige bg-lightBeige rounded-sm shadow-custom-dark w-full focus:border-black focus:border-2 focus:ring-black focus:outline-none"
-          placeholder="Short description of profile banner image"
-        />
-        <p className="text-red-600 text-sm font-bold m-1">
-          {errors.banner?.alt?.message}
-        </p>
-      </div>
-      <div className="mt-3 text-black">
         <Controller
           name="venueManager"
           control={control}
           render={({ field }) => (
             <SwitchField
-              label="I want to register as a host"
+              label={field.value ? "I want to register as a host" : "Not yet.."}
               checked={field.value}
               onChange={field.onChange}
               textColor="text-black"
-              textShadow=""
             />
           )}
         />

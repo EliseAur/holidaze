@@ -3,19 +3,17 @@ export default function Modal({ isOpen, onClose, children }) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center overflow-auto"
-      style={{ backgroundColor: "rgba(0, 0, 0, 0.87)" }}
+      className="fixed inset-0 z-100 overflow-auto flex justify-center items-center"
+      style={{ backgroundColor: "rgba(0, 0, 0, 0.7)" }}
     >
-      <div className="bg-beige p-6 rounded-sm shadow-lg  mx-5 relative max-w-[500px] w-full">
+      <div className="bg-beige p-3 rounded-sm shadow-lg  mx-auto relative max-w-[500px] w-full">
         <button
-          className="absolute top-1 right-4 text-black text-2xl"
+          className="absolute top-3 right-7 text-black text-3xl font-bold"
           onClick={onClose}
         >
           &times;
         </button>
-        {/* <h2 className="text-xl font-black mb-2">Edit profile</h2>
-        {children} */}
-        <div className="overflow-y-auto max-h-[80vh]">{children}</div>
+        <div className="overflow-y-auto max-h-[100vh]">{children}</div>
       </div>
     </div>
   );
