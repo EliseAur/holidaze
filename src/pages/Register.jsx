@@ -123,13 +123,23 @@ export default function Register() {
           </div> */}
 
           {/* Venue Manager toggle */}
-          <SwitchField
-            label="I want to register as a host"
-            checked={venueManager}
-            onChange={setVenueManager}
-            textColor="text-beige"
-            textShadow="text-shadow"
-          />
+          <div className="text-sm">
+            <label
+              htmlFor="venueManager"
+              className="block text-base text-beige font-bold text-shadow mb-1"
+            >
+              Register as a host?
+            </label>
+            <SwitchField
+              label={
+                venueManager ? "Yes, I want to register as a host" : "Not yet.."
+              }
+              checked={venueManager}
+              onChange={setVenueManager}
+              textColor="text-beige"
+              textShadow="text-shadow"
+            />
+          </div>
         </div>
         <button
           type="submit"
