@@ -7,14 +7,6 @@ export async function createVenue(createdVenue) {
     throw new Error("No user name found");
   }
 
-  // Remove URLs for images 2, 3, and 4 if they are empty or invalid
-  createdVenue.media = createdVenue.media.filter((media, index) => {
-    if (index > 0 && (!media.url || media.url === "")) {
-      return false;
-    }
-    return true;
-  });
-
   const endpoint = `${API_HOLIDAZE_BASE}/venues`;
   const options = {
     method: "POST",
