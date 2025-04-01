@@ -11,35 +11,28 @@ const VenueCreateSchema = yup.object({
     .min(20, "Description must be more than 20 characters")
     .required(),
 
-  media: yup
-    .array()
-    .of(
-      yup.lazy((value, { index }) => {
-        if (index === 0) {
-          return yup.object({
-            url: yup
-              .string()
-              .url("Must be a valid URL")
-              .required("URL is required")
-              .typeError("Must be a valid URL"),
-          });
-        } else {
-          return yup.object({
-            url: yup
-              .string()
-              .url("Must be a valid URL")
-              .nullable()
-              .notRequired()
-              .typeError("Must be a valid URL"),
-            alt: yup
-              .string()
-              .max(49, "Description must be less than 50 characters")
-              .typeError("Description must be less than 50 characters"),
-          });
-        }
-      }),
-    )
-    .length(4, "You must provide exactly 4 images"),
+  media: yup.array().of(
+    yup.lazy((value, { index }) => {
+      if (index === 0) {
+        return yup.object({
+          url: yup
+            .string()
+            .url("Must be a valid URL")
+            .required("URL is required")
+            .typeError("Must be a valid URL"),
+        });
+      } else {
+        return yup.object({
+          url: yup
+            .string()
+            .url("Must be a valid URL")
+            .nullable()
+            .notRequired()
+            .typeError("Must be a valid URL"),
+        });
+      }
+    }),
+  ),
   price: yup
     .number()
     .min(1, "Price must be at least 1")
@@ -48,6 +41,7 @@ const VenueCreateSchema = yup.object({
   maxGuests: yup
     .number()
     .min(1, "Must be at least 1")
+    .max(100, "Must be less than 100")
     .required("You must enter the maximum number of guests")
     .typeError("Must be a number"),
   meta: yup.object({
@@ -452,9 +446,11 @@ export default function VenueCreateForm({ onClose, onUpdate }) {
         Create Venue
       </button>
       {errors.form && (
-        <p className="text-red-600 text-sm font-bold m-1">
-          {errors.form.message}
-        </p>
+        <div className="mt-3 border border-red-600 bg-red-100 p-2 rounded">
+          <p className="text-red-600 text-sm font-bold m-1">
+            {errors.form.message}
+          </p>
+        </div>
       )}
     </form>
   );
