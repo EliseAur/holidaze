@@ -23,6 +23,7 @@ import VenueCreateForm from "./VenueCreateForm";
 import Modal from "./Modal";
 import BookingConfirmation from "./BookingConformation";
 import ProfileCard from "./ProfileCard";
+import VenueUpdateForm from "./VenueUpdateForm";
 
 export {
   Header,
@@ -48,4 +49,5 @@ export {
   Modal,
   BookingConfirmation,
   ProfileCard,
+  VenueUpdateForm,
 };

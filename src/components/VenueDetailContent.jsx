@@ -14,6 +14,8 @@ import {
   faUserGroup,
   faSackDollar,
   faCalendarDay,
+  faPenToSquare,
+  faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -41,6 +43,7 @@ export default function VenueDetailContent({
   handleDateChange,
   handleBooking,
   setGuests,
+  openVenueModal,
 }) {
   const {
     // id,
@@ -115,6 +118,32 @@ export default function VenueDetailContent({
       ) : (
         <div className="mt-3 w-full h-60 sm:h-72 bg-gray-300 flex items-center justify-center rounded-sm">
           <span className="text-gray-700 text-light">No image available</span>
+        </div>
+      )}
+      {userName === owner.name && (
+        <div className="flex flex-col sm:flex-row mt-3 bg-lighterGreen rounded-sm shadow-sm px-5 py-3 ">
+          <p className="text-md sm:text-lg font-black mb-1 sm flex-grow">
+            Manage venue:
+          </p>
+          <div className="flex flex-grow justify-between items-center w-full sm:max-w-[280px]">
+            <button
+              onClick={openVenueModal}
+              className="bg-black shadow-custom-dark text-lightBeige text-xs font-bold px-4 py-2 rounded inline-block hover:bg-gray-900 w-full mr-2"
+            >
+              <FontAwesomeIcon
+                icon={faPenToSquare}
+                className="text-lightBeige mr-1"
+              />
+              Update Venue
+            </button>
+            <button className="bg-black shadow-custom-dark text-lightBeige text-xs font-bold px-4 py-2 rounded inline-block hover:bg-gray-900 w-full">
+              <FontAwesomeIcon
+                icon={faTrash}
+                className="text-lightBeige mr-1"
+              />
+              Delete Venue
+            </button>
+          </div>
         </div>
       )}
       <div className="mt-3 bg-lightBeige rounded-sm shadow-sm p-5">
@@ -506,4 +535,5 @@ VenueDetailContent.propTypes = {
   handleDateChange: PropTypes.func.isRequired,
   handleBooking: PropTypes.func.isRequired,
   setGuests: PropTypes.func.isRequired,
+  openVenueModal: PropTypes.func.isRequired,
 };

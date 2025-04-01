@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { fetchVenueDetails } from "../api";
 import { VenueDetailContent, LoadingSpinner } from "../components";
 import { fetchBooking } from "../api";
 import { differenceInDays } from "date-fns";
-import { Modal, BookingConfirmation } from "../components";
+import { Modal, BookingConfirmation, VenueUpdateForm } from "../components";
 
 function VenueDetail() {
   const { id } = useParams();
@@ -15,27 +15,50 @@ function VenueDetail() {
   const [guests, setGuests] = useState(1);
   const [totalPrice, setTotalPrice] = useState(0);
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
+  const [isVenueModalOpen, setIsVenueModalOpen] = useState(false);
 
   const openBookingModal = () => setIsBookingModalOpen(true);
   const closeBookingModal = () => setIsBookingModalOpen(false);
 
-  useEffect(() => {
-    async function loadVenue() {
-      try {
-        const venue = await fetchVenueDetails(id);
-        console.log("Venue details with api fetch:", venue);
-        setVenue(venue);
-      } catch (error) {
-        setError({
-          message: error.message,
-          status: error.status,
-          statusCode: error.statusCode,
-        });
-      }
-    }
+  const openVenueModal = () => setIsVenueModalOpen(true);
+  const closeVenueModal = () => setIsVenueModalOpen(false);
 
-    loadVenue();
-  }, [id]);
+  // useEffect(() => {
+  //   async function loadVenue() {
+  //     try {
+  //       const venue = await fetchVenueDetails(id);
+  //       console.log("Venue details with api fetch:", venue);
+  //       setVenue(venue);
+  //     } catch (error) {
+  //       setError({
+  //         message: error.message,
+  //         status: error.status,
+  //         statusCode: error.statusCode,
+  //       });
+  //     }
+  //   }
+
+  //   loadVenue();
+  // }, [id]);
+
+  // Use useCallback to memoize the loadVenue function
+  const loadVenue = useCallback(async () => {
+    try {
+      const venue = await fetchVenueDetails(id);
+      console.log("Venue details with API fetch:", venue);
+      setVenue(venue);
+    } catch (error) {
+      setError({
+        message: error.message,
+        status: error.status,
+        statusCode: error.statusCode,
+      });
+    }
+  }, [id]); // Add 'id' as a dependency since it can change
+
+  useEffect(() => {
+    loadVenue(); // Call loadVenue when the component mounts or id changes
+  }, [loadVenue]);
 
   const handleDateChange = (dates) => {
     const [start, end] = dates;
@@ -88,10 +111,24 @@ function VenueDetail() {
           setGuests={setGuests}
           isBookingModalOpen={isBookingModalOpen}
           closeBookingModal={closeBookingModal}
+          openVenueModal={openVenueModal}
+          isVenueModalOpen={isVenueModalOpen}
+          closeVenueModal={closeVenueModal}
         />
       )}
       <Modal isOpen={isBookingModalOpen} onClose={closeBookingModal}>
         <BookingConfirmation onClose={closeBookingModal} />
+      </Modal>
+      <Modal isOpen={isVenueModalOpen} onClose={closeVenueModal}>
+        <VenueUpdateForm
+          venue={venue}
+          onClose={closeVenueModal}
+          // onUpdate={(updatedVenue) => setVenue(updatedVenue)}
+          onUpdate={() => {
+            console.log("Re-fetching venue details after update...");
+            loadVenue(); // Re-fetch the updated venue details
+          }}
+        />
       </Modal>
     </>
   );
