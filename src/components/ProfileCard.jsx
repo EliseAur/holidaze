@@ -40,7 +40,7 @@ export default function ProfileCard({
             )
           )}
           <div className="inset-0 absolute flex flex-col top-20 md:top-24 right-1/2 sm:right-1/2 transform max-w-[340px] pl-4 text-black md:ml-5">
-            <div className="w-28 h-28 md:w-32 md:h-32 rounded-full">
+            <div className="w-28 h-28 md:w-32 md:h-32 rounded-full bg-lightBeige">
               <img
                 src={
                   profile.avatar &&
