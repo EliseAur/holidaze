@@ -165,6 +165,7 @@ export default function Account() {
                             venue={venue}
                             isFavorite={false}
                             onFavoriteClick={handleFavoriteClick}
+                            isHostedByUser={true}
                           />
                         </div>
                       ))}

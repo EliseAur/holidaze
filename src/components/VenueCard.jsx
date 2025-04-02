@@ -13,7 +13,12 @@ import {
   faSackDollar,
 } from "@fortawesome/free-solid-svg-icons";
 
-export default function VenueCard({ venue, isFavorite, onFavoriteClick }) {
+export default function VenueCard({
+  venue,
+  isFavorite,
+  onFavoriteClick,
+  isHostedByUser,
+}) {
   return (
     <div className="bg-lightBeige rounded-sm shadow-lg relative hover:shadow-custom-dark">
       {venue.media.length > 0 ? (
@@ -127,7 +132,7 @@ export default function VenueCard({ venue, isFavorite, onFavoriteClick }) {
               to={`/venue/${venue.id}`}
               className="text-sm bg-lightGreen text-black font-bold py-1 px-4 rounded-sm shadow-custom-dark hover:bg-darkGreen w-full text-center"
             >
-              View
+              {isHostedByUser ? "Manage Venue" : "View"}
             </Link>
           </div>
         </div>
@@ -160,4 +165,7 @@ VenueCard.propTypes = {
       parking: PropTypes.bool,
     }).isRequired,
   }).isRequired,
+  isFavorite: PropTypes.bool,
+  onFavoriteClick: PropTypes.func,
+  isHostedByUser: PropTypes.bool,
 };
