@@ -22,6 +22,11 @@ export async function apiFetch(endpoint, options = {}, requireAuth = true) {
       headers,
     });
 
+    // Handle 204 No Content responses
+    if (response.status === 204) {
+      return null; // No content to parse
+    }
+
     const result = await response.json();
 
     if (response.ok) {

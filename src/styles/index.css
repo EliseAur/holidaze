@@ -47,7 +47,8 @@ body {
 }
 
 .headerNavBox,
-.footerBg {
+.footerBg,
+.modal-message {
   background-image: url("../images/bg-palms.jpg");
 }
 

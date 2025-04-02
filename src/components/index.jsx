@@ -21,6 +21,7 @@ import LoadingSpinner from "./LoadingSpinner";
 import ProfileUpdateForm from "./ProfileUpdateForm";
 import VenueCreateForm from "./VenueCreateForm";
 import Modal from "./Modal";
+import ModalMessage from "./ModalMessage";
 import BookingConfirmation from "./BookingConformation";
 import ProfileCard from "./ProfileCard";
 import VenueUpdateForm from "./VenueUpdateForm";
@@ -50,4 +51,5 @@ export {
   BookingConfirmation,
   ProfileCard,
   VenueUpdateForm,
+  ModalMessage,
 };

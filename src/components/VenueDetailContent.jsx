@@ -31,7 +31,8 @@ import {
 } from "date-fns";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext"; // Import your AuthContext
-
+import { deleteVenue } from "../api";
+import { ModalMessage } from "./index";
 registerLocale("en-GB", enGB);
 
 export default function VenueDetailContent({
@@ -46,7 +47,7 @@ export default function VenueDetailContent({
   openVenueModal,
 }) {
   const {
-    // id,
+    id,
     name,
     media,
     description,
@@ -58,6 +59,48 @@ export default function VenueDetailContent({
     owner,
     bookings,
   } = venue;
+
+  const [isMessageModalOpen, setIsMessageModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+
+  const closeMessageModal = () => {
+    setIsMessageModalOpen(false);
+    setModalMessage("");
+  };
+
+  const closeConfirmModal = () => {
+    setIsConfirmModalOpen(false);
+  };
+
+  const handleDeleteVenue = async () => {
+    console.log("Attempting to delete venue with ID:", id);
+
+    if (userName !== venue.owner.name) {
+      setModalMessage("You are not authorized to delete this venue.");
+      setIsMessageModalOpen(true);
+      return;
+    }
+
+    setIsConfirmModalOpen(true); // Open the confirmation modal
+  };
+
+  const confirmDeleteVenue = async () => {
+    setIsConfirmModalOpen(false); // Close the confirmation modal
+    try {
+      await deleteVenue(id);
+      setModalMessage("Venue deleted successfully!");
+      setIsMessageModalOpen(true);
+      // setIsRedirecting(true); // Show redirecting message
+      setTimeout(() => {
+        window.location.href = "/account"; // Redirect to the account page
+      }, 2000);
+    } catch (error) {
+      console.error(`Failed to delete venue with ID ${id}:`, error);
+      setModalMessage("Failed to delete the venue. Please try again.");
+      setIsMessageModalOpen(true);
+    }
+  };
 
   const { isLoggedIn } = useContext(AuthContext); // Use context to get authentication status
   const userName = localStorage.getItem("userName");
@@ -136,7 +179,10 @@ export default function VenueDetailContent({
               />
               Update Venue
             </button>
-            <button className="bg-black shadow-custom-dark text-lightBeige text-xs font-bold px-4 py-2 rounded inline-block hover:bg-gray-900 w-full">
+            <button
+              onClick={handleDeleteVenue}
+              className="bg-black shadow-custom-dark text-lightBeige text-xs font-bold px-4 py-2 rounded inline-block hover:bg-gray-900 w-full"
+            >
               <FontAwesomeIcon
                 icon={faTrash}
                 className="text-lightBeige mr-1"
@@ -146,6 +192,21 @@ export default function VenueDetailContent({
           </div>
         </div>
       )}
+      {/* Confirmation Modal */}
+      <ModalMessage
+        isOpen={isConfirmModalOpen}
+        message="Are you sure you want to delete this venue?"
+        onClose={closeConfirmModal}
+        onConfirm={confirmDeleteVenue}
+        showConfirmButtons={true}
+      />
+
+      {/* Message Modal */}
+      <ModalMessage
+        isOpen={isMessageModalOpen}
+        message={modalMessage}
+        onClose={closeMessageModal}
+      />
       <div className="mt-3 bg-lightBeige rounded-sm shadow-sm p-5">
         <div className="flex justify-between flex-grow">
           <h1 className="text-lg sm:text-2xl italic font-black break-words mb-3">
@@ -487,7 +548,7 @@ export default function VenueDetailContent({
 
 VenueDetailContent.propTypes = {
   venue: PropTypes.shape({
-    // id: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     media: PropTypes.arrayOf(
       PropTypes.shape({
