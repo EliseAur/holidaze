@@ -13,7 +13,7 @@ import {
   ProfileCard,
 } from "../components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import { faPenToSquare, faArrowUp } from "@fortawesome/free-solid-svg-icons";
 
 export default function Account() {
   const [profile, setProfile] = useState(null);
@@ -311,7 +311,7 @@ export default function Account() {
             </section>
             <section
               id="favorites"
-              className=" pt-3 pb-6 mb-4 max-w-[360px] sm:max-w-[1279px] px-4 mx-auto"
+              className=" pt-3 pb-6 max-w-[360px] sm:max-w-[1279px] px-4 mx-auto"
             >
               <h2 className="text-xl font-black">Favorites</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-2 sm:gap-3 ">
@@ -351,7 +351,17 @@ export default function Account() {
                     : "View all favorites"}
                 </button>
               )}
+              <hr className="mt-6" />
             </section>
+            <div className="w-[43px] mx-auto">
+              <a
+                href="#top"
+                title="Back to top"
+                className="text-xl px-3 py-1 mb-4 rounded-full border-3 border-black bg-beige text-black hover:bg-black hover:text-beige block cursor-pointer"
+              >
+                <FontAwesomeIcon icon={faArrowUp} />
+              </a>
+            </div>
           </div>
         </div>
       )}
