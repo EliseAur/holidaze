@@ -11,6 +11,7 @@ import {
   LoginRegWideScreen,
   LoginRegMobile,
 } from "./HeaderButtons";
+import FilterVenuesForm from "./FilterVenuesForm";
 import FilterVenues from "./FilterVenues";
 import VenueCard from "./VenueCard";
 import VenueDetailContent from "./VenueDetailContent";
@@ -33,6 +34,7 @@ export {
   HeaderBgPalms,
   NavWideScreen,
   NavMobile,
+  FilterVenuesForm,
   FilterVenues,
   VenueCard,
   Footer,
