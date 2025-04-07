@@ -1,105 +1,89 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faWifi,
-  faPaw,
-  faUtensils,
-  faParking,
-  faSliders,
-  faSearch,
-} from "@fortawesome/free-solid-svg-icons";
+import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import FilterVenuesForm from "./FilterVenuesForm";
 
-export default function FilterVenues() {
+export default function FilterVenues({ venues, onFilter }) {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filters, setFilters] = useState({
+    parking: false,
+    pets: false,
+    wifi: false,
+    breakfast: false,
+    guests: "",
+    price: "",
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  useEffect(() => {
+    const applyFilters = () => {
+      const filteredVenues = venues.filter((venue) => {
+        // Search by name, description, location, country, or city
+        const matchesSearch =
+          venue.name?.toLowerCase().includes(searchQuery.toLowerCase()) || // Check name
+          venue.description
+            ?.toLowerCase()
+            .includes(searchQuery.toLowerCase()) || // Check description
+          venue.location?.country
+            ?.toLowerCase()
+            .includes(searchQuery.toLowerCase()) || // Check country
+          venue.location?.city
+            ?.toLowerCase()
+            .includes(searchQuery.toLowerCase()); // Check city
+
+        // Filter by checkboxes
+        const matchesFilters =
+          (!filters.parking || venue.meta.parking) &&
+          (!filters.pets || venue.meta.pets) &&
+          (!filters.wifi || venue.meta.wifi) &&
+          (!filters.breakfast || venue.meta.breakfast);
+
+        // Filter by guests
+        const matchesGuests =
+          !filters.guests ||
+          (filters.guests === "5"
+            ? venue.maxGuests > 4
+            : venue.maxGuests === parseInt(filters.guests));
+
+        // Filter by price
+        const matchesPrice =
+          !filters.price ||
+          (filters.price === "low" && venue.price < 50) ||
+          (filters.price === "medium" &&
+            venue.price >= 50 &&
+            venue.price <= 100) ||
+          (filters.price === "high" && venue.price > 100);
+
+        return matchesSearch && matchesFilters && matchesGuests && matchesPrice;
+      });
+
+      onFilter(filteredVenues);
+    };
+    applyFilters(); // Call applyFilters whenever searchQuery or filters change
+  }, [searchQuery, filters, venues, onFilter]); // Dependencies: re-run when these change
+
   return (
-    <div className="mt-5 px-2">
-      <h2 className="text-xl font-bold mb-2">
-        <FontAwesomeIcon icon={faSliders} className="mr-2" />
-        Filter Venues
-      </h2>
-      <div className=" grid grid-cols-2 gap-2">
-        <div className="grid grid-cols-1 sm:grid-cols-2">
-          <div>
-            <label className="flex items-center space-x-1">
-              <input type="checkbox" name="parking" className="form-checkbox" />
-              <FontAwesomeIcon icon={faParking} />
-              <span>Parking</span>
-            </label>
-          </div>
-          <div>
-            <label className="flex items-center space-x-1">
-              <input type="checkbox" name="pets" className="form-checkbox" />
-              <FontAwesomeIcon icon={faPaw} />
-              <span>Pets</span>
-            </label>
-          </div>
-          <div>
-            <label className="flex items-center space-x-1">
-              <input type="checkbox" name="wifi" className="form-checkbox" />
-              <FontAwesomeIcon icon={faWifi} />
-              <span>Wifi</span>
-            </label>
-          </div>
-          <div>
-            <label className="flex items-center space-x-1">
-              <input
-                type="checkbox"
-                name="breakfast"
-                className="form-checkbox"
-              />
-              <FontAwesomeIcon icon={faUtensils} />
-              <span>Breakfast</span>
-            </label>
-          </div>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-          <div>
-            <label className="block">
-              <span className="font-bold ml-1">Guests</span>
-              <select
-                name="guests"
-                className="form-select block w-full bg-lightBeige px-2 py-1 rounded-sm shadow-sm  text-sm"
-              >
-                <option value="">Any</option>
-                <option value="1">1 Guest</option>
-                <option value="2">2 Guests</option>
-                <option value="3">3 Guests</option>
-                <option value="4">4 Guests</option>
-                <option value="5">More than 4 Guests</option>
-              </select>
-            </label>
-          </div>
-          <div>
-            <label className="block">
-              <span className="font-bold ml-1">Price</span>
-              <select
-                name="price"
-                className="form-select block w-full bg-lightBeige px-2 py-1 rounded-sm shadow-sm text-sm"
-              >
-                <option value="">Any</option>
-                <option value="low">Low</option>
-                <option value="medium">Medium</option>
-                <option value="high">High</option>
-              </select>
-            </label>
-          </div>
-        </div>
-        <div className="flex flex-col sm:flex-row col-span-2">
-          <div className="mt-2 w-full sm:w-auto">
-            <button className="bg-black text-white font-bold shadow-lg py-2 px-4 rounded-sm hover:bg-grey-900 w-full cursor-pointer hover:shadow-custom-dark">
-              Apply Filters
-            </button>
-          </div>
-          <div className="flex mt-2 shadow-lg flex-grow w-full sm:max-w-[49.5%] sm:ml-auto">
-            <input
-              type="text"
-              placeholder="Search for venues..."
-              className="flex-grow w-full py-2 px-3 rounded-l-sm focus:outline-none bg-lightBeige  text-black placeholder-stone-400"
-            />
-            <button className="bg-black text-white font-bold px-3 py-2 rounded-r-sm hover:bg-gray-800 cursor-pointer">
-              <FontAwesomeIcon icon={faSearch} />
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <FilterVenuesForm
+      searchQuery={searchQuery}
+      filters={filters}
+      onSearchChange={handleSearchChange}
+      onInputChange={handleInputChange}
+      // onApplyFilters={applyFilters}
+    />
   );
 }
+
+FilterVenues.propTypes = {
+  venues: PropTypes.array.isRequired, // Array of venues to filter
+  onFilter: PropTypes.func.isRequired, // Callback to pass filtered venues to the parent
+};
