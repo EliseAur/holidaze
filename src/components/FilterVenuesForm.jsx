@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faWifi,
@@ -14,6 +15,7 @@ export default function FilterVenuesForm({
   onSearchChange,
   onInputChange,
   onApplyFilters,
+  onResetFilters,
 }) {
   if (!filters) {
     console.error("Filters prop is undefined in FilterVenuesForm.");
@@ -133,7 +135,30 @@ export default function FilterVenuesForm({
             </label>
           </div>
         </div>
+        <button
+          type="button"
+          onClick={onResetFilters} // Call resetFilters when clicked
+          className="bg-black text-beige font-bold py-2 px-4 rounded mt-4 col-span-2 sm:col-start-1 sm:max-w-[200px]"
+        >
+          Reset Filters
+        </button>
       </div>
     </div>
   );
 }
+
+FilterVenuesForm.propTypes = {
+  searchQuery: PropTypes.string.isRequired, // The search query string
+  filters: PropTypes.shape({
+    parking: PropTypes.bool,
+    pets: PropTypes.bool,
+    wifi: PropTypes.bool,
+    breakfast: PropTypes.bool,
+    guests: PropTypes.string,
+    price: PropTypes.string,
+  }).isRequired, // The filters object
+  onSearchChange: PropTypes.func.isRequired, // Function to handle search input changes
+  onInputChange: PropTypes.func.isRequired, // Function to handle filter input changes
+  onApplyFilters: PropTypes.func.isRequired, // Function to apply filters
+  onResetFilters: PropTypes.func.isRequired, // Function to reset filters
+};

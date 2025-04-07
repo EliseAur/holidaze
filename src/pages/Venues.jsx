@@ -17,6 +17,7 @@ function Venues() {
   const [loading, setLoading] = useState(false); // Initialize the loading state
   const { isLoggedIn } = useOutletContext();
   const { favorites, handleFavoriteClick } = useFavorites(isLoggedIn);
+  const [noMatches, setNoMatches] = useState(false);
 
   // Fetch all venues in the background
   useEffect(() => {
@@ -24,6 +25,7 @@ function Venues() {
       try {
         const allFetchedVenues = await fetchAllVenuesWithoutPagination(); // Fetch all venues
         setAllVenues(allFetchedVenues); // Store all venues in the state
+        console.log("Fetched All venues without pagination", allFetchedVenues);
       } catch (error) {
         console.error("Error fetching all venues in the background:", error);
       }
@@ -41,7 +43,6 @@ function Venues() {
         setVenues((prevVenues) => {
           const updatedVenues =
             page === 1 ? newVenues : [...prevVenues, ...newVenues];
-          setFilteredVenues(updatedVenues); // Update filtered venues for the current page
           return updatedVenues;
         });
       } catch (error) {
@@ -54,27 +55,29 @@ function Venues() {
     getPaginatedVenues();
   }, [page]);
 
-  // Memoize the onFilter function
-  const handleFilter = useCallback(
-    (filtered) => {
-      if (filtered.length === allVenues.length) {
-        // No filter or search is active, reset filteredVenues
-        setFilteredVenues([]);
-      } else {
-        // A filter or search is active, update filteredVenues
-        setFilteredVenues(filtered);
-      }
-    },
-    [allVenues],
-  );
+  const handleFilter = useCallback((filtered) => {
+    if (filtered === null) {
+      setFilteredVenues([]); // Reset filters: show paginated venues
+      setPage(1); // Reset to the first page
+      setNoMatches(false);
+    } else if (filtered.length === 0) {
+      setFilteredVenues([]);
+      setNoMatches(true);
+    } else {
+      setFilteredVenues(filtered);
+      setNoMatches(false);
+    }
+  }, []);
 
   const loadMoreVenues = () => {
     setPage((prevPage) => prevPage + 1); // Increment the page number
   };
 
-  const isFilterActive =
-    filteredVenues.length > 0 || allVenues.length > venues.length;
-  const venuesToDisplay = isFilterActive ? filteredVenues : venues;
+  const venuesToDisplay = noMatches
+    ? []
+    : filteredVenues.length > 0
+      ? filteredVenues
+      : venues;
 
   console.log("allVenues:", allVenues); // Log all venues
   console.log("filteredVenues:", filteredVenues); // Log filtered venues
@@ -93,66 +96,15 @@ function Venues() {
         <LoadingSpinner />
       ) : (
         <>
-          {/* <div className="px-2 mx-auto grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mt-10">
-            {venuesToDisplay.map((venue, index) => (
-              <VenueCard
-                key={`${venue.id}-${index}`}
-                venue={venue}
-                isFavorite={favorites.includes(venue.id)}
-                onFavoriteClick={handleFavoriteClick}
-              />
-            ))}
-          </div>
-          <div className="flex justify-center items-center mx-auto">
-            <button
-              className="bg-black text-beige font-bold py-2 px-4 rounded mt-8 shadow-custom-dark hover:bg-gray-900 block mr-2 cursor-pointer w-[170px]"
-              onClick={loadMoreVenues}
-              disabled={loading}
-            >
-              {loading ? "Loading..." : "Load More Venues"}
-            </button>
-            <a
-              href="#top"
-              className="ml-2 text-xl mt-8 px-3 py-1 rounded-full border-3 border-black bg-beige text-black hover:bg-black hover:text-beige block cursor-pointer"
-            >
-              <FontAwesomeIcon icon={faArrowUp} />
-            </a>
-          </div> */}
-          {isFilterActive && filteredVenues.length === 0 ? ( // Check if no venues match the filter
-            <>
-              <div className="text-center mt-10">
-                <p className="text-xl font-bold text-gray-700">
-                  No venues match your filter.
-                </p>
-              </div>
-              <div className="px-2 mx-auto grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mt-10">
-                {venues.map((venue, index) => (
-                  <VenueCard
-                    key={`${venue.id}-${index}`}
-                    venue={venue}
-                    isFavorite={favorites.includes(venue.id)}
-                    onFavoriteClick={handleFavoriteClick}
-                  />
-                ))}
-              </div>
-              {venues.length < allVenues.length && (
-                <div className="flex justify-center items-center mx-auto">
-                  <button
-                    className="bg-black text-beige font-bold py-2 px-4 rounded mt-8 shadow-custom-dark hover:bg-gray-900 block mr-2 cursor-pointer w-[170px]"
-                    onClick={loadMoreVenues}
-                    disabled={loading}
-                  >
-                    {loading ? "Loading..." : "Load More Venues"}
-                  </button>
-                  <a
-                    href="#top"
-                    className="ml-2 text-xl mt-8 px-3 py-1 rounded-full border-3 border-black bg-beige text-black hover:bg-black hover:text-beige block cursor-pointer"
-                  >
-                    <FontAwesomeIcon icon={faArrowUp} />
-                  </a>
-                </div>
-              )}
-            </>
+          {noMatches ? ( // Check if no venues match the filter
+            <div className="text-center mt-10">
+              <p className="text-xl font-bold text-black">
+                No venues match your filter or search..
+              </p>
+              <p className="text-xl font-bold text-black mt-2">
+                Reset to see all venues.
+              </p>
+            </div>
           ) : (
             <>
               <div className="px-2 mx-auto grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mt-10">
@@ -165,23 +117,24 @@ function Venues() {
                   />
                 ))}
               </div>
-              {!isFilterActive && venues.length < allVenues.length && (
-                <div className="flex justify-center items-center mx-auto">
-                  <button
-                    className="bg-black text-beige font-bold py-2 px-4 rounded mt-8 shadow-custom-dark hover:bg-gray-900 block mr-2 cursor-pointer w-[170px]"
-                    onClick={loadMoreVenues}
-                    disabled={loading}
-                  >
-                    {loading ? "Loading..." : "Load More Venues"}
-                  </button>
-                  <a
-                    href="#top"
-                    className="ml-2 text-xl mt-8 px-3 py-1 rounded-full border-3 border-black bg-beige text-black hover:bg-black hover:text-beige block cursor-pointer"
-                  >
-                    <FontAwesomeIcon icon={faArrowUp} />
-                  </a>
-                </div>
-              )}
+              {filteredVenues.length === 0 &&
+                venues.length < allVenues.length && (
+                  <div className="flex justify-center items-center mx-auto">
+                    <button
+                      className="bg-black text-beige font-bold py-2 px-4 rounded mt-8 shadow-custom-dark hover:bg-gray-900 block mr-2 cursor-pointer w-[170px]"
+                      onClick={loadMoreVenues}
+                      disabled={loading}
+                    >
+                      {loading ? "Loading..." : "Load More Venues"}
+                    </button>
+                    <a
+                      href="#top"
+                      className="ml-2 text-xl mt-8 px-3 py-1 rounded-full border-3 border-black bg-beige text-black hover:bg-black hover:text-beige block cursor-pointer"
+                    >
+                      <FontAwesomeIcon icon={faArrowUp} />
+                    </a>
+                  </div>
+                )}
             </>
           )}
         </>

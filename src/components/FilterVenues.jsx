@@ -25,8 +25,25 @@ export default function FilterVenues({ venues, onFilter }) {
     setSearchQuery(e.target.value);
   };
 
+  const resetFilters = () => {
+    setFilters({
+      parking: false,
+      pets: false,
+      wifi: false,
+      breakfast: false,
+      guests: "",
+      price: "",
+    });
+    setSearchQuery("");
+    onFilter(null); // Pass the default venues to the parent
+  };
+
   useEffect(() => {
     const applyFilters = () => {
+      if (!searchQuery && Object.values(filters).every((value) => !value)) {
+        // No filters or search query, do nothing
+        return;
+      }
       const filteredVenues = venues.filter((venue) => {
         // Search by name, description, location, country, or city
         const matchesSearch =
@@ -78,7 +95,7 @@ export default function FilterVenues({ venues, onFilter }) {
       filters={filters}
       onSearchChange={handleSearchChange}
       onInputChange={handleInputChange}
-      // onApplyFilters={applyFilters}
+      onResetFilters={resetFilters}
     />
   );
 }
