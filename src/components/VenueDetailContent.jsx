@@ -82,6 +82,15 @@ export default function VenueDetailContent({
       return;
     }
 
+    // Check if the venue has bookings
+    if (venue.bookings.length > 0) {
+      setModalMessage(
+        "This venue has active bookings and cannot be deleted. Please contact the booking customers to cancel their bookings first.",
+      );
+      setIsMessageModalOpen(true);
+      return;
+    }
+
     setIsConfirmModalOpen(true); // Open the confirmation modal
   };
 
@@ -89,7 +98,9 @@ export default function VenueDetailContent({
     setIsConfirmModalOpen(false); // Close the confirmation modal
     try {
       await deleteVenue(id);
-      setModalMessage("Venue deleted successfully!");
+      setModalMessage(
+        "Venue deleted successfully! Please wait to be redirected to your updated account page.",
+      );
       setIsMessageModalOpen(true);
       // setIsRedirecting(true); // Show redirecting message
       setTimeout(() => {

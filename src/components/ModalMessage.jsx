@@ -31,9 +31,6 @@ export default function ModalMessage({
             </>
           ) : (
             <div className="flex flex-col items-center">
-              <p className="text-center text-black font-bold mb-4">
-                Please wait to be sent back to your updated account..
-              </p>
               <button
                 onClick={onClose}
                 className="bg-black text-lightBeige font-bold py-2 px-4 rounded-sm hover:bg-gray-900 hover:cursor-pointer shadow-custom-dark w-40"

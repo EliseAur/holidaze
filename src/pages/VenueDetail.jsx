@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Navigate } from "react-router-dom";
 import { fetchVenueDetails } from "../api";
 import { VenueDetailContent, LoadingSpinner } from "../components";
 import { fetchBooking } from "../api";
@@ -16,6 +16,7 @@ function VenueDetail() {
   const [totalPrice, setTotalPrice] = useState(0);
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const [isVenueModalOpen, setIsVenueModalOpen] = useState(false);
+  const [isRedirecting, setIsRedirecting] = useState(false);
 
   const openBookingModal = () => setIsBookingModalOpen(true);
   const closeBookingModal = () => setIsBookingModalOpen(false);
@@ -23,26 +24,9 @@ function VenueDetail() {
   const openVenueModal = () => setIsVenueModalOpen(true);
   const closeVenueModal = () => setIsVenueModalOpen(false);
 
-  // useEffect(() => {
-  //   async function loadVenue() {
-  //     try {
-  //       const venue = await fetchVenueDetails(id);
-  //       console.log("Venue details with api fetch:", venue);
-  //       setVenue(venue);
-  //     } catch (error) {
-  //       setError({
-  //         message: error.message,
-  //         status: error.status,
-  //         statusCode: error.statusCode,
-  //       });
-  //     }
-  //   }
-
-  //   loadVenue();
-  // }, [id]);
-
   // Use useCallback to memoize the loadVenue function
   const loadVenue = useCallback(async () => {
+    if (isRedirecting) return; // Skip fetching if redirecting
     try {
       const venue = await fetchVenueDetails(id);
       console.log("Venue details with API fetch:", venue);
@@ -54,7 +38,7 @@ function VenueDetail() {
         statusCode: error.statusCode,
       });
     }
-  }, [id]); // Add 'id' as a dependency since it can change
+  }, [id, isRedirecting]); // Add 'id' as a dependency since it can change
 
   useEffect(() => {
     loadVenue(); // Call loadVenue when the component mounts or id changes
@@ -93,6 +77,10 @@ function VenueDetail() {
     return null;
   }
 
+  if (isRedirecting) {
+    return <Navigate to="/account" />; // Redirect to the account page
+  }
+
   if (!venue) {
     return <LoadingSpinner />;
   }
@@ -114,6 +102,7 @@ function VenueDetail() {
           openVenueModal={openVenueModal}
           isVenueModalOpen={isVenueModalOpen}
           closeVenueModal={closeVenueModal}
+          setIsRedirecting={setIsRedirecting}
         />
       )}
       <Modal isOpen={isBookingModalOpen} onClose={closeBookingModal}>
@@ -123,7 +112,6 @@ function VenueDetail() {
         <VenueUpdateForm
           venue={venue}
           onClose={closeVenueModal}
-          // onUpdate={(updatedVenue) => setVenue(updatedVenue)}
           onUpdate={() => {
             console.log("Re-fetching venue details after update...");
             loadVenue(); // Re-fetch the updated venue details
