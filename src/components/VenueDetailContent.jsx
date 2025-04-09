@@ -33,6 +33,7 @@ import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext"; // Import your AuthContext
 import { deleteVenue } from "../api";
 import { ModalMessage } from "./index";
+import placeholderImage from "../images/placeholder-profile-img.jpg";
 registerLocale("en-GB", enGB);
 
 export default function VenueDetailContent({
@@ -102,7 +103,6 @@ export default function VenueDetailContent({
         "Venue deleted successfully! Please wait to be redirected to your updated account page.",
       );
       setIsMessageModalOpen(true);
-      // setIsRedirecting(true); // Show redirecting message
       setTimeout(() => {
         window.location.href = "/account"; // Redirect to the account page
       }, 2000);
@@ -376,9 +376,23 @@ export default function VenueDetailContent({
             <h2 className="text-md sm:text-lg font-black">Contact host</h2>
             <div>
               <img
-                src={owner.avatar.url}
-                alt={owner.name}
-                className="w-10 h-10 rounded-full mt-3"
+                src={
+                  owner.avatar &&
+                  owner.avatar.url.includes(
+                    "https://images.unsplash.com/photo-1579547945413-497e1b99dac0?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&q=80&h=400&w=400",
+                  )
+                    ? placeholderImage
+                    : owner.avatar.url
+                }
+                alt={
+                  owner.avatar &&
+                  owner.avatar.url.includes(
+                    "https://images.unsplash.com/photo-1579547945413-497e1b99dac0?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&q=80&h=400&w=400",
+                  )
+                    ? "Profile placeholder image"
+                    : owner.avatar.alt || "Profile placeholder image"
+                }
+                className="w-15 h-15 rounded-full mt-3 border-1 border-white shadow-sm"
               />
             </div>
             <p className="mt-3 font-bold">{owner.name}</p>
@@ -515,7 +529,7 @@ export default function VenueDetailContent({
                   endDate &&
                   differenceInDays(endDate, startDate) > 0
                     ? differenceInDays(endDate, startDate)
-                    : "Invalid dates"}
+                    : "0"}
                 </p>
                 <p className="text-">
                   <span className="font-bold">Total: </span> {totalPrice}$
@@ -586,6 +600,7 @@ VenueDetailContent.propTypes = {
       email: PropTypes.string.isRequired,
       avatar: PropTypes.shape({
         url: PropTypes.string.isRequired,
+        alt: PropTypes.string,
       }).isRequired,
     }).isRequired,
     bookings: PropTypes.arrayOf(
