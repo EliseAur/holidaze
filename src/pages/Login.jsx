@@ -1,30 +1,67 @@
-import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 import { authLogin } from "../api/authLogin";
 import { useAuth } from "../context/useAuth";
+import { useState } from "react";
+
+// Define the validation schema using yup
+const loginSchema = yup.object().shape({
+  email: yup
+    .string()
+    .email("Please enter a valid email address")
+    .matches(
+      /^[a-zA-Z0-9._%+-]+@stud\.noroff\.no$/,
+      "Email must be in the format name@stud.noroff.no",
+    )
+
+    .required("Email is required"),
+  password: yup
+    .string()
+    .min(6, "Password must be at least 6 characters")
+    .required("Password is required"),
+});
 
 export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const { handleLogin } = useAuth();
+  const [apiError, setApiError] = useState(""); // State to track API error messages
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  // Initialize react-hook-form with yup validation
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(loginSchema),
+    mode: "onBlur",
+  });
 
+  // Handle form submission
+  const onSubmit = async (data) => {
     try {
-      const result = await authLogin(email, password);
-      console.log("Login response:", result); // Log the entire response
+      const result = await authLogin(data.email, data.password);
+      console.log("Login response:", result);
 
       // Store the token in local storage
       if (result && result.accessToken && result.name) {
         handleLogin(result.accessToken, result.name);
         navigate("/account");
       } else {
+        setApiError("Unexpected error occurred. Please try again.");
         console.error("Token or name not found in the response");
       }
     } catch (error) {
-      console.error("Error logging in:", error);
+      console.error("1) Error logging in:", error);
+
+      // Log the entire error object to inspect its structure
+      console.log("Full error object:", error);
+      if (error.message) {
+        setApiError(error.message);
+      } else {
+        setApiError("An unexpected error occurred. Please try again.");
+      }
     }
   };
 
@@ -33,7 +70,13 @@ export default function Login() {
       <h1 className="text-4xl font-black italic text-lightGreen text-shadow mb-4">
         Login
       </h1>
-      <form onSubmit={handleSubmit}>
+      {/* Display API error message */}
+      {apiError && (
+        <p className="text-red-600 text-sm text-center mb-4 bg-red-200 p-2 rounded-sm shadow-custom-dark border-2 border-red-500">
+          {apiError}
+        </p>
+      )}
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className="grid grid-cols-1 gap-4 mb-4">
           {/* Email input */}
           <div>
@@ -46,13 +89,17 @@ export default function Login() {
             <input
               id="email"
               type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="px-2 py-1 border border-darkBeige bg-lightBeige rounded-sm shadow-custom-dark w-full focus:border-lightGreen focus:border-2 focus:ring-lightGreen focus:outline-none"
+              {...register("email")} // Register the email field
+              className={`px-2 py-1 border ${
+                errors.email ? "border-red-500" : "border-darkBeige"
+              } bg-lightBeige rounded-sm shadow-custom-dark w-full focus:border-lightGreen focus:border-2 focus:ring-lightGreen focus:outline-none`}
               placeholder="name@stud.noroff.no"
-              required
             />
-            {/* <p className="text-red-600 text-sm">{errors.email?.message}</p> */}
+            {errors.email && (
+              <p className="text-red-600 text-sm bg-red-200 p-2 rounded-sm mt-1 shadow-custom-dark border-2 border-red-500">
+                {errors.email.message}
+              </p>
+            )}
           </div>
 
           {/* Password input */}
@@ -66,14 +113,17 @@ export default function Login() {
             <input
               id="password"
               type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="px-2 py-1 border border-darkBeige bg-lightBeige rounded-sm shadow-custom-dark w-full focus:border-lightGreen focus:border-2 focus:ring-lightGreen focus:outline-none"
+              {...register("password")} // Register the password field
+              className={`px-2 py-1 border ${
+                errors.password ? "border-red-500" : "border-darkBeige"
+              } bg-lightBeige rounded-sm shadow-custom-dark w-full focus:border-lightGreen focus:border-2 focus:ring-lightGreen focus:outline-none`}
               placeholder="Enter password"
-              required
             />
-
-            {/* <p className="text-red-600 text-sm">{errors.subject?.message}</p> */}
+            {errors.password && (
+              <p className="text-red-600 text-sm bg-red-200 p-2 rounded-sm mt-1 shadow-custom-dark border-2 border-red-500">
+                {errors.password.message}
+              </p>
+            )}
           </div>
         </div>
         <button
