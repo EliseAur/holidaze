@@ -44,7 +44,7 @@ export default function VenueCard({
       <div className="p-3 sm:p-2 sm:pt-1 md:px-3">
         <Link to={`/venue/${venue.id}`}>
           <h2 className="px-2 text-sm sm:text-lg md:text-xl font-black underline hover:underline hover:decoration-2 truncate p-1 cursor-pointer">
-            {venue.name}
+            {venue.name ? venue.name : "Venue name"}
           </h2>
         </Link>
         <div
@@ -56,7 +56,15 @@ export default function VenueCard({
               icon={faMapMarkerAlt}
               className="text-black mr-1"
             />
-            {venue.location.country} - {venue.location.city}
+            {venue.location.city || venue.location.country ? (
+              <span className="font-bold text-sm">
+                {venue.location.city ? venue.location.city : ""}
+                {venue.location.city && venue.location.country ? ", " : ""}
+                {venue.location.country ? venue.location.country : ""}
+              </span>
+            ) : (
+              <span className="font-bold text-sm">Location not set</span>
+            )}
           </span>
         </div>
         <div className="px-2 py1 text-sm flex-grow flex justify-between">
@@ -74,7 +82,7 @@ export default function VenueCard({
               icon={faStar}
               className="text-black mr-0.5 text-xs sm:text:sm"
             />
-            <span>{venue.rating}</span>
+            <span>{venue.rating.toFixed(0)}</span>
           </span>
         </div>
         <div className="px-2 py-1 text-sm flex w-full justify-between">
