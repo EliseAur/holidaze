@@ -159,6 +159,11 @@ export default function Account() {
                 {profile.venueManager ? (
                   venuesToShow.length > 0 ? (
                     <>
+                      <p className="col-span-full">
+                        To delete or update your venues, click the{" "}
+                        <span className="font-bold">Manage Venue</span> button
+                        for the venue.
+                      </p>
                       {venuesToShow.map((venue) => (
                         <div key={venue.id} className="mt-3">
                           <VenueCard

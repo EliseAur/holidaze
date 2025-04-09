@@ -7,7 +7,11 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
 const ProfileUpdateSchema = yup.object({
-  bio: yup.string().max(80, "Bio must be less than 80 characters"),
+  bio: yup
+    .string()
+    .max(80, "Bio must be less than 80 characters")
+    .nullable()
+    .notRequired(),
   avatar: yup.object({
     url: yup
       .string()
@@ -20,7 +24,9 @@ const ProfileUpdateSchema = yup.object({
     url: yup
       .string()
       .url("Must be a valid URL")
-      .typeError("Must be a valid URL"),
+      .typeError("Must be a valid URL")
+      .notRequired()
+      .nullable(),
   }),
   venueManager: yup.boolean(),
 });
@@ -36,6 +42,8 @@ export default function ProfileUpdateForm({ onClose, onUpdate }) {
     },
     venueManager: false,
   });
+
+  const [isUpdated, setIsUpdated] = useState(false); // Track if the profile is updated
 
   const {
     register,
@@ -86,8 +94,8 @@ export default function ProfileUpdateForm({ onClose, onUpdate }) {
     try {
       const updatedProfile = await updateProfile(data);
       console.log("Profile updated successfully:", updatedProfile);
+      setIsUpdated(true); // Set the state to true after a successful update
       onUpdate(); // Call the callback function to update the account page
-      onClose(); // Close the modal after successful update
     } catch (error) {
       console.error("1) Error updating profile:", error);
       if (error.message.includes("Image is not accessible")) {
@@ -120,78 +128,108 @@ export default function ProfileUpdateForm({ onClose, onUpdate }) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="p-5 text-sm">
-      <h2 className="text-2xl font-black text-black mb-3">Update Profile</h2>
-      <div>
-        <label htmlFor="bio" className="block text-sm text-black font-bold">
-          Bio:
-        </label>
-        <textarea
-          {...register("bio")}
-          id="bio"
-          className="px-2 py-1 border border-darkBeige bg-lightBeige rounded-sm shadow-custom-dark w-full focus:border-black focus:border-2 focus:ring-black focus:outline-none h-30"
-          placeholder="Tell us about yourself"
-        />
-        <p className="text-red-600 text-sm font-bold m-1">
-          {errors.bio?.message}
-        </p>
-      </div>
-      <div className="mt-2">
-        <label htmlFor="avatar" className="block text-sm text-black font-bold">
-          Profile image
-        </label>
-        <input
-          id="avatar"
-          type="url"
-          {...register("avatar.url")}
-          className="px-2 py-1 border border-darkBeige bg-lightBeige rounded-sm shadow-custom-dark w-full focus:border-black focus:border-2 focus:ring-black focus:outline-none"
-          placeholder="Must be a valid URL"
-        />
-        <p className="text-red-600 text-sm font-bold m-1">
-          {errors.avatar?.url?.message}
-        </p>
-      </div>
-      <div className="mt-2">
-        <label htmlFor="banner" className="block text-sm text-black font-bold">
-          Profile banner/ background image
-        </label>
-        <input
-          id="banner"
-          type="url"
-          {...register("banner.url")}
-          className="px-2 py-1 border border-darkBeige bg-lightBeige rounded-sm shadow-custom-dark w-full focus:border-black focus:border-2 focus:ring-black focus:outline-none"
-          placeholder="Must be a valid URL"
-        />
-        <p className="text-red-600 text-sm font-bold m-1">
-          {errors.banner?.url?.message}
-        </p>
-      </div>
-      <div className="my-6 text-black">
-        <label
-          htmlFor="venueManager"
-          className="block text-lg text-black font-black"
-        >
-          Register as a host?
-        </label>
-        <Controller
-          name="venueManager"
-          control={control}
-          render={({ field }) => (
-            <SwitchField
-              label={field.value ? "I want to register as a host" : "Not yet.."}
-              checked={field.value}
-              onChange={field.onChange}
-              textColor="text-black"
+    <div>
+      {isUpdated ? (
+        <div className="text-center p-5 pb-8">
+          <h2 className="text-2xl font-black text-black mb-3">
+            Profile updated successfully!
+          </h2>
+          <p className="text-sm text-black">
+            Your profile has been updated. You can close this window or make
+            further changes.
+          </p>
+          <button
+            onClick={onClose}
+            className="bg-lightGreen shadow-custom-dark text-black font-bold px-4 py-2 rounded mt-4 inline-block hover:bg-darkGreen cursor-pointer"
+          >
+            Close
+          </button>
+        </div>
+      ) : (
+        <form onSubmit={handleSubmit(onSubmit)} className="p-5 text-sm">
+          <h2 className="text-2xl font-black text-black mb-3">
+            Update Profile
+          </h2>
+          <div>
+            <label htmlFor="bio" className="block text-sm text-black font-bold">
+              Bio:
+            </label>
+            <textarea
+              {...register("bio")}
+              id="bio"
+              className="px-2 py-1 border border-darkBeige bg-lightBeige rounded-sm shadow-custom-dark w-full focus:border-black focus:border-2 focus:ring-black focus:outline-none h-30"
+              placeholder="Tell us about yourself"
             />
-          )}
-        />
-      </div>
-      <button
-        type="submit"
-        className="bg-lightGreen shadow-custom-dark text-black font-bold px-4 py-2 rounded mt-4 inline-block hover:bg-darkGreen cursor-pointer"
-      >
-        Update Profile
-      </button>
-    </form>
+            <p className="text-red-600 text-sm font-bold m-1">
+              {errors.bio?.message}
+            </p>
+          </div>
+          <div className="mt-2">
+            <label
+              htmlFor="avatar"
+              className="block text-sm text-black font-bold"
+            >
+              Profile image
+            </label>
+            <input
+              id="avatar"
+              type="url"
+              {...register("avatar.url")}
+              className="px-2 py-1 border border-darkBeige bg-lightBeige rounded-sm shadow-custom-dark w-full focus:border-black focus:border-2 focus:ring-black focus:outline-none"
+              placeholder="Must be a valid URL"
+            />
+            <p className="text-red-600 text-sm font-bold m-1">
+              {errors.avatar?.url?.message}
+            </p>
+          </div>
+          <div className="mt-2">
+            <label
+              htmlFor="banner"
+              className="block text-sm text-black font-bold"
+            >
+              Profile banner/ background image
+            </label>
+            <input
+              id="banner"
+              type="url"
+              {...register("banner.url")}
+              className="px-2 py-1 border border-darkBeige bg-lightBeige rounded-sm shadow-custom-dark w-full focus:border-black focus:border-2 focus:ring-black focus:outline-none"
+              placeholder="Must be a valid URL"
+            />
+            <p className="text-red-600 text-sm font-bold m-1">
+              {errors.banner?.url?.message}
+            </p>
+          </div>
+          <div className="my-6 text-black">
+            <label
+              htmlFor="venueManager"
+              className="block text-lg text-black font-black"
+            >
+              Register as a host?
+            </label>
+            <Controller
+              name="venueManager"
+              control={control}
+              render={({ field }) => (
+                <SwitchField
+                  label={
+                    field.value ? "I want to register as a host" : "Not yet.."
+                  }
+                  checked={field.value}
+                  onChange={field.onChange}
+                  textColor="text-black"
+                />
+              )}
+            />
+          </div>
+          <button
+            type="submit"
+            className="bg-lightGreen shadow-custom-dark text-black font-bold px-4 py-2 rounded mt-4 inline-block hover:bg-darkGreen cursor-pointer"
+          >
+            Update Profile
+          </button>
+        </form>
+      )}
+    </div>
   );
 }

@@ -3,7 +3,7 @@ export default function Modal({ isOpen, onClose, children }) {
 
   return (
     <div
-      className="fixed inset-0 z-100 overflow-auto flex justify-center items-center"
+      className="modal fixed inset-0 z-100 overflow-auto flex justify-center items-center bg-cover bg-top bg-no-repeat"
       style={{ backgroundColor: "rgba(0, 0, 0, 0.7)" }}
     >
       <div className="bg-beige p-0 rounded-sm shadow-lg  mx-auto relative max-w-[500px] w-full">
