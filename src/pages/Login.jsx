@@ -72,7 +72,7 @@ export default function Login() {
       </h1>
       {/* Display API error message */}
       {apiError && (
-        <p className="text-red-600 text-sm text-center mb-4 bg-red-200 p-2 rounded-sm shadow-custom-dark border-2 border-red-500">
+        <p className="text-red-600 text-sm text-center mb-4 bg-red-100 p-2 rounded-sm shadow-custom-dark border-1 border-red-400">
           {apiError}
         </p>
       )}
@@ -96,7 +96,7 @@ export default function Login() {
               placeholder="name@stud.noroff.no"
             />
             {errors.email && (
-              <p className="text-red-600 text-sm bg-red-200 p-2 rounded-sm mt-1 shadow-custom-dark border-2 border-red-500">
+              <p className="text-red-600 text-sm bg-red-100 p-2 rounded-sm mt-1 shadow-custom-dark border-2 border-red-400">
                 {errors.email.message}
               </p>
             )}
@@ -120,7 +120,7 @@ export default function Login() {
               placeholder="Enter password"
             />
             {errors.password && (
-              <p className="text-red-600 text-sm bg-red-200 p-2 rounded-sm mt-1 shadow-custom-dark border-2 border-red-500">
+              <p className="text-red-600 text-sm bg-red-100 p-2 rounded-sm mt-1 shadow-custom-dark border-2 border-red-400">
                 {errors.password.message}
               </p>
             )}
