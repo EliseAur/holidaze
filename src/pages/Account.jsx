@@ -7,7 +7,6 @@ import { useMediaQuery } from "react-responsive";
 import {
   LoadingSpinner,
   VenueCard,
-  // ProfileUpdateForm,
   VenueCreateForm,
   Modal,
   ProfileCard,
@@ -160,9 +159,12 @@ export default function Account() {
                   venuesToShow.length > 0 ? (
                     <>
                       <p className="col-span-full">
-                        To delete or update your venues, click the{" "}
-                        <span className="font-bold">Manage Venue</span> button
-                        for the venue.
+                        Click the{" "}
+                        <span className="font-black">Manage Venue</span> button{" "}
+                        to <span className="font-black">delete</span>,{" "}
+                        <span className="font-black">update</span> or to view
+                        the <span className="font-black">list of bookings</span>{" "}
+                        for your venues.
                       </p>
                       {venuesToShow.map((venue) => (
                         <div key={venue.id} className="mt-3">
@@ -187,10 +189,7 @@ export default function Account() {
                         >
                           + Add a venue
                         </button>
-                        <Modal
-                          isOpen={isVenueModalOpen}
-                          onClose={closeVenueModal}
-                        >
+                        <Modal onClose={closeVenueModal}>
                           <VenueCreateForm
                             onClose={closeVenueModal}
                             onUpdate={getProfile}
