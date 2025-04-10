@@ -41,6 +41,7 @@ export default function ProfileUpdateForm({ onClose, onUpdate }) {
       url: "",
     },
     venueManager: false,
+    venues: [], // Add venues to the profile state
   });
 
   const [isUpdated, setIsUpdated] = useState(false); // Track if the profile is updated
@@ -216,11 +217,23 @@ export default function ProfileUpdateForm({ onClose, onUpdate }) {
                     field.value ? "I want to register as a host" : "Not yet.."
                   }
                   checked={field.value}
-                  onChange={field.onChange}
+                  onChange={(value) => {
+                    if (profile.venues.length > 0) {
+                      // Prevent toggling if venues exist
+                      return;
+                    }
+                    field.onChange(value); // Update the state if allowed
+                  }}
                   textColor="text-black"
+                  disabled={profile.venues.length > 0} // Disable if venues exist
                 />
               )}
             />
+            {profile.venues.length > 0 && (
+              <p className="text-black border-1 border-red-400 rounded-sm p-2 bg-red-100 text-sm font-bold mt-2">
+                You cannot unregister as a host while you have active venues.
+              </p>
+            )}
           </div>
           <button
             type="submit"
