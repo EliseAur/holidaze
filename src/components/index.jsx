@@ -17,7 +17,7 @@ import VenueCard from "./VenueCard";
 import VenueDetailContent from "./VenueDetailContent";
 import Footer from "./Footer";
 import FooterWithNoBg from "./FooterWithNoBg";
-import SwitchField from "./registerHostSwitch";
+import SwitchField from "./RegisterHostSwitch";
 import LoadingSpinner from "./LoadingSpinner";
 import ProfileUpdateForm from "./ProfileUpdateForm";
 import VenueCreateForm from "./VenueCreateForm";
