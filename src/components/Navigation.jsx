@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 
 export function NavWideScreen({ isLoggedIn }) {
   return (
@@ -83,3 +84,11 @@ export function NavMobile({ isLoggedIn }) {
     </nav>
   );
 }
+
+NavWideScreen.propTypes = {
+  isLoggedIn: PropTypes.bool.isRequired,
+};
+
+NavMobile.propTypes = {
+  isLoggedIn: PropTypes.bool.isRequired,
+};

@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 
 export default function BookingConfirmation({ onClose }) {
   return (
@@ -22,3 +23,7 @@ export default function BookingConfirmation({ onClose }) {
     </div>
   );
 }
+
+BookingConfirmation.propTypes = {
+  onClose: PropTypes.func.isRequired,
+};

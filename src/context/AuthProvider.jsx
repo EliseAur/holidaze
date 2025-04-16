@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { AuthContext } from "./AuthContext";
+import PropTypes from "prop-types";
 
 export function AuthProvider({ children }) {
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
@@ -28,3 +29,7 @@ export function AuthProvider({ children }) {
     </AuthContext.Provider>
   );
 }
+
+AuthProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};

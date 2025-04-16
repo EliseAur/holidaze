@@ -5,6 +5,7 @@ import { SwitchField } from "./index";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import PropTypes from "prop-types";
 
 const ProfileUpdateSchema = yup.object({
   bio: yup
@@ -246,3 +247,9 @@ export default function ProfileUpdateForm({ onClose, onUpdate }) {
     </div>
   );
 }
+
+// Add PropTypes for validation
+ProfileUpdateForm.propTypes = {
+  onClose: PropTypes.func.isRequired,
+  onUpdate: PropTypes.func.isRequired,
+};
