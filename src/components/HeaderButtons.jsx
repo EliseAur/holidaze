@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faTimes, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
+import PropTypes from "prop-types";
 
 export function Logo() {
   return (
@@ -94,3 +95,11 @@ export function LoginRegMobile() {
     </div>
   );
 }
+
+LogoutAccountBtnWideScreen.propTypes = {
+  handleLogout: PropTypes.func.isRequired, // Validate that handleLogout is a required function
+};
+
+LogoutAccountBtnMobile.propTypes = {
+  handleLogout: PropTypes.func.isRequired, // Validate that handleLogout is a required function
+};

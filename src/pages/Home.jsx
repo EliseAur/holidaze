@@ -17,7 +17,6 @@ function Home() {
         const latest = await fetchLatestVenues();
         setLatestVenues(latest); // Store the latest venues in the state
         console.log("Latest Fetched venues:", latest); // Log the fetched venues
-        // setVenues(venues);
       } catch (error) {
         console.error("Error fetching venues:", error);
       }

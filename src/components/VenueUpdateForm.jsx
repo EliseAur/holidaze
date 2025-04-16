@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { updateVenue } from "../api/updateVenue";
-// import { fetchVenueDetails } from "../api/fetchVenueDetails";
 import { SwitchField } from "./index";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import PropTypes from "prop-types";
 
 const VenueSchema = yup.object({
   name: yup.string().min(6, "Name must be more than 6 characters").required(),
@@ -505,3 +505,23 @@ export default function VenueUpdateForm({ venue, onClose, onUpdate }) {
     </div>
   );
 }
+
+// PropTypes for validation
+VenueUpdateForm.propTypes = {
+  venue: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    media: PropTypes.arrayOf(
+      PropTypes.shape({
+        url: PropTypes.string.isRequired,
+      }),
+    ),
+    price: PropTypes.number.isRequired,
+    maxGuests: PropTypes.number.isRequired,
+    meta: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
+  }).isRequired,
+  onClose: PropTypes.func.isRequired,
+  onUpdate: PropTypes.func.isRequired,
+};

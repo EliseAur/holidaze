@@ -4,6 +4,7 @@ import { SwitchField } from "./index";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import PropTypes from "prop-types";
 
 const VenueCreateSchema = yup.object({
   name: yup.string().min(6, "Name must be more than 6 characters").required(),
@@ -13,7 +14,7 @@ const VenueCreateSchema = yup.object({
     .required(),
 
   media: yup.array().of(
-    yup.lazy((value, { index }) => {
+    yup.lazy((_, { index }) => {
       if (index === 0) {
         return yup.object({
           url: yup
@@ -251,7 +252,7 @@ export default function VenueCreateForm({ onClose, onUpdate }) {
                   htmlFor={`media-url-${index}`}
                   className="block text-sm text-black font-bold"
                 >
-                  {index + 1}) Image
+                  {index + 1} Image
                 </label>
                 <input
                   {...register(`media.${index}.url`)}
@@ -500,3 +501,8 @@ export default function VenueCreateForm({ onClose, onUpdate }) {
     </div>
   );
 }
+
+VenueCreateForm.propTypes = {
+  onClose: PropTypes.func.isRequired,
+  onUpdate: PropTypes.func.isRequired,
+};

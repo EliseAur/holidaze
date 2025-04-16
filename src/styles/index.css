@@ -115,10 +115,6 @@ body {
   border-color: black;
 }
 
-/* .react-datepicker__day--selected {
-  background-color: var(--color-blue-400);
-}  */
-
 .react-datepicker__day:not([aria-disabled="true"]):hover {
   background-color: var(--color-blue-100);
 }
