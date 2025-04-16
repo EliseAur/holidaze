@@ -1,1 +1,210 @@
 @import "tailwindcss";
+
+/* Custom colors for the main theme */
+@theme {
+  --color-beige: #f2e9d8;
+  --color-lightBeige: #f9f6f1;
+  --color-darkBeige: #95928c;
+  --color-lightGreen: #aaff9f;
+  --color-darkGreen: #7cd870;
+  --color-darkerGreen: #1a201d;
+  --color-lighterGreen: #c1eebb;
+  --color-lightGrey: #eae5dc;
+  --shadow-custom-dark: 0 3px 6px rgba(0, 0, 0, 0.5);
+  --drop-shadow: drop-shadow(3px 3px 3px rgba(0, 0, 0, 1));
+  --border-datepicker: 1px solid #aeaeae;
+  /* Gradient background */
+  --gradient-gradientGreen: linear-gradient(
+    to bottom right,
+    var(--color-darkerGreen),
+    var(--color-lighterGreen)
+  );
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overscroll-behavior: none; /* Prevent overscroll behavior */
+}
+
+body {
+  font-family: "Lato", sans-serif;
+  background-color: var(--color-beige);
+}
+
+.text-shadow {
+  filter: var(--drop-shadow);
+}
+
+.input-inner-shadow:focus {
+  box-shadow: inset 0 0 0 2px #f2e9d8;
+}
+
+.shadow-custom-dark {
+  box-shadow: var(--shadow-custom-dark);
+}
+
+.headerNavBox,
+.footerBg,
+.modal,
+.modal-message {
+  background-image: url("../images/bg-palms.jpg");
+}
+
+/* Custom styles for the carousel */
+.carousel-root {
+  border-radius: 4px;
+}
+.carousel .control-arrow,
+.carousel.carousel-slider .control-arrow {
+  opacity: 1;
+}
+
+.carousel .control-next.control-arrow::before {
+  border-left: 11px solid white;
+  filter: var(--drop-shadow);
+}
+
+.carousel .control-prev.control-arrow::before {
+  border-right: 11px solid white;
+  filter: var(--drop-shadow);
+}
+
+.carousel .control-next.control-arrow:hover::before {
+  border-left: 11px solid var(--color-darkGreen);
+}
+
+.carousel .control-prev.control-arrow:hover::before {
+  border-right: 11px solid var(--color-darkGreen);
+}
+
+.carousel .control-arrow::before,
+.carousel.carousel-slider .control-arrow::before {
+  border-top: 11px solid transparent;
+  border-bottom: 11px solid transparent;
+}
+
+.carousel-slider {
+  border-radius: 4px;
+}
+
+.carousel .control-dots .dot {
+  background-color: white;
+  opacity: 1;
+  width: 20px;
+  border-radius: 4px;
+}
+
+.carousel .control-dots .dot:hover {
+  background-color: var(--color-darkGreen);
+}
+
+.carousel .control-dots .selected {
+  background-color: var(--color-darkGreen);
+}
+
+/* Custom styles for the date picker */
+.react-datepicker__header {
+  background-color: var(--color-lightGreen);
+  color: white;
+}
+
+.react-datepicker__navigation-icon::before {
+  border-color: black;
+}
+
+.react-datepicker__day:not([aria-disabled="true"]):hover {
+  background-color: var(--color-blue-100);
+}
+
+.react-datepicker__day--selected:not([aria-disabled="true"]):hover {
+  background-color: var(--color-blue-500);
+}
+
+.border-datepicker {
+  border: var(--border-datepicker);
+}
+
+.react-datepicker__day--today {
+  text-decoration: underline;
+  color: black;
+}
+
+.booked-date {
+  color: white !important;
+}
+
+/* Loading spinner */
+.loader {
+  border-top-color: var(--color-darkerGreen);
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* .lato-thin {
+  font-family: "Lato", serif;
+  font-weight: 100;
+  font-style: normal;
+}
+
+.lato-light {
+  font-family: "Lato", serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.lato-regular {
+  font-family: "Lato", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.lato-bold {
+  font-family: "Lato", serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.lato-black {
+  font-family: "Lato", serif;
+  font-weight: 900;
+  font-style: normal;
+}
+
+.lato-thin-italic {
+  font-family: "Lato", serif;
+  font-weight: 100;
+  font-style: italic;
+}
+
+.lato-light-italic {
+  font-family: "Lato", serif;
+  font-weight: 300;
+  font-style: italic;
+}
+
+.lato-regular-italic {
+  font-family: "Lato", serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.lato-bold-italic {
+  font-family: "Lato", serif;
+  font-weight: 700;
+  font-style: italic;
+}
+
+/* Logo, h1 */
+/* .lato-black-italic {
+  font-family: "Lato", serif;
+  font-weight: 900;
+  font-style: italic;
+} */
