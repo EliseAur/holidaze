@@ -18,7 +18,11 @@ export default function Header() {
   const location = useLocation();
   const navigate = useNavigate();
   const menuRef = useRef(null);
-  const { isLoggedIn, handleLogout: authHandleLogout } = useAuth(); // Use the handleLogout from AuthProvider
+  const {
+    isLoggedIn,
+    venueManager,
+    handleLogout: authHandleLogout,
+  } = useAuth(); // Use the handleLogout from AuthProvider
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -58,7 +62,7 @@ export default function Header() {
       <div className=" mx-auto flex justify-between items-center p-3">
         <div className="flex md:items-center flex-grow">
           <Logo />
-          <NavWideScreen isLoggedIn={isLoggedIn} />
+          <NavWideScreen isLoggedIn={isLoggedIn} venueManager={venueManager} />
           <div className="hidden md:flex items-center">
             {isLoggedIn ? (
               <LogoutAccountBtnWideScreen handleLogout={handleLogout} />
@@ -101,7 +105,7 @@ export default function Header() {
               Menu
             </p>
             <hr />
-            <NavMobile isLoggedIn={isLoggedIn} />
+            <NavMobile isLoggedIn={isLoggedIn} venueManager={venueManager} />
             <hr />
 
             {isLoggedIn ? (

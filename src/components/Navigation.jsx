@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
-export function NavWideScreen({ isLoggedIn }) {
+export function NavWideScreen({ isLoggedIn, venueManager }) {
   return (
     <nav className="hidden md:flex flex-grow justify-center items-center">
       <Link
@@ -18,12 +18,21 @@ export function NavWideScreen({ isLoggedIn }) {
       </Link>
       {isLoggedIn ? (
         <>
-          <Link
-            to="#"
-            className="text-shadow border border-transparent px-3 py-2 text-center hover:border hover:border-beige hover:bg-zinc-800/20 rounded-full whitespace-nowrap"
-          >
-            Become a host
-          </Link>
+          {venueManager ? (
+            <Link
+              to="/account"
+              className="text-shadow border border-transparent px-3 py-2 text-center hover:border hover:border-beige hover:bg-zinc-800/20 rounded-full whitespace-nowrap"
+            >
+              Account
+            </Link>
+          ) : (
+            <Link
+              to="/account"
+              className="text-shadow border border-transparent px-3 py-2 text-center hover:border hover:border-beige hover:bg-zinc-800/20 rounded-full whitespace-nowrap"
+            >
+              Become a host
+            </Link>
+          )}
           <Link
             to="/favorites"
             className="text-shadow border border-transparent px-3 py-2 text-center hover:border hover:border-beige hover:bg-zinc-800/20 rounded-full whitespace-nowrap"
@@ -43,7 +52,7 @@ export function NavWideScreen({ isLoggedIn }) {
   );
 }
 
-export function NavMobile({ isLoggedIn }) {
+export function NavMobile({ isLoggedIn, venueManager }) {
   return (
     <nav>
       <Link
@@ -60,12 +69,21 @@ export function NavMobile({ isLoggedIn }) {
       </Link>
       {isLoggedIn ? (
         <>
-          <Link
-            to="#"
-            className="block px-4 py-2 text-lg hover:text-darkGreen text-right"
-          >
-            Become a host
-          </Link>
+          {venueManager ? (
+            <Link
+              to="/account"
+              className="block px-4 py-2 text-lg hover:text-darkGreen text-right"
+            >
+              Account
+            </Link>
+          ) : (
+            <Link
+              to="/account"
+              className="block px-4 py-2 text-lg hover:text-darkGreen text-right"
+            >
+              Become a host
+            </Link>
+          )}
           <Link
             to="/favorites"
             className="block px-4 py-2 text-lg hover:text-darkGreen text-right"
@@ -87,8 +105,10 @@ export function NavMobile({ isLoggedIn }) {
 
 NavWideScreen.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
+  venueManager: PropTypes.bool.isRequired,
 };
 
 NavMobile.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
+  venueManager: PropTypes.bool.isRequired,
 };
