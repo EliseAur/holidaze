@@ -46,7 +46,7 @@ export default function Login() {
 
       // Store the token in local storage
       if (result && result.accessToken && result.name) {
-        handleLogin(result.accessToken, result.name);
+        handleLogin(result.accessToken, result.name, result.venueManager);
         navigate("/account");
       } else {
         setApiError("Unexpected error occurred. Please try again.");
