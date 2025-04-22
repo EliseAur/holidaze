@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { updateVenue } from "../api/updateVenue";
+import { validateImageUrls } from "../utils";
 import { SwitchField } from "./index";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -37,6 +38,7 @@ const VenueSchema = yup.object({
   price: yup
     .number()
     .min(1, "Price must be at least 1")
+    .max(10000, "Price must be less than 10 000")
     .required("You must enter a price per night")
     .typeError("Price must be a number"),
   maxGuests: yup
@@ -113,6 +115,12 @@ export default function VenueUpdateForm({ venue, onClose, onUpdate }) {
       return;
     }
 
+    // Validate all non-empty image URLs using the utility function
+    const areImagesValid = await validateImageUrls(data.media, setError);
+    if (!areImagesValid) {
+      return; // Stop submission if any image URL is invalid
+    }
+
     // Remove URLs for images 2, 3, and 4 if they are empty or invalid
     data.media = data.media.filter((media, index) => {
       if (index > 0 && (!media.url || media.url === "")) {
@@ -127,66 +135,14 @@ export default function VenueUpdateForm({ venue, onClose, onUpdate }) {
       setIsUpdated(true);
       onUpdate(); // Call the callback function to update the account page
     } catch (error) {
-      console.error("Error creating venue:", error);
+      console.error("Error updating venue:", error);
 
-      const errorMessage = error.message;
-
-      const imageUrl = error.imageUrl;
-
-      if (errorMessage.includes("Image is not accessible")) {
-        if (imageUrl) {
-          const imageIndex = data.media.findIndex(
-            (media) => media.url === imageUrl,
-          );
-          if (imageIndex !== -1) {
-            setError(`media.${imageIndex}.url`, {
-              type: "manual",
-              message:
-                "Image is not accessible, please double check the image address",
-            });
-          } else {
-            setError("form", {
-              type: "manual",
-              message:
-                "Image is not accessible, please double check the image address",
-            });
-          }
-        } else {
-          setError("form", {
-            type: "manual",
-            message:
-              "Image is not accessible, please double check the image address",
-          });
-        }
-      } else if (errorMessage.includes("Failed to create venue")) {
-        if (imageUrl) {
-          const imageIndex = data.media.findIndex(
-            (media) => media.url === imageUrl,
-          );
-          if (imageIndex !== -1) {
-            setError(`media.${imageIndex}.url`, {
-              type: "manual",
-              message: "Please double check the image address.",
-            });
-          } else {
-            setError("form", {
-              type: "manual",
-              message:
-                "Failed to create venue. Please check the provided data.",
-            });
-          }
-        } else {
-          setError("form", {
-            type: "manual",
-            message: "Failed to create venue. Please check the provided data.",
-          });
-        }
-      } else {
-        setError("form", {
-          type: "manual",
-          message: "An unknown error occurred. Please try again.",
-        });
-      }
+      // Handle generic form errors
+      setError("form", {
+        type: "manual",
+        message:
+          "An unknown error occurred. Please check the provided data and try again.",
+      });
     }
   };
 
@@ -487,19 +443,22 @@ export default function VenueUpdateForm({ venue, onClose, onUpdate }) {
               </p>
             </div>
           </div>
+          {errors.form && (
+            <>
+              <hr className="mt-5" />
+              <div className="mt-5 border border-red-600 bg-red-100 p-2 rounded">
+                <p className="text-red-600 text-sm font-bold m-1">
+                  {errors.form.message}
+                </p>
+              </div>
+            </>
+          )}
           <button
             type="submit"
             className="bg-lightGreen shadow-custom-dark text-black font-bold px-4 py-2 rounded mt-4 inline-block hover:bg-darkGreen cursor-pointer"
           >
             Update Venue
           </button>
-          {errors.form && (
-            <div className="mt-3 border border-red-600 bg-red-100 p-2 rounded">
-              <p className="text-red-600 text-sm font-bold m-1">
-                {errors.form.message}
-              </p>
-            </div>
-          )}
         </form>
       )}
     </div>

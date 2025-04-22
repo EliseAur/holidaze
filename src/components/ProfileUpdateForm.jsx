@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { updateProfile } from "../api/updateProfile";
 import { fetchProfile } from "../api/fetchProfile";
+import { isValidImageUrl } from "../utils";
 import { SwitchField } from "./index";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -78,6 +79,7 @@ export default function ProfileUpdateForm({ onClose, onUpdate }) {
   }, [setValue]);
 
   const onSubmit = async (data) => {
+    // Validate image URLs
     if (!data.avatar.url) {
       setError("avatar.url", {
         type: "manual",
@@ -86,6 +88,16 @@ export default function ProfileUpdateForm({ onClose, onUpdate }) {
       return;
     }
 
+    const isAvatarValid = await isValidImageUrl(data.avatar.url);
+    if (!isAvatarValid) {
+      setError("avatar.url", {
+        type: "manual",
+        message: "The URL does not point to a valid image.",
+      });
+      return;
+    }
+
+    // Validate banner URL
     if (!data.banner.url) {
       setError("banner.url", {
         type: "manual",
@@ -93,6 +105,16 @@ export default function ProfileUpdateForm({ onClose, onUpdate }) {
       });
       return;
     }
+
+    const isBannerValid = await isValidImageUrl(data.banner.url);
+    if (!isBannerValid) {
+      setError("banner.url", {
+        type: "manual",
+        message: "The URL does not point to a valid image.",
+      });
+      return;
+    }
+
     try {
       const updatedProfile = await updateProfile(data);
       console.log("Profile updated successfully:", updatedProfile);
@@ -100,32 +122,11 @@ export default function ProfileUpdateForm({ onClose, onUpdate }) {
       onUpdate(); // Call the callback function to update the account page
     } catch (error) {
       console.error("1) Error updating profile:", error);
-      if (error.message.includes("Image is not accessible")) {
-        if (data.avatar.url === error.message.split(": ")[1]) {
-          setError("avatar.url", {
-            type: "manual",
-            message:
-              "Image is not accessible, please double check the image address",
-          });
-        } else if (data.banner.url === error.message.split(": ")[1]) {
-          setError("banner.url", {
-            type: "manual",
-            message:
-              "Image is not accessible, please double check the image address",
-          });
-        } else {
-          setError("avatar.url", {
-            type: "manual",
-            message:
-              "Image is not accessible, please double check the image address",
-          });
-          setError("banner.url", {
-            type: "manual",
-            message:
-              "Image is not accessible, please double check the image address",
-          });
-        }
-      }
+      setError("form", {
+        type: "manual",
+        message:
+          "An unknown error occurred. Please check the provided data and try again.",
+      });
     }
   };
 
