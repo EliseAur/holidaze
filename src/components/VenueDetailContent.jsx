@@ -1,6 +1,6 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -47,6 +47,7 @@ export default function VenueDetailContent({
   setGuests,
   openVenueModal,
 }) {
+  const navigate = useNavigate();
   const {
     id,
     name,
@@ -64,6 +65,19 @@ export default function VenueDetailContent({
   const [isMessageModalOpen, setIsMessageModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  // Create a state to track the validity of each image.
+  const [imageValidity, setImageValidity] = useState(
+    media.map(() => true), // Initialize all images as valid
+  );
+
+  // Update the onError handler to mark individual images as invalid.
+  const handleImageError = (index) => {
+    setImageValidity((prev) => {
+      const updatedValidity = [...prev];
+      updatedValidity[index] = false; // Mark the specific image as invalid
+      return updatedValidity;
+    });
+  };
 
   const closeMessageModal = () => {
     setIsMessageModalOpen(false);
@@ -104,7 +118,8 @@ export default function VenueDetailContent({
       );
       setIsMessageModalOpen(true);
       setTimeout(() => {
-        window.location.href = "/account"; // Redirect to the account page
+        // window.location.href = "/account"; // Redirect to the account page
+        navigate("/account");
       }, 2000);
     } catch (error) {
       console.error(`Failed to delete venue with ID ${id}:`, error);
@@ -155,25 +170,40 @@ export default function VenueDetailContent({
         >
           {media.map((image, index) => (
             <div key={index} className="">
-              <img
-                src={image.url}
-                alt={image.alt || "Venue image"}
-                className="w-full h-60 sm:h-72 object-cover rounded-sm"
-              />
+              {imageValidity[index] ? (
+                <img
+                  src={image.url}
+                  alt={image.alt || "Venue image"}
+                  className="w-full h-60 sm:h-72 object-cover rounded-sm"
+                  onError={() => handleImageError(index)} // Handle image load failure
+                />
+              ) : (
+                <div className="w-full h-60 sm:h-72 bg-gray-300 flex items-center justify-center rounded-sm">
+                  <span className="text-gray-700">No image found</span>
+                </div>
+              )}
             </div>
           ))}
         </Carousel>
       ) : media.length === 1 ? (
-        <img
-          src={media[0].url}
-          alt={media[0].alt || "Image not found."}
-          className="mt-3 w-full h-60 sm:h-72 object-cover rounded-sm"
-        />
+        imageValidity[0] ? (
+          <img
+            src={media[0].url}
+            alt={media[0].alt || "Venue image"}
+            className="mt-3 w-full h-60 sm:h-72 object-cover rounded-sm"
+            onError={() => handleImageError(0)} // Handle image load failure
+          />
+        ) : (
+          <div className="mt-3 w-full h-60 sm:h-72 bg-gray-300 flex items-center justify-center rounded-sm">
+            <span className="text-gray-700">No image found</span>
+          </div>
+        )
       ) : (
         <div className="mt-3 w-full h-60 sm:h-72 bg-gray-300 flex items-center justify-center rounded-sm">
           <span className="text-gray-700 text-light">No image available</span>
         </div>
       )}
+
       {userName === owner.name && (
         <div className="flex flex-col sm:flex-row mt-3 bg-lighterGreen rounded-sm shadow-sm px-5 py-3 ">
           <p className="text-md sm:text-lg font-black mb-1 sm flex-grow">
