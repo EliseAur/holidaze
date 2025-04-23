@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useOutletContext } from "react-router-dom";
 import { fetchLatestVenues } from "../api/fetchVenues";
-import { VenueCard } from "../components";
+import { VenueCard, LoadingSpinner } from "../components";
 import { BackToTop } from "../components/common";
 import { useFavorites } from "../hooks/useFavorites";
 
@@ -9,20 +9,28 @@ function Home() {
   const [latestVenues, setLatestVenues] = useState([]); // Initialize the state with an empty array
   const { isLoggedIn } = useOutletContext();
   const { favorites, handleFavoriteClick } = useFavorites(isLoggedIn);
+  const [loading, setLoading] = useState(true); // Initialize the loading state
 
   useEffect(() => {
     async function getVenues() {
       try {
+        setLoading(true); // Set loading to true before fetching
         const latest = await fetchLatestVenues();
         setLatestVenues(latest); // Store the latest venues in the state
         console.log("Latest Fetched venues:", latest); // Log the fetched venues
       } catch (error) {
         console.error("Error fetching venues:", error);
+      } finally {
+        setLoading(false); // Set loading to false after fetching
       }
     }
 
     getVenues();
   }, []);
+
+  if (loading) {
+    return <LoadingSpinner />; // Show spinner while loading
+  }
 
   return (
     <main

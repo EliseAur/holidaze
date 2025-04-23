@@ -1,21 +1,28 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { VenueCard } from "../components";
+import { VenueCard, LoadingSpinner } from "../components";
 import { fetchFavorites } from "../api/fetchFavorites";
 import { useFavorites } from "../hooks/useFavorites";
 
 export default function Favorites() {
   const { favorites, handleFavoriteClick } = useFavorites(true);
   const [favoriteVenues, setFavoriteVenues] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchFavoriteVenues = async () => {
+      setLoading(true); // Start loading
       const fetchedVenues = await fetchFavorites();
       setFavoriteVenues(fetchedVenues);
+      setLoading(false); // Stop loading
     };
 
     fetchFavoriteVenues();
   }, [favorites]);
+
+  if (loading) {
+    return <LoadingSpinner />; // Show spinner while loading
+  }
 
   return (
     <div className="bg-beige py-8 lg:px-8  max-w-96 px-3 sm:max-w-2xl sm:px-4 md:max-w-3xl md:px-6 lg:max-w-6xl mx-auto">
