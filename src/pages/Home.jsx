@@ -4,8 +4,6 @@ import { fetchLatestVenues } from "../api/fetchVenues";
 import { VenueCard } from "../components";
 import { BackToTop } from "../components/common";
 import { useFavorites } from "../hooks/useFavorites";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
 
 function Home() {
   const [latestVenues, setLatestVenues] = useState([]); // Initialize the state with an empty array
