@@ -11,7 +11,11 @@ import {
   ProfileCard,
   BookingCard,
 } from "../components";
-import { BackToTop, ViewMoreButtonAccount } from "../components/common";
+import {
+  BackToTop,
+  ViewMoreButtonAccount,
+  ErrorBox,
+} from "../components/common";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 
@@ -40,10 +44,14 @@ export default function Account() {
 
   const getProfile = async () => {
     try {
+      setLoading(true);
+      setError(null); // Reset error state
       const profileData = await fetchProfile();
       setProfile(profileData);
     } catch (error) {
-      setError(error.message);
+      setError(
+        `Failed to load your account. Please try again later. ${error.message}`,
+      );
     } finally {
       setLoading(false);
     }
@@ -71,7 +79,8 @@ export default function Account() {
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    // return <div>Error: {error}</div>;
+    return <ErrorBox message={error} />;
   }
 
   let venuesToShow;

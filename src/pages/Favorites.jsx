@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { VenueCard, LoadingSpinner } from "../components";
+import { ErrorBox } from "../components/common";
 import { fetchFavorites } from "../api/fetchFavorites";
 import { useFavorites } from "../hooks/useFavorites";
 
@@ -8,13 +9,21 @@ export default function Favorites() {
   const { favorites, handleFavoriteClick } = useFavorites(true);
   const [favoriteVenues, setFavoriteVenues] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchFavoriteVenues = async () => {
-      setLoading(true); // Start loading
-      const fetchedVenues = await fetchFavorites();
-      setFavoriteVenues(fetchedVenues);
-      setLoading(false); // Stop loading
+      try {
+        setLoading(true);
+        setError(null); // Reset error state
+        const fetchedVenues = await fetchFavorites();
+        setFavoriteVenues(fetchedVenues);
+      } catch (error) {
+        console.error("Error fetching favorites:", error);
+        setError("Failed to load favorites. Please try again later."); // Set error message
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchFavoriteVenues();
@@ -22,6 +31,10 @@ export default function Favorites() {
 
   if (loading) {
     return <LoadingSpinner />; // Show spinner while loading
+  }
+
+  if (error) {
+    return <ErrorBox message={error} />;
   }
 
   return (

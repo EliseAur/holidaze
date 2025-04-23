@@ -5,7 +5,7 @@ import {
   fetchAllVenuesWithoutPagination,
 } from "../api/fetchVenues";
 import { FilterVenues, VenueCard, LoadingSpinner } from "../components";
-import { BackToTop } from "../components/common";
+import { BackToTop, ErrorBox } from "../components/common";
 import { useFavorites } from "../hooks/useFavorites";
 
 function Venues() {
@@ -14,6 +14,7 @@ function Venues() {
   const [page, setPage] = useState(1); // Initialize the page state
   const [filteredVenues, setFilteredVenues] = useState([]); // Filtered venues
   const [loading, setLoading] = useState(false); // Initialize the loading state
+  const [error, setError] = useState(null);
   const { isLoggedIn } = useOutletContext();
   const { favorites, handleFavoriteClick } = useFavorites(isLoggedIn);
   const [noMatches, setNoMatches] = useState(false);
@@ -36,8 +37,9 @@ function Venues() {
   // Fetch paginated venues
   useEffect(() => {
     async function getPaginatedVenues() {
-      setLoading(true);
       try {
+        setLoading(true);
+        setError(null); // Reset error state
         const newVenues = await fetchAllVenues(page); // Fetch venues for the current page
         setVenues((prevVenues) => {
           const updatedVenues =
@@ -46,6 +48,9 @@ function Venues() {
         });
       } catch (error) {
         console.error("Error fetching paginated venues:", error);
+        setError(
+          `Failed to load venues. Please try again later. ${error.message}`,
+        );
       } finally {
         setLoading(false);
       }
@@ -78,58 +83,49 @@ function Venues() {
       ? filteredVenues
       : venues;
 
-  console.log("allVenues:", allVenues); // Log all venues
-  console.log("filteredVenues:", filteredVenues); // Log filtered venues
-  console.log("venues:", venues); // Log paginated venues
-  console.log("page:", page); // Log current page
-  console.log("venuesToDisplay", venuesToDisplay); // Log venues to display
-
   return (
     <div
       id="venueContainer"
-      className="bg-beige py-8 lg:px-8 px-1 sm:px-3 md:px-6 mx-auto max-w-[360px]  sm:max-w-[1279px]"
+      className="bg-beige py-8 lg:px-8 px-1 sm:px-3 md:px-6 mx-auto max-w-[360px] sm:max-w-[1279px]"
     >
       <h2 className="text-3xl font-black italic px-2 sm:mx-0">All venues</h2>
       <FilterVenues venues={allVenues} onFilter={handleFilter} />
-      {loading && page === 1 ? (
+      {error ? (
+        <ErrorBox message={error} />
+      ) : loading && page === 1 ? (
         <LoadingSpinner />
+      ) : noMatches ? (
+        <div className="text-center mt-10">
+          <p className="text-xl font-bold text-black">
+            No venues match your filter or search..
+          </p>
+          <p className="text-xl font-bold text-black mt-2">
+            Reset to see all venues.
+          </p>
+        </div>
       ) : (
         <>
-          {noMatches ? ( // Check if no venues match the filter
-            <div className="text-center mt-10">
-              <p className="text-xl font-bold text-black">
-                No venues match your filter or search..
-              </p>
-              <p className="text-xl font-bold text-black mt-2">
-                Reset to see all venues.
-              </p>
+          <div className="px-2 mx-auto grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mt-10">
+            {venuesToDisplay.map((venue, index) => (
+              <VenueCard
+                key={`${venue.id}-${index}`}
+                venue={venue}
+                isFavorite={favorites.includes(venue.id)}
+                onFavoriteClick={handleFavoriteClick}
+              />
+            ))}
+          </div>
+          {filteredVenues.length === 0 && venues.length < allVenues.length && (
+            <div className="flex justify-center items-center mx-auto">
+              <button
+                className="bg-black text-beige font-bold py-2 px-4 rounded mt-8 shadow-custom-dark hover:bg-gray-900 block mr-2 cursor-pointer w-[170px]"
+                onClick={loadMoreVenues}
+                disabled={loading}
+              >
+                {loading ? "Loading..." : "Load More Venues"}
+              </button>
+              <BackToTop />
             </div>
-          ) : (
-            <>
-              <div className="px-2 mx-auto grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mt-10">
-                {venuesToDisplay.map((venue, index) => (
-                  <VenueCard
-                    key={`${venue.id}-${index}`}
-                    venue={venue}
-                    isFavorite={favorites.includes(venue.id)}
-                    onFavoriteClick={handleFavoriteClick}
-                  />
-                ))}
-              </div>
-              {filteredVenues.length === 0 &&
-                venues.length < allVenues.length && (
-                  <div className="flex justify-center items-center mx-auto">
-                    <button
-                      className="bg-black text-beige font-bold py-2 px-4 rounded mt-8 shadow-custom-dark hover:bg-gray-900 block mr-2 cursor-pointer w-[170px]"
-                      onClick={loadMoreVenues}
-                      disabled={loading}
-                    >
-                      {loading ? "Loading..." : "Load More Venues"}
-                    </button>
-                    <BackToTop />
-                  </div>
-                )}
-            </>
           )}
         </>
       )}
