@@ -5,9 +5,11 @@ import {
   fetchAllVenuesWithoutPagination,
 } from "../api/fetchVenues";
 import { FilterVenues, VenueCard, LoadingSpinner } from "../components";
+import { BackToTop } from "../components/common";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
 import { useFavorites } from "../hooks/useFavorites";
+// import { BackToTop } from "../components/common";
 
 function Venues() {
   const [allVenues, setAllVenues] = useState([]); // Store all venues fetched in the background
@@ -127,12 +129,13 @@ function Venues() {
                     >
                       {loading ? "Loading..." : "Load More Venues"}
                     </button>
-                    <a
+                    {/* <a
                       href="#top"
                       className="ml-2 text-xl mt-8 px-3 py-1 rounded-full border-3 border-black bg-beige text-black hover:bg-black hover:text-beige block cursor-pointer"
                     >
                       <FontAwesomeIcon icon={faArrowUp} />
-                    </a>
+                    </a> */}
+                    <BackToTop />
                   </div>
                 )}
             </>

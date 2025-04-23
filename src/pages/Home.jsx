@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { Link, useOutletContext } from "react-router-dom";
 import { fetchLatestVenues } from "../api/fetchVenues";
 import { VenueCard } from "../components";
+import { BackToTop } from "../components/common";
 import { useFavorites } from "../hooks/useFavorites";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
 
 function Home() {
   const [latestVenues, setLatestVenues] = useState([]); // Initialize the state with an empty array
@@ -28,7 +29,7 @@ function Home() {
   return (
     <main
       id="venueContainer"
-      className="bg-beige py-8 lg:px-8 px-1 sm:px-3 md:px-6 mx-auto max-w-[360px] sm:max-w-[1279px]"
+      className="bg-beige py-8 px-1 sm:px-3 md:px-6 mx-auto max-w-[360px] sm:max-w-[1279px]"
     >
       <div className="flex flex-col sm:flex-row sm:items-center justify-between px-2">
         <div>
@@ -65,12 +66,7 @@ function Home() {
         >
           All venues
         </Link>
-        <a
-          href="#top"
-          className="ml-2 text-xl mt-8 px-3 py-1 rounded-full border-3 border-black bg-beige text-black hover:bg-black hover:text-beige block cursor-pointer"
-        >
-          <FontAwesomeIcon icon={faArrowUp} />
-        </a>
+        <BackToTop />
       </div>
     </main>
   );
