@@ -26,6 +26,7 @@ import ModalMessage from "./ModalMessage";
 import BookingConfirmation from "./BookingConformation";
 import ProfileCard from "./ProfileCard";
 import VenueUpdateForm from "./VenueUpdateForm";
+import BookingCard from "./BookingCard";
 
 export {
   Header,
@@ -54,4 +55,5 @@ export {
   ProfileCard,
   VenueUpdateForm,
   ModalMessage,
+  BookingCard,
 };

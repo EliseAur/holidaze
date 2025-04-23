@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { fetchProfile, fetchFavorites } from "../api";
 import { useFavorites } from "../hooks/useFavorites";
 import { Link } from "react-router-dom";
-import { format, differenceInDays } from "date-fns";
 import { useMediaQuery } from "react-responsive";
 import {
   LoadingSpinner,
@@ -10,8 +9,9 @@ import {
   VenueCreateForm,
   Modal,
   ProfileCard,
+  BookingCard,
 } from "../components";
-import { BackToTop } from "../components/common";
+import { BackToTop, ViewMoreButtonAccount } from "../components/common";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 
@@ -213,16 +213,14 @@ export default function Account() {
                   </div>
                 )}
               </div>
-              {profile.venueManager && profile.venues.length > 2 && (
-                <button
-                  onClick={() => setShowAllVenues(!showAllVenues)}
-                  className="bg-black text-beige font-bold py-2 px-4 rounded mt-8 shadow-custom-dark hover:bg-gray-900 block cursor-pointer mx-auto"
-                >
-                  {showAllVenues
-                    ? "Show less venues"
-                    : "View all venues you host"}
-                </button>
-              )}
+              <ViewMoreButtonAccount
+                isShown={showAllVenues}
+                toggleShown={() => setShowAllVenues(!showAllVenues)}
+                totalItems={profile.venues.length}
+                visibleItems={venuesToShow.length}
+                showText="View all venues you host"
+                hideText="Show less venues"
+              />
               <hr className="mt-6" />
             </section>
             <section
@@ -230,64 +228,11 @@ export default function Account() {
               className=" py-3 max-w-[360px] sm:max-w-[1279px] px-4 mx-auto"
             >
               <h2 className="text-xl font-black">Upcoming bookings</h2>
-
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-2 sm:gap-3">
                 {bookingsToShow.length > 0 ? (
-                  bookingsToShow.map((booking) => {
-                    const nights = differenceInDays(
-                      new Date(booking.dateTo),
-                      new Date(booking.dateFrom),
-                    );
-                    const totalPrice = booking.venue.price * nights;
-                    return (
-                      <div
-                        key={booking.id}
-                        className="booking-card bg-lightBeige rounded-sm shadow-lg mt-2 hover:shadow-custom-dark"
-                      >
-                        {booking.venue.media.length > 0 && (
-                          <Link to={`/venue/${booking.venue.id}`}>
-                            <img
-                              src={booking.venue.media[0].url}
-                              alt={booking.venue.media[0].alt || "Venue image"}
-                              className="venue-image w-full h-50 sm:h-56 object-cover rounded-t-sm"
-                            />
-                          </Link>
-                        )}
-                        <div className="p-3">
-                          <Link to={`/venue/${booking.venue.id}`}>
-                            <h4 className="xs:text-lg sm:text-xl font-black underline hover:underline hover:decoration-2 truncate">
-                              {booking.venue.name}
-                            </h4>
-                          </Link>
-                          <p className="text-sm mt-1">
-                            <span className="font-bold">Dates: </span>
-                            {format(
-                              new Date(booking.dateFrom),
-                              "dd.MM.yy",
-                            )} - {format(new Date(booking.dateTo), "dd.MM.yy")}
-                          </p>
-                          <p className="text-sm mt-1">
-                            <span className="font-bold">Nights: </span>
-                            {nights}
-                          </p>
-                          <p className="text-sm mt-1">
-                            <span className="font-bold">Guests: </span>
-                            {booking.guests}
-                          </p>
-                          <p className="text-sm mt-1">
-                            <span className="font-bold">Total price: </span>
-                            {totalPrice}$
-                          </p>
-                          <Link
-                            to={`/venue/${booking.venue.id}`}
-                            className="text-sm bg-lightGreen text-black text-center font-bold py-1 rounded mt-2 shadow-custom-dark hover:bg-darkGreen block cursor-pointer"
-                          >
-                            Venue Details
-                          </Link>
-                        </div>
-                      </div>
-                    );
-                  })
+                  bookingsToShow.map((booking) => (
+                    <BookingCard key={booking.id} booking={booking} />
+                  ))
                 ) : (
                   <div className="col-span-2">
                     <p>You have no bookings yet.</p>
@@ -304,14 +249,14 @@ export default function Account() {
                   </div>
                 )}
               </div>
-              {upcomingBookings.length > 2 && (
-                <button
-                  onClick={() => setShowAllBookings(!showAllBookings)}
-                  className="bg-black text-beige font-bold py-2 px-4 rounded mt-8 shadow-custom-dark hover:bg-gray-900 block cursor-pointer w-[170px] mx-auto"
-                >
-                  {showAllBookings ? "Show less bookings" : "View all bookings"}
-                </button>
-              )}
+              <ViewMoreButtonAccount
+                isShown={showAllBookings}
+                toggleShown={() => setShowAllBookings(!showAllBookings)}
+                totalItems={upcomingBookings.length}
+                visibleItems={bookingsToShow.length}
+                showText="View all bookings"
+                hideText="Show less bookings"
+              />
               <hr className="mt-6" />
             </section>
             <section
@@ -346,16 +291,14 @@ export default function Account() {
                   </div>
                 )}
               </div>
-              {favoriteVenues.length > 2 && (
-                <button
-                  onClick={() => setShowAllFavorites(!showAllFavorites)}
-                  className="bg-black text-beige font-bold py-2 px-4 rounded mt-8 shadow-custom-dark hover:bg-gray-900 block cursor-pointer w-[170px] mx-auto"
-                >
-                  {showAllFavorites
-                    ? "Show less favorites"
-                    : "View all favorites"}
-                </button>
-              )}
+              <ViewMoreButtonAccount
+                isShown={showAllFavorites}
+                toggleShown={() => setShowAllFavorites(!showAllFavorites)}
+                totalItems={favoriteVenues.length}
+                visibleItems={favoritesToShow.length}
+                showText="View all favorites"
+                hideText="Show less favorites"
+              />
               <hr className="mt-6" />
             </section>
             <div className="flex justify-center items-center mx-auto">

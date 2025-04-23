@@ -86,7 +86,7 @@ export default function ProfileCard({
             </div>
           </div>
         </div>
-        <div className="bg-lightBeige lg:pt-30 py-9 sm:py-6 lg:pb-7 px-4 text-sm flex justify-between items-center flex-grow rounded-b-2xl">
+        <div className="bg-lightBeige lg:pt-30 py-4 px-4 text-sm flex justify-between items-center flex-grow rounded-b-2xl">
           <div className="flex flex-col lg:flex-row text-lg lg:text-lg sm:space-x-4 underline border-l-1 pl-3 sm:pl-5 lg:mr-5 ml-auto border-black text-black font-bold">
             <Link
               to="/account"
