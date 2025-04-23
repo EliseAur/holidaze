@@ -115,7 +115,6 @@ export default function VenueDetailContent({
       );
       setIsMessageModalOpen(true);
       setTimeout(() => {
-        // window.location.href = "/account"; // Redirect to the account page
         navigate("/account");
       }, 2000);
     } catch (error) {
