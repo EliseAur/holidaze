@@ -1,34 +1,50 @@
 import { useEffect, useState } from "react";
 import { Link, useOutletContext } from "react-router-dom";
 import { fetchLatestVenues } from "../api/fetchVenues";
-import { VenueCard } from "../components";
+import { VenueCard, LoadingSpinner } from "../components";
+import { BackToTop, ErrorBox } from "../components/common";
 import { useFavorites } from "../hooks/useFavorites";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
 
 function Home() {
   const [latestVenues, setLatestVenues] = useState([]); // Initialize the state with an empty array
   const { isLoggedIn } = useOutletContext();
   const { favorites, handleFavoriteClick } = useFavorites(isLoggedIn);
+  const [loading, setLoading] = useState(true); // Initialize the loading state
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     async function getVenues() {
       try {
+        setLoading(true); // Set loading to true before fetching
+        setError(null); // Reset error state
         const latest = await fetchLatestVenues();
         setLatestVenues(latest); // Store the latest venues in the state
         console.log("Latest Fetched venues:", latest); // Log the fetched venues
       } catch (error) {
         console.error("Error fetching venues:", error);
+        setError(
+          `Failed to load latest venues. Please try again later. ${error.message}`,
+        );
+      } finally {
+        setLoading(false); // Set loading to false after fetching
       }
     }
 
     getVenues();
   }, []);
 
+  if (loading) {
+    return <LoadingSpinner />; // Show spinner while loading
+  }
+
+  if (error) {
+    return <ErrorBox message={error} />;
+  }
+
   return (
     <main
       id="venueContainer"
-      className="bg-beige py-8 lg:px-8 px-1 sm:px-3 md:px-6 mx-auto max-w-[360px] sm:max-w-[1279px]"
+      className="bg-beige py-8 px-1 sm:px-3 md:px-6 mx-auto max-w-[360px] sm:max-w-[1279px]"
     >
       <div className="flex flex-col sm:flex-row sm:items-center justify-between px-2">
         <div>
@@ -65,12 +81,7 @@ function Home() {
         >
           All venues
         </Link>
-        <a
-          href="#top"
-          className="ml-2 text-xl mt-8 px-3 py-1 rounded-full border-3 border-black bg-beige text-black hover:bg-black hover:text-beige block cursor-pointer"
-        >
-          <FontAwesomeIcon icon={faArrowUp} />
-        </a>
+        <BackToTop />
       </div>
     </main>
   );

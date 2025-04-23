@@ -1,12 +1,9 @@
 import { PropTypes } from "prop-types";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import FacilityIconRounded from "./common/FacilitiesIcons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faWifi,
-  faPaw,
-  faUtensils,
-  faParking,
   faStar,
   faMapMarkerAlt,
   faHeart,
@@ -59,7 +56,7 @@ export default function VenueCard({
       </button>
       <div className="p-3 sm:p-2 sm:pt-1 md:px-3">
         <Link to={`/venue/${venue.id}`}>
-          <h2 className="px-2 text-sm sm:text-lg md:text-xl font-black underline hover:underline hover:decoration-2 truncate p-1 cursor-pointer">
+          <h2 className="px-2 text-lg italic sm:text-lg md:text-xl font-black underline hover:underline hover:decoration-2 truncate p-1 cursor-pointer">
             {venue.name ? venue.name : "Venue name"}
           </h2>
         </Link>
@@ -83,69 +80,37 @@ export default function VenueCard({
             )}
           </span>
         </div>
-        <div className="px-2 py1 text-sm flex-grow flex justify-between">
+        <div className="px-2 py-1 text-sm flex-grow flex justify-between">
           <div className="flex-grow ">
             <span className="font-bold">
-              <FontAwesomeIcon
-                icon={faSackDollar}
-                className="mr-1 text-xs sm:text-sm"
-              />
+              <FontAwesomeIcon icon={faSackDollar} className="mr-1 text-sm" />
               {venue.price} USD
             </span>
           </div>
-          <span className="flex-grow text-right">
+          <span className="flex-grow text-right font-bold">
             <FontAwesomeIcon
               icon={faStar}
-              className="text-black mr-0.5 text-xs sm:text:sm"
+              className="text-black mr-0.5 text-sm"
             />
             <span>{venue.rating.toFixed(0)}</span>
           </span>
         </div>
-        <div className="px-2 py-1 text-sm flex w-full justify-between">
-          <div className="min-w-[80px] max-w-[86px] sm:max-w-[90px] flex flex-grow  justify-between space-x-0 sm:space-x-2 text-sm sm:text-md">
-            <span title={venue.meta.wifi ? "Wifi available" : "No wifi"}>
-              <FontAwesomeIcon
-                icon={faWifi}
-                className={venue.meta.wifi ? "text-black" : "text-gray-400"}
-              />
-            </span>
-            <span title={venue.meta.pets ? "Pets Allowed" : "No pets allowed"}>
-              <FontAwesomeIcon
-                icon={faPaw}
-                className={venue.meta.pets ? "text-black" : "text-gray-400"}
-              />
-            </span>
-            <span
-              title={
-                venue.meta.breakfast ? "Breakfast Included" : "No breakfast"
-              }
-            >
-              <FontAwesomeIcon
-                icon={faUtensils}
-                className={
-                  venue.meta.breakfast ? "text-black" : "text-gray-400"
-                }
-              />
-            </span>
-            <span
-              title={
-                venue.meta.parking
-                  ? "Parking Available"
-                  : "No parking available"
-              }
-            >
-              <FontAwesomeIcon
-                icon={faParking}
-                className={venue.meta.parking ? "text-black" : "text-gray-400"}
-              />
-            </span>
+        <div className="px-2 py-2 text-sm flex w-full justify-between  items-center">
+          <div className=" flex flex-grow max-w-[121px]  justify-between space-x-0 sm:space-x-2 text-md sm:text-md">
+            <FacilityIconRounded available={venue.meta.wifi} type="wifi" />
+            <FacilityIconRounded available={venue.meta.pets} type="pets" />
+            <FacilityIconRounded
+              available={venue.meta.breakfast}
+              type="breakfast"
+            />
+            <FacilityIconRounded
+              available={venue.meta.parking}
+              type="parking"
+            />
           </div>
           <div className="flex-grow text-right">
-            <span className="">
-              <FontAwesomeIcon
-                icon={faUserGroup}
-                className="mr-0.5 text-xs sm:text:sm"
-              />
+            <span className="font-bold">
+              <FontAwesomeIcon icon={faUserGroup} className="mr-0.5 text-sm" />
               {venue.maxGuests}
             </span>
           </div>

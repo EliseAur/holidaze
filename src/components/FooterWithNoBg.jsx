@@ -44,6 +44,7 @@ export default function FooterWithNoBg() {
       </div>
       <div className="z-10 relative text-shadow font-bold text-beige text-center py-4">
         <p>&copy; 2025 Elise Aurtande. All rights reserved.</p>
+        <p>Powered by Noroff API.</p>
       </div>
     </>
   );

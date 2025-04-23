@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useParams, Navigate } from "react-router-dom";
 import { fetchVenueDetails } from "../api";
 import { VenueDetailContent, LoadingSpinner } from "../components";
+import { ErrorBox } from "../components/common";
 import { fetchBooking } from "../api";
 import { differenceInDays, eachDayOfInterval, isSameDay } from "date-fns";
 import {
@@ -44,15 +45,14 @@ function VenueDetail() {
   const loadVenue = useCallback(async () => {
     if (isRedirecting) return; // Skip fetching if redirecting
     try {
+      setError(null); // Reset error state
       const venue = await fetchVenueDetails(id);
       console.log("Venue details with API fetch:", venue);
       setVenue(venue);
     } catch (error) {
-      setError({
-        message: error.message,
-        status: error.status,
-        statusCode: error.statusCode,
-      });
+      setError(
+        `Failed to load venue. Please try again later. ${error.message}`,
+      );
     }
   }, [id, isRedirecting]); // Add 'id' as a dependency since it can change
 
@@ -130,7 +130,7 @@ function VenueDetail() {
 
   if (error) {
     console.log("Error fetching venue:", error);
-    return null;
+    return <ErrorBox message={error} />;
   }
 
   if (isRedirecting) {
@@ -140,7 +140,6 @@ function VenueDetail() {
   if (!venue) {
     return <LoadingSpinner />;
   }
-
   return (
     <>
       {venue && (

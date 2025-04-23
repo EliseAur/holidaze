@@ -63,7 +63,7 @@ export default function ProfileCard({
             </div>
             <div>
               <div className="flex flex-col sm:flex-row sm:items-center">
-                <h1 className="font-black text-lg text-left mt-2 inline-block">
+                <h1 className="font-black text-xl text-left mt-2 inline-block">
                   {profile.name}
                 </h1>
                 {profile.venueManager && (
@@ -78,16 +78,16 @@ export default function ProfileCard({
               </div>
               <p className="text-sm text-left font-bold">{profile.email}</p>
               <div className="mt-5">
-                <span className="font-black text-black text-sm">Bio: </span>
-                <span className="text-black text-sm italic break-words">
+                <span className="font-black text-black text-md">Bio: </span>
+                <span className="text-black text-md break-words">
                   {profile.bio}
                 </span>
               </div>
             </div>
           </div>
         </div>
-        <div className="bg-lightBeige lg:pt-30 py-9 sm:py-6 lg:pb-7 px-4 text-sm flex justify-between items-center flex-grow rounded-b-2xl">
-          <div className="flex flex-col lg:flex-row text-md lg:text-lg sm:space-x-4 underline border-l-1 pl-3 sm:pl-5 lg:mr-5 ml-auto border-black text-black font-bold">
+        <div className="bg-lightBeige lg:pt-30 py-4 px-4 text-sm flex justify-between items-center flex-grow rounded-b-2xl">
+          <div className="flex flex-col lg:flex-row text-lg lg:text-lg sm:space-x-4 underline border-l-1 pl-3 sm:pl-5 lg:mr-5 ml-auto border-black text-black font-bold">
             <Link
               to="/account"
               onClick={(e) => {
@@ -127,7 +127,7 @@ export default function ProfileCard({
             <div className="text-black">
               <button
                 onClick={openProfileModal}
-                className="bg-black text-xs sm:text-sm text-white font-bold px-4 py-2 rounded mb-2 mt-6 lg:mt-3 inline-block hover:bg-gray-900 shadow-custom-dark w-full sm:max-w-[124px]"
+                className="bg-black text-sm text-white font-bold px-4 py-2 rounded mb-2 mt-6 lg:mt-3 inline-block hover:bg-gray-900 shadow-custom-dark w-full sm:max-w-[124px]"
               >
                 <FontAwesomeIcon icon={faPenToSquare} className="mr-2" />
                 Edit profile
@@ -144,7 +144,7 @@ export default function ProfileCard({
               <div className="text-black">
                 <button
                   onClick={openVenueModal}
-                  className="bg-lightGreen shadow-custom-dark text-black text-xs sm:text-sm font-bold px-4 py-2 mb-2 mt-1 lg:mt-3 rounded inline-block hover:bg-darkGreen w-full sm:max-w-[124px]"
+                  className="bg-lightGreen shadow-custom-dark text-black text-sm font-bold px-4 py-2 mb-2 mt-1 lg:mt-3 rounded inline-block hover:bg-darkGreen w-full sm:max-w-[124px]"
                 >
                   + Add venue
                 </button>

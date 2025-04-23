@@ -3,12 +3,9 @@ import PropTypes from "prop-types";
 import { Link, useNavigate } from "react-router-dom";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
+import FacilityIconRounded from "./common/FacilitiesIcons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faWifi,
-  faPaw,
-  faUtensils,
-  faParking,
   faStar,
   faMapMarkerAlt,
   faUserGroup,
@@ -118,7 +115,6 @@ export default function VenueDetailContent({
       );
       setIsMessageModalOpen(true);
       setTimeout(() => {
-        // window.location.href = "/account"; // Redirect to the account page
         navigate("/account");
       }, 2000);
     } catch (error) {
@@ -327,60 +323,33 @@ export default function VenueDetailContent({
           <div className="min-w-[258.3px] w-full bg-lightBeige rounded-sm shadow-sm p-5 mt-3 sm:mr-1">
             <h2 className="text-md sm:text-lg font-black">Facilities</h2>
             <div className="flex flex-row mt-1">
-              <div className="bg-black rounded-full w-[22px] h-[22px] flex items-center justify-center">
+              <div className="bg-black rounded-full w-[24px] h-[24px] flex items-center justify-center">
                 <div>
                   <FontAwesomeIcon
                     icon={faUserGroup}
-                    className="text-beige mb-0.5 text-xs"
+                    className="text-lightBeige mb-0.5 text-xs"
                   />
                 </div>
               </div>
               <span className="ml-1">Max {maxGuests} guests</span>
             </div>
             <div className="flex flex-row mt-1">
-              <span
-                className={
-                  meta.wifi
-                    ? "bg-black rounded-full w-[22px] h-[22px] flex items-center justify-center"
-                    : "bg-darkBeige rounded-full w-[22px] h-[22px] flex items-center justify-center"
-                }
-              >
-                <FontAwesomeIcon icon={faWifi} className="text-beige text-xs" />
-              </span>
+              <FacilityIconRounded available={meta.wifi} type="wifi" />
               <span className="ml-1">
                 {meta.wifi ? "Wifi available" : "No wifi in the venue"}
               </span>
             </div>
             <div className="flex flex-row mt-1">
-              <span
-                className={
-                  meta.parking
-                    ? "bg-black rounded-full w-[22px] h-[22px] flex items-center justify-center"
-                    : "bg-darkBeige rounded-full w-[22px] h-[22px] flex items-center justify-center"
-                }
-              >
-                <FontAwesomeIcon
-                  icon={faParking}
-                  className="text-beige text-xs"
-                />
-              </span>
+              <FacilityIconRounded available={meta.parking} type="parking" />
               <span className="ml-1">
                 {meta.parking ? "Parking available" : "Parking not available"}
               </span>
             </div>
             <div className="flex flex-row mt-1">
-              <span
-                className={
-                  meta.breakfast
-                    ? "bg-black rounded-full w-[22px] h-[22px] flex items-center justify-center"
-                    : "bg-darkBeige rounded-full w-[22px] h-[22px] flex items-center justify-center"
-                }
-              >
-                <FontAwesomeIcon
-                  icon={faUtensils}
-                  className="text-beige text-xs"
-                />
-              </span>
+              <FacilityIconRounded
+                available={meta.breakfast}
+                type="breakfast"
+              />
               <span className="ml-1">
                 {meta.breakfast
                   ? "Breakfast included"
@@ -388,15 +357,7 @@ export default function VenueDetailContent({
               </span>
             </div>
             <div className="flex flex-row mt-1">
-              <span
-                className={
-                  meta.pets
-                    ? "bg-black rounded-full w-[22px] h-[22px] flex items-center justify-center"
-                    : "bg-darkBeige rounded-full w-[22px] h-[22px] flex items-center justify-center"
-                }
-              >
-                <FontAwesomeIcon icon={faPaw} className="text-beige text-xs" />
-              </span>
+              <FacilityIconRounded available={meta.pets} type="pets" />
               <span className="ml-1">
                 {meta.pets ? "Pets allowed" : "Pets not allowed"}
               </span>

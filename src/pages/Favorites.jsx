@@ -1,21 +1,41 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { VenueCard } from "../components";
+import { VenueCard, LoadingSpinner } from "../components";
+import { ErrorBox } from "../components/common";
 import { fetchFavorites } from "../api/fetchFavorites";
 import { useFavorites } from "../hooks/useFavorites";
 
 export default function Favorites() {
   const { favorites, handleFavoriteClick } = useFavorites(true);
   const [favoriteVenues, setFavoriteVenues] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchFavoriteVenues = async () => {
-      const fetchedVenues = await fetchFavorites();
-      setFavoriteVenues(fetchedVenues);
+      try {
+        setLoading(true);
+        setError(null); // Reset error state
+        const fetchedVenues = await fetchFavorites();
+        setFavoriteVenues(fetchedVenues);
+      } catch (error) {
+        console.error("Error fetching favorites:", error);
+        setError("Failed to load favorites. Please try again later."); // Set error message
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchFavoriteVenues();
   }, [favorites]);
+
+  if (loading) {
+    return <LoadingSpinner />; // Show spinner while loading
+  }
+
+  if (error) {
+    return <ErrorBox message={error} />;
+  }
 
   return (
     <div className="bg-beige py-8 lg:px-8  max-w-96 px-3 sm:max-w-2xl sm:px-4 md:max-w-3xl md:px-6 lg:max-w-6xl mx-auto">
