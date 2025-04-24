@@ -16,6 +16,7 @@ import {
   ViewMoreButtonAccount,
   ErrorBox,
 } from "../components/common";
+import useSEO from "../hooks/useSEO";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 
@@ -42,9 +43,18 @@ export default function Account() {
   const isMd = useMediaQuery({ minWidth: 768, maxWidth: 991 });
   const isLg = useMediaQuery({ minWidth: 992 });
 
-  const getProfile = async () => {
+  useSEO({
+    title: "Holidaze | Account",
+    description:
+      "Manage your Holidaze account. Edit your profile, register as a host, create and manage venues, view bookings for your hosted venues, and check bookings you've made to other venues.",
+    keywords:
+      "account management, edit profile, host venues, create venues, manage bookings, favorite venues, Holidaze",
+  });
+
+  // Fetch profile data
+  const getProfile = async (showLoading = true) => {
     try {
-      setLoading(true);
+      if (showLoading) setLoading(true); // Only show the spinner if needed
       setError(null); // Reset error state
       const profileData = await fetchProfile();
       setProfile(profileData);
@@ -53,7 +63,7 @@ export default function Account() {
         `Failed to load your account. Please try again later. ${error.message}`,
       );
     } finally {
-      setLoading(false);
+      if (showLoading) setLoading(false);
     }
   };
 
@@ -157,7 +167,6 @@ export default function Account() {
             isVenueModalOpen={isVenueModalOpen}
             getProfile={getProfile}
           />
-          ;
           <div className="profile-details mt-3 px-2 sm:px-6 pb-8">
             <section
               id="hosting"
@@ -170,7 +179,7 @@ export default function Account() {
                     <>
                       <p className="col-span-full">
                         Click the{" "}
-                        <span className="font-black">Manage Venue</span> button{" "}
+                        <span className="font-black">Manage Venue</span> button
                         to <span className="font-black">delete</span>,{" "}
                         <span className="font-black">update</span> or to view
                         the <span className="font-black">list of bookings</span>{" "}

@@ -135,7 +135,7 @@ export default function ProfileCard({
               <Modal isOpen={isProfileModalOpen} onClose={closeProfileModal}>
                 <ProfileUpdateForm
                   onClose={closeProfileModal}
-                  onUpdate={getProfile}
+                  onUpdate={() => getProfile(false)}
                 />
               </Modal>
             </div>
@@ -151,7 +151,7 @@ export default function ProfileCard({
                 <Modal isOpen={isVenueModalOpen} onClose={closeVenueModal}>
                   <VenueCreateForm
                     onClose={closeVenueModal}
-                    onUpdate={getProfile}
+                    onUpdate={() => getProfile(false)}
                   />
                 </Modal>
               </div>
