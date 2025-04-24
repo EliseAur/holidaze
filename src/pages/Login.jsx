@@ -5,6 +5,7 @@ import * as yup from "yup";
 import { authLogin } from "../api/authLogin";
 import { useAuth } from "../context/useAuth";
 import { useState } from "react";
+import useSEO from "../hooks/useSEO";
 
 // Define the validation schema using yup
 const loginSchema = yup.object().shape({
@@ -27,6 +28,14 @@ export default function Login() {
   const navigate = useNavigate();
   const { handleLogin } = useAuth();
   const [apiError, setApiError] = useState(""); // State to track API error messages
+
+  useSEO({
+    title: "Holidaze | Login",
+    description:
+      "Log in to your Holidaze account to manage your bookings, favorite venues, and hosted venues. Access your profile and start planning your next getaway.",
+    keywords:
+      "login, Holidaze account, manage bookings, favorite venues, hosted venues",
+  });
 
   // Initialize react-hook-form with yup validation
   const {

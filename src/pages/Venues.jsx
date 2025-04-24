@@ -7,6 +7,7 @@ import {
 import { FilterVenues, VenueCard, LoadingSpinner } from "../components";
 import { BackToTop, ErrorBox } from "../components/common";
 import { useFavorites } from "../hooks/useFavorites";
+import useSEO from "../hooks/useSEO";
 
 function Venues() {
   const [allVenues, setAllVenues] = useState([]); // Store all venues fetched in the background
@@ -18,6 +19,14 @@ function Venues() {
   const { isLoggedIn } = useOutletContext();
   const { favorites, handleFavoriteClick } = useFavorites(isLoggedIn);
   const [noMatches, setNoMatches] = useState(false);
+
+  useSEO({
+    title: "Holidaze | All Venues",
+    description:
+      "Explore all available venues on Holidaze. Use filters and search to find the perfect vacation home for your next getaway.",
+    keywords:
+      "all venues, vacation homes, holiday rentals, venue search, venue filters, Holidaze",
+  });
 
   // Fetch all venues in the background
   useEffect(() => {
