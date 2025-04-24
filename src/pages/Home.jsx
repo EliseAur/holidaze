@@ -4,6 +4,7 @@ import { fetchLatestVenues } from "../api/fetchVenues";
 import { VenueCard, LoadingSpinner } from "../components";
 import { BackToTop, ErrorBox } from "../components/common";
 import { useFavorites } from "../hooks/useFavorites";
+import useSEO from "../hooks/useSEO";
 
 function Home() {
   const [latestVenues, setLatestVenues] = useState([]); // Initialize the state with an empty array
@@ -11,6 +12,15 @@ function Home() {
   const { favorites, handleFavoriteClick } = useFavorites(isLoggedIn);
   const [loading, setLoading] = useState(true); // Initialize the loading state
   const [error, setError] = useState(null);
+
+  // Use the SEO hook
+  useSEO({
+    title: "Holidaze | Home",
+    description:
+      "Discover beautiful vacation homes and book your next getaway with Holidaze. Explore a wide range of venues for your perfect holiday.",
+    keywords:
+      "vacation homes, holiday rentals, holiday, travel, getaways, Holidaze",
+  });
 
   useEffect(() => {
     async function getVenues() {

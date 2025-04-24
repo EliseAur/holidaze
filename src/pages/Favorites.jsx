@@ -4,12 +4,22 @@ import { VenueCard, LoadingSpinner } from "../components";
 import { ErrorBox } from "../components/common";
 import { fetchFavorites } from "../api/fetchFavorites";
 import { useFavorites } from "../hooks/useFavorites";
+import useSEO from "../hooks/useSEO";
 
 export default function Favorites() {
   const { favorites, handleFavoriteClick } = useFavorites(true);
   const [favoriteVenues, setFavoriteVenues] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  // Use the SEO hook
+  useSEO({
+    title: "Holidaze | Favorites",
+    description:
+      "View and manage your favorite venues on Holidaze. Explore your saved vacation homes and plan your next getaway.",
+    keywords:
+      "favorite venues, saved vacation homes, Holidaze favorites, travel, getaways",
+  });
 
   useEffect(() => {
     const fetchFavoriteVenues = async () => {

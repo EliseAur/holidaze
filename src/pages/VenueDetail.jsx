@@ -1,16 +1,18 @@
 import { useState, useEffect, useCallback } from "react";
 import { useParams, Navigate } from "react-router-dom";
 import { fetchVenueDetails } from "../api";
-import { VenueDetailContent, LoadingSpinner } from "../components";
-import { ErrorBox } from "../components/common";
-import { fetchBooking } from "../api";
-import { differenceInDays, eachDayOfInterval, isSameDay } from "date-fns";
 import {
+  VenueDetailContent,
+  LoadingSpinner,
   Modal,
   BookingConfirmation,
   VenueUpdateForm,
   ModalMessage,
 } from "../components";
+import { ErrorBox } from "../components/common";
+import useSEO from "../hooks/useSEO";
+import { fetchBooking } from "../api";
+import { differenceInDays, eachDayOfInterval, isSameDay } from "date-fns";
 
 function VenueDetail() {
   const { id } = useParams();
@@ -25,6 +27,17 @@ function VenueDetail() {
   const [modalMessage, setModalMessage] = useState("");
   const [isVenueModalOpen, setIsVenueModalOpen] = useState(false);
   const [isRedirecting, setIsRedirecting] = useState(false);
+
+  // Dynamically update SEO metadata
+  useSEO({
+    title: venue ? `Holidaze | ${venue.name}` : "Holidaze | Venue Details",
+    description: venue
+      ? `Discover "${venue.name}" on Holidaze. ${venue.description} Book your stay today.`
+      : "Explore venue details on Holidaze. Book your next getaway today.",
+    keywords: venue
+      ? `"${venue.name}", vacation homes, holiday rentals, Holidaze`
+      : "venue details, vacation homes, holiday rentals, Holidaze",
+  });
 
   const openBookingModal = () => setIsBookingModalOpen(true);
   const closeBookingModal = () => setIsBookingModalOpen(false);

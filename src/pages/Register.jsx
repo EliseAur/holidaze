@@ -5,6 +5,7 @@ import * as yup from "yup";
 import { authRegister } from "../api/authRegister";
 import { SwitchField } from "../components";
 import { useState } from "react";
+import useSEO from "../hooks/useSEO";
 
 // Define the validation schema using yup
 const registerSchema = yup.object().shape({
@@ -30,6 +31,14 @@ const registerSchema = yup.object().shape({
 export default function Register() {
   const navigate = useNavigate();
   const [apiError, setApiError] = useState(""); // State to track API error messages
+
+  useSEO({
+    title: "Holidaze | Register",
+    description:
+      "Create your Holidaze account to book venues, manage your bookings, and become a host. Register now to start planning your next getaway.",
+    keywords:
+      "register, Holidaze account, create account, book venues, become a host",
+  });
 
   // Initialize react-hook-form with yup validation
   const {
