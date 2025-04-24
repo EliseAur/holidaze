@@ -19,12 +19,13 @@ const router = createBrowserRouter([
         path: "/",
         element: <Home />,
       },
-
-      //Other routes that share the same structure as the Home route (HeaderWithHero, Outlet, Footer)
+      {
+        path: "/home", // Add this route for /home
+        element: <Home />,
+      },
     ],
   },
   {
-    // Other layouts and pages that doesn't share the same structure and layout as Home and About
     path: "/login",
     element: <BgPalmsLayout />,
     children: [
