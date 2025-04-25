@@ -140,8 +140,8 @@ export default function VenueDetailContent({
     setShowFullDescription(!showFullDescription);
   };
 
-  const truncatedDescription = description.split(" ").slice(0, 50).join(" ");
-  const isTruncated = description.split(" ").length > 50;
+  const truncatedDescription = description.split(" ").slice(0, 40).join(" ");
+  const isTruncated = description.split(" ").length > 40;
 
   // Function to apply CSS class to booked dates and current date
   const getDayClassName = (date) => {
@@ -298,7 +298,9 @@ export default function VenueDetailContent({
           Description
         </h2>
         <p className="break-words text-sm sm:text-base">
-          {showFullDescription ? description : `${truncatedDescription}...`}
+          {showFullDescription || !isTruncated
+            ? description
+            : `${truncatedDescription}...`}
         </p>
         {isTruncated && (
           <button
