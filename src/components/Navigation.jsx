@@ -21,21 +21,21 @@ export function NavWideScreen({ isLoggedIn, venueManager }) {
           {venueManager ? (
             <Link
               to="/account"
-              className="text-shadow border border-transparent px-3 py-2 text-center hover:border hover:border-beige hover:bg-zinc-800/20 rounded-full whitespace-nowrap"
+              className={`text-shadow border border-transparent px-3 py-2 text-center hover:border hover:border-beige hover:bg-zinc-800/20 rounded-full whitespace-nowrap ${location.pathname === "/account" ? "underline decoration-2" : ""}`}
             >
               Account
             </Link>
           ) : (
             <Link
               to="/account"
-              className="text-shadow border border-transparent px-3 py-2 text-center hover:border hover:border-beige hover:bg-zinc-800/20 rounded-full whitespace-nowrap"
+              className={`text-shadow border border-transparent px-3 py-2 text-center hover:border hover:border-beige hover:bg-zinc-800/20 rounded-full whitespace-nowrap ${location.pathname === "/account" ? "underline decoration-2" : ""}`}
             >
               Become a host
             </Link>
           )}
           <Link
             to="/favorites"
-            className="text-shadow border border-transparent px-3 py-2 text-center hover:border hover:border-beige hover:bg-zinc-800/20 rounded-full whitespace-nowrap"
+            className={`text-shadow border border-transparent px-3 py-2 text-center hover:border hover:border-beige hover:bg-zinc-800/20 rounded-full whitespace-nowrap ${location.pathname === "/favorites" ? "underline decoration-2" : ""}`}
           >
             Favorites
           </Link>
@@ -43,7 +43,7 @@ export function NavWideScreen({ isLoggedIn, venueManager }) {
       ) : (
         <Link
           to="/register"
-          className="text-shadow border border-transparent px-3 py-2 text-center hover:border hover:border-beige hover:bg-zinc-800/20 rounded-full whitespace-nowrap"
+          className={`text-shadow border border-transparent px-3 py-2 text-center hover:border hover:border-beige hover:bg-zinc-800/20 rounded-full whitespace-nowrap ${location.pathname === "/register" ? "underline decoration-2" : ""}`}
         >
           Become a host
         </Link>
