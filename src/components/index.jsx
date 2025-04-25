@@ -26,6 +26,7 @@ import ModalMessage from "./ModalMessage";
 import BookingConfirmation from "./BookingConformation";
 import ProfileCard from "./ProfileCard";
 import VenueUpdateForm from "./VenueUpdateForm";
+import VenueForm from "./VenueForm";
 import BookingCard from "./BookingCard";
 
 export {
@@ -56,4 +57,5 @@ export {
   VenueUpdateForm,
   ModalMessage,
   BookingCard,
+  VenueForm,
 };
