@@ -1,5 +1,13 @@
 import * as yup from "yup";
 
+/**
+ * VenueSchema
+ *
+ * A `yup` schema for validating venue data.
+ * Ensures all required fields are present and meet validation criteria.
+ *
+ * @returns {yup.ObjectSchema} A schema object for validating venue data.
+ */
 export const VenueSchema = yup.object({
   name: yup.string().min(6, "Name must be more than 6 characters").required(),
   description: yup

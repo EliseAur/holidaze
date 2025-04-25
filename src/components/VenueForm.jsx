@@ -2,6 +2,23 @@ import { Controller } from "react-hook-form";
 import PropTypes from "prop-types";
 import { SwitchField } from "./index";
 
+/**
+ * VenueForm Component
+ *
+ * This reusable form component renders the layout and fields for creating or updating a venue.
+ * It includes input fields for venue details such as name, description, images, price, location,
+ * and metadata (e.g., wifi, parking, breakfast, pets).
+ *
+ * Props:
+ * @param {Function} onSubmit - Callback function to handle form submission.
+ * @param {string} formTitle - The title of the form (e.g., "Create Venue" or "Update Venue").
+ * @param {string} submitButtonLabel - The label for the submit button (e.g., "Create Venue").
+ * @param {Object} errors - Validation errors for the form fields.
+ * @param {Object} control - React Hook Form's control object for managing controlled inputs.
+ * @param {Function} register - React Hook Form's register function for binding inputs.
+ *
+ * @returns {JSX.Element} The rendered VenueForm component.
+ */
 export default function VenueForm({
   onSubmit,
   formTitle,

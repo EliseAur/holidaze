@@ -1,5 +1,18 @@
 import PropTypes from "prop-types";
 
+/**
+ * VenueSuccessMsg Component
+ *
+ * This component displays a success message after a venue is successfully created or updated.
+ * It includes a title, a message, and a button to close the success message.
+ *
+ * Props:
+ * @param {string} title - The title of the success message.
+ * @param {string} message - The body of the success message.
+ * @param {Function} onClose - Callback function to close the success message.
+ *
+ * @returns {JSX.Element} The rendered VenueSuccessMsg component.
+ */
 export default function VenueSuccessMsg({ title, message, onClose }) {
   return (
     <div className="text-center p-5 pb-8">

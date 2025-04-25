@@ -9,6 +9,18 @@ import { VenueSchema } from "./schemas";
 import { VenueForm } from "./index";
 import { VenueSuccessMsg } from "./common";
 
+/**
+ * VenueCreateForm Component
+ *
+ * This component renders a form for creating a new venue. It uses shared utilities,
+ * schema validation, and a reusable form component to ensure consistency.
+ *
+ * Props:
+ * @param {Function} onClose - Callback function to close the form or modal.
+ * @param {Function} onUpdate - Callback function to refresh the parent component or venue list.
+ *
+ * @returns {JSX.Element} The rendered VenueCreateForm component.
+ */
 export default function VenueCreateForm({ onClose, onUpdate }) {
   const {
     register,
@@ -18,29 +30,38 @@ export default function VenueCreateForm({ onClose, onUpdate }) {
     formState: { errors },
   } = useForm({
     resolver: yupResolver(VenueSchema),
-    defaultValues: venueDefaultValues, // Use default values
+    defaultValues: venueDefaultValues, // Default form values
     mode: "onChange",
   });
 
   const [isCreated, setIsCreated] = useState(false);
 
+  /**
+   * Handles form submission.
+   *
+   * This function validates the form data, filters image URLs, and sends the data
+   * to the API to create a new venue. It also handles success and error states.
+   *
+   * @param {Object} data - The form data submitted by the user.
+   * @returns {Promise<void>}
+   */
   const onSubmit = async (data) => {
-    console.log("Form data before processing:", data); // Debugging: Log form data
+    console.log("Form data before processing:", data);
 
-    // Use the utility function to validate and filter images
+    // Validate and filter image URLs
     const filteredMedia = await validateAndFilterVenueImages(
       data.media,
       setError,
     );
     if (!filteredMedia) return; // Stop submission if validation fails
 
-    data.media = filteredMedia; // Update the media array with filtered results
+    data.media = filteredMedia;
 
     try {
       const newVenue = await createVenue(data);
       console.log("Venue created successfully:", newVenue);
-      setIsCreated(true); // Set the created state to true
-      onUpdate(); // Call the callback function to update the account page
+      setIsCreated(true);
+      onUpdate();
     } catch (error) {
       console.error("Error creating venue:", error);
 

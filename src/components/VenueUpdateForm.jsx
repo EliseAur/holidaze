@@ -9,6 +9,19 @@ import { VenueSchema } from "./schemas";
 import { VenueForm } from "./index";
 import { VenueSuccessMsg } from "./common";
 
+/**
+ * VenueUpdateForm Component
+ *
+ * This component renders a form for updating an existing venue. It uses shared utilities,
+ * schema validation, and a reusable form component to ensure consistency and maintainability.
+ *
+ * Props:
+ * @param {Object} venue - The venue object containing the current details of the venue to be updated.
+ * @param {Function} onClose - Callback function to close the form or modal after the venue is updated.
+ * @param {Function} onUpdate - Callback function to refresh the parent component or venue list.
+ *
+ * @returns {JSX.Element} The rendered VenueUpdateForm component.
+ */
 export default function VenueUpdateForm({ venue, onClose, onUpdate }) {
   const {
     register,
@@ -25,29 +38,43 @@ export default function VenueUpdateForm({ venue, onClose, onUpdate }) {
 
   const [isUpdated, setIsUpdated] = useState(false);
 
+  /**
+   * Populates the form with the current venue details when the `venue` prop changes.
+   *
+   * @returns {void}
+   */
   useEffect(() => {
     if (venue) {
       reset(venue); // Populate the form with venueDetails
     }
   }, [venue, reset]);
 
+  /**
+   * Handles form submission.
+   *
+   * This function validates the form data, filters image URLs, and sends the data
+   * to the API to update the venue. It also handles success and error states.
+   *
+   * @param {Object} data - The form data submitted by the user.
+   * @returns {Promise<void>}
+   */
   const onSubmit = async (data) => {
-    console.log("Form data before processing:", data); // Debugging: Log form data
+    console.log("Form data before processing:", data);
 
-    // Use the utility function to validate and filter images
+    // Validate and filter image URLs
     const filteredMedia = await validateAndFilterVenueImages(
       data.media,
       setError,
     );
     if (!filteredMedia) return; // Stop submission if validation fails
 
-    data.media = filteredMedia; // Update the media array with filtered results
+    data.media = filteredMedia;
 
     try {
       const updatedVenue = await updateVenue(venue.id, data);
       console.log("Venue updated successfully:", updatedVenue);
       setIsUpdated(true);
-      onUpdate(); // Call the callback function to update the account page
+      onUpdate();
     } catch (error) {
       console.error("Error updating venue:", error);
 
@@ -83,7 +110,6 @@ export default function VenueUpdateForm({ venue, onClose, onUpdate }) {
   );
 }
 
-// PropTypes for validation
 VenueUpdateForm.propTypes = {
   venue: PropTypes.shape({
     id: PropTypes.string.isRequired,

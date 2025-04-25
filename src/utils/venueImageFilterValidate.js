@@ -1,5 +1,16 @@
 import { validateImageUrls } from "./index";
 
+/**
+ * Validates and filters venue image URLs.
+ *
+ * This function ensures that all image URLs in the `media` array are valid and filters out
+ * empty or invalid URLs. It also ensures that the first image URL is always provided.
+ *
+ * @param {Array} media - An array of media objects, each containing a `url` property.
+ * @param {Function} setError - A function to set validation errors for invalid URLs.
+ * @returns {Promise<Array|boolean>} A promise that resolves to a filtered array of valid image objects,
+ *                                   or `false` if validation fails.
+ */
 export const validateAndFilterVenueImages = async (media, setError) => {
   // Check if the first image URL is empty
   if (!media[0].url) {
