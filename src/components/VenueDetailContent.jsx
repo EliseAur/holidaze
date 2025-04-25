@@ -201,32 +201,24 @@ export default function VenueDetailContent({
       )}
 
       {userName === owner.name && (
-        <div className="flex flex-col sm:flex-row mt-3 bg-lighterGreen rounded-sm shadow-sm px-5 py-3 ">
-          <p className="text-md sm:text-lg font-black mb-1 sm flex-grow">
-            Manage venue:
-          </p>
-          <div className="flex flex-grow justify-between items-center w-full sm:max-w-[280px]">
-            <button
-              onClick={openVenueModal}
-              className="bg-black shadow-custom-dark text-lightBeige text-xs font-bold px-4 py-2 rounded inline-block hover:bg-gray-900 w-full mr-2"
-            >
-              <FontAwesomeIcon
-                icon={faPenToSquare}
-                className="text-lightBeige mr-1"
-              />
-              Update Venue
-            </button>
-            <button
-              onClick={handleDeleteVenue}
-              className="bg-black shadow-custom-dark text-lightBeige text-xs font-bold px-4 py-2 rounded inline-block hover:bg-gray-900 w-full"
-            >
-              <FontAwesomeIcon
-                icon={faTrash}
-                className="text-lightBeige mr-1"
-              />
-              Delete Venue
-            </button>
-          </div>
+        <div className="flex p-3 mt-3">
+          <button
+            onClick={openVenueModal}
+            className="bg-black text-lightBeige text-xs font-bold px-4 py-2 rounded hover:bg-gray-900 w-full mr-2 "
+          >
+            <FontAwesomeIcon
+              icon={faPenToSquare}
+              className="text-lightBeige mr-1"
+            />
+            Update Venue
+          </button>
+          <button
+            onClick={handleDeleteVenue}
+            className="bg-black text-lightBeige text-xs font-bold px-4 py-2 rounded hover:bg-gray-900 w-full "
+          >
+            <FontAwesomeIcon icon={faTrash} className="text-lightBeige mr-1" />
+            Delete Venue
+          </button>
         </div>
       )}
       {/* Confirmation Modal */}
@@ -246,10 +238,10 @@ export default function VenueDetailContent({
       />
       <div className="mt-3 bg-lightBeige rounded-sm shadow-sm p-5">
         <div className="flex justify-between flex-grow">
-          <h1 className="text-lg sm:text-2xl italic font-black break-words mb-3">
-            {name}
+          <h1 className="text-lg sm:text-2xl italic font-black break-words mb-3 overflow-hidden ">
+            {name ? name : "Venue name"}
           </h1>
-          <div className="hidden sm:block mt-1">
+          <div className="hidden sm:flex mt-1 flex-row">
             <FontAwesomeIcon
               icon={faStar}
               className="text-yellow-500 text-lg"

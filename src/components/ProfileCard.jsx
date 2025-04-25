@@ -127,7 +127,7 @@ export default function ProfileCard({
             <div className="text-black">
               <button
                 onClick={openProfileModal}
-                className="bg-black text-sm text-white font-bold px-4 py-2 rounded mb-2 mt-6 lg:mt-3 inline-block hover:bg-gray-900 shadow-custom-dark w-full sm:max-w-[124px]"
+                className="bg-black text-sm text-white font-bold px-4 py-2 rounded mb-2 mt-6 lg:mt-3 inline-block hover:bg-gray-900 shadow-custom-dark w-full sm:max-w-[124px] cursor-pointer"
               >
                 <FontAwesomeIcon icon={faPenToSquare} className="mr-2" />
                 Edit profile
@@ -144,7 +144,7 @@ export default function ProfileCard({
               <div className="text-black">
                 <button
                   onClick={openVenueModal}
-                  className="bg-lightGreen shadow-custom-dark text-black text-sm font-bold px-4 py-2 mb-2 mt-1 lg:mt-3 rounded inline-block hover:bg-darkGreen w-full sm:max-w-[124px]"
+                  className="bg-lightGreen shadow-custom-dark text-black text-sm font-bold px-4 py-2 mb-2 mt-1 lg:mt-3 rounded inline-block hover:bg-darkGreen w-full sm:max-w-[124px] cursor-pointer"
                 >
                   + Add venue
                 </button>
