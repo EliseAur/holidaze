@@ -239,7 +239,7 @@ export default function VenueDetailContent({
       <div className="mt-3 bg-lightBeige rounded-sm shadow-sm p-5">
         <div className="flex justify-between flex-grow">
           <h1 className="text-lg sm:text-2xl italic font-black break-words mb-3 overflow-hidden ">
-            {name}
+            {name ? name : "Venue name"}
           </h1>
           <div className="hidden sm:flex mt-1 flex-row">
             <FontAwesomeIcon

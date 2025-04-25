@@ -41,7 +41,7 @@ export default function BookingCard({ booking }) {
       <div className="p-3">
         <Link to={`/venue/${booking.venue.id}`}>
           <h4 className="xs:text-lg sm:text-xl font-black underline hover:underline hover:decoration-2 truncate">
-            {booking.venue.name}
+            {booking.venue.name ? booking.venue.name : "Venue name"}
           </h4>
         </Link>
         <p className="text-sm mt-1">
