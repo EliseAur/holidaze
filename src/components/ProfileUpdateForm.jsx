@@ -1,51 +1,30 @@
 import { useState, useEffect } from "react";
+import { ProfileSchema } from "../schemas";
 import { updateProfile } from "../api/updateProfile";
 import { fetchProfile } from "../api/fetchProfile";
 import { isValidImageUrl } from "../utils";
 import { SwitchField } from "./index";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
 import PropTypes from "prop-types";
+import { profileDefaultValues } from "../constants";
+import { FormSuccessMsg } from "./common";
 
-const ProfileUpdateSchema = yup.object({
-  bio: yup
-    .string()
-    .max(80, "Bio must be less than 80 characters")
-    .nullable()
-    .notRequired(),
-  avatar: yup.object({
-    url: yup
-      .string()
-      .url("Must be a valid URL")
-      .typeError("Must be a valid URL")
-      .notRequired()
-      .nullable(),
-  }),
-  banner: yup.object({
-    url: yup
-      .string()
-      .url("Must be a valid URL")
-      .typeError("Must be a valid URL")
-      .notRequired()
-      .nullable(),
-  }),
-  venueManager: yup.boolean(),
-});
-
+/**
+ * ProfileUpdateForm Component
+ *
+ * This component renders a form for updating the user's profile. It includes fields for the user's bio,
+ * profile image, banner image, and an option to register as a host. The form uses schema validation
+ * with `yup` and handles image URL validation. It also displays a success message upon successful updates.
+ *
+ * Props:
+ * @param {Function} onClose - Callback function to close the form or modal.
+ * @param {Function} onUpdate - Callback function to refresh the parent component or profile page after an update.
+ *
+ * @returns {JSX.Element} The rendered ProfileUpdateForm component.
+ */
 export default function ProfileUpdateForm({ onClose, onUpdate }) {
-  const [profile, setProfile] = useState({
-    bio: "",
-    avatar: {
-      url: "",
-    },
-    banner: {
-      url: "",
-    },
-    venueManager: false,
-    venues: [], // Add venues to the profile state
-  });
-
+  const [profile, setProfile] = useState(profileDefaultValues);
   const [isUpdated, setIsUpdated] = useState(false); // Track if the profile is updated
 
   const {
@@ -56,7 +35,7 @@ export default function ProfileUpdateForm({ onClose, onUpdate }) {
     setError,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(ProfileUpdateSchema),
+    resolver: yupResolver(ProfileSchema),
     defaultValues: profile,
     mode: "onChange",
   });
@@ -133,21 +112,11 @@ export default function ProfileUpdateForm({ onClose, onUpdate }) {
   return (
     <div>
       {isUpdated ? (
-        <div className="text-center p-5 pb-8">
-          <h2 className="text-2xl font-black text-black mb-3">
-            Profile updated successfully!
-          </h2>
-          <p className="text-sm text-black">
-            Your profile has been updated. You can close this window or make
-            further changes.
-          </p>
-          <button
-            onClick={onClose}
-            className="bg-lightGreen shadow-custom-dark text-black font-bold px-4 py-2 rounded mt-4 inline-block hover:bg-darkGreen cursor-pointer"
-          >
-            Close
-          </button>
-        </div>
+        <FormSuccessMsg
+          title="Profile updated successfully!"
+          message="Your profile has been updated. You can close this window."
+          onClose={onClose}
+        />
       ) : (
         <form onSubmit={handleSubmit(onSubmit)} className="p-5 text-sm">
           <h2 className="text-2xl font-black text-black mb-3">
