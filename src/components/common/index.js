@@ -2,7 +2,7 @@ import BackToTop from "./BackToTop";
 import FacilityIconRounded from "./FacilitiesIcons";
 import ViewMoreButtonAccount from "./ViewMoreButtonAccount";
 import ErrorBox from "./ErrorBox";
-import VenueSuccessMsg from "./VenueSuccessMsg";
+import FormSuccessMsg from "./FormSuccessMsg";
 import VenueCardMedia from "./VenueMedia";
 
 export {
@@ -10,6 +10,6 @@ export {
   FacilityIconRounded,
   ViewMoreButtonAccount,
   ErrorBox,
-  VenueSuccessMsg,
+  FormSuccessMsg,
   VenueCardMedia,
 };

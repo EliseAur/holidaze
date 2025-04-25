@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import { updateVenue } from "../api/updateVenue";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { venueDefaultValues } from "../constants/venueDefaultvalues"; // Import default values
+import { venueDefaultValues } from "../constants"; // Import default values
 import { validateAndFilterVenueImages } from "../utils";
 import PropTypes from "prop-types";
-import { VenueSchema } from "./schemas";
+import { VenueSchema } from "../schemas";
 import { VenueForm } from "./index";
-import { VenueSuccessMsg } from "./common";
+import { FormSuccessMsg } from "./common";
 
 /**
  * VenueUpdateForm Component
@@ -90,7 +90,7 @@ export default function VenueUpdateForm({ venue, onClose, onUpdate }) {
   return (
     <div>
       {isUpdated ? (
-        <VenueSuccessMsg
+        <FormSuccessMsg
           title="Venue updated successfully!"
           message="Your venue has been updated. You can close this window."
           onClose={onClose}

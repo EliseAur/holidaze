@@ -2,12 +2,12 @@ import { useState } from "react";
 import { createVenue } from "../api/createVenue";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { venueDefaultValues } from "../constants/venueDefaultvalues"; // Import default values
+import { venueDefaultValues } from "../constants/"; // Import default values
 import { validateAndFilterVenueImages } from "../utils";
 import PropTypes from "prop-types";
-import { VenueSchema } from "./schemas";
+import { VenueSchema } from "../schemas";
 import { VenueForm } from "./index";
-import { VenueSuccessMsg } from "./common";
+import { FormSuccessMsg } from "./common";
 
 /**
  * VenueCreateForm Component
@@ -77,7 +77,7 @@ export default function VenueCreateForm({ onClose, onUpdate }) {
   return (
     <div>
       {isCreated ? (
-        <VenueSuccessMsg
+        <FormSuccessMsg
           title="Venue created successfully!"
           message="Your venue has been created. You can close this window."
           onClose={onClose}
