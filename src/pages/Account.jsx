@@ -204,7 +204,7 @@ export default function Account() {
                       <div className="text-black">
                         <button
                           onClick={openVenueModal}
-                          className="bg-lightGreen shadow-custom-dark text-black font-bold px-4 py-2 rounded mt-2 inline-block hover:bg-darkGreen"
+                          className="bg-lightGreen shadow-custom-dark text-black font-bold px-4 py-2 rounded mt-2 inline-block hover:bg-darkGreen cursor-pointer"
                         >
                           + Add a venue
                         </button>
@@ -223,7 +223,7 @@ export default function Account() {
                     <p>Edit profile to register.</p>
                     <button
                       onClick={openProfileModal}
-                      className="bg-lightGreen shadow-custom-dark text-black font-bold px-4 py-2 rounded mt-2 inline-block hover:bg-darkGreen"
+                      className="bg-lightGreen shadow-custom-dark text-black font-bold px-4 py-2 rounded mt-2 inline-block hover:bg-darkGreen cursor-pointer"
                     >
                       <FontAwesomeIcon icon={faPenToSquare} className="mr-2" />
                       Edit profile
