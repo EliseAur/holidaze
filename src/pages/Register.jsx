@@ -1,33 +1,25 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
+import { RegisterSchema } from "../schemas";
 import { authRegister } from "../api/authRegister";
 import { SwitchField } from "../components";
 import { useState } from "react";
 import useSEO from "../hooks/useSEO";
 
-// Define the validation schema using yup
-const registerSchema = yup.object().shape({
-  email: yup
-    .string()
-    .email("Please enter a valid email address")
-    .matches(
-      /^[a-zA-Z0-9._%+-]+@stud\.noroff\.no$/,
-      "Email must be in the format name@stud.noroff.no",
-    )
-    .required("Email is required"),
-  name: yup
-    .string()
-    .min(3, "Username must be at least 3 characters")
-    .required("Username is required"),
-  password: yup
-    .string()
-    .min(6, "Password must be at least 6 characters")
-    .required("Password is required"),
-  venueManager: yup.boolean(),
-});
-
+/**
+ * Register component for creating a new Holidaze account.
+ * Allows users to register by providing their email, username, and password.
+ * Users can also choose to register as a venue manager.
+ * Validates the form using `react-hook-form` and `yup`, and handles API errors gracefully.
+ * Redirects the user to the login page upon successful registration.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered Register component.
+ *
+ * @example
+ * <Register />
+ */
 export default function Register() {
   const navigate = useNavigate();
   const [apiError, setApiError] = useState(""); // State to track API error messages
@@ -48,15 +40,31 @@ export default function Register() {
     watch,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(registerSchema),
+    resolver: yupResolver(RegisterSchema),
     mode: "onBlur",
   });
 
-  // Handle form submission
+  /**
+   * Handles the form submission for user registration.
+   * Sends the user's registration data to the API and processes the response.
+   * If successful, navigates the user to the login page.
+   * If an error occurs, sets an appropriate error message.
+   *
+   * @async
+   * @param {Object} data - The form data containing the user's registration details.
+   * @param {string} data.email - The user's email address.
+   * @param {string} data.name - The user's username.
+   * @param {string} data.password - The user's password.
+   * @param {boolean} [data.venueManager] - Indicates if the user wants to register as a venue manager.
+   * @returns {Promise<void>} Resolves when the registration process is complete.
+   *
+   * @example
+   * const data = { email: "user@example.com", name: "username", password: "password123", venueManager: true };
+   * await onSubmit(data);
+   */
   const onSubmit = async (data) => {
     try {
-      const result = await authRegister(data);
-      console.log("Registration response:", result);
+      await authRegister(data);
       navigate("/login");
     } catch (error) {
       console.error("Error registering:", error);
@@ -78,7 +86,6 @@ export default function Register() {
       <p className="font-bold text-md text-beige text-shadow mb-4 leading-tight">
         To book venues and to become a host, please register your details below.
       </p>
-      {/* Display API error message */}
       {apiError && (
         <p className="text-red-600 text-sm text-center mb-4 bg-red-200 p-2 rounded-sm shadow-custom-dark border-2 border-red-500">
           {apiError}
@@ -86,7 +93,6 @@ export default function Register() {
       )}
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="grid grid-cols-1 gap-4 mb-4">
-          {/* Email input */}
           <div>
             <label
               htmlFor="email"
@@ -97,7 +103,7 @@ export default function Register() {
             <input
               id="email"
               type="email"
-              {...register("email")} // Register the email field
+              {...register("email")}
               className={`px-2 py-1 border ${
                 errors.email ? "border-red-400" : "border-darkBeige"
               } bg-lightBeige rounded-sm shadow-custom-dark w-full focus:border-lightGreen focus:border-2 focus:ring-lightGreen focus:outline-none`}
@@ -109,8 +115,6 @@ export default function Register() {
               </p>
             )}
           </div>
-
-          {/* Username input */}
           <div>
             <label
               htmlFor="name"
@@ -121,7 +125,7 @@ export default function Register() {
             <input
               id="name"
               type="text"
-              {...register("name")} // Register the username field
+              {...register("name")}
               className={`px-2 py-1 border ${
                 errors.name ? "border-red-400" : "border-darkBeige"
               } bg-lightBeige rounded-sm shadow-custom-dark w-full focus:border-lightGreen focus:border-2 focus:ring-lightGreen focus:outline-none`}
@@ -133,8 +137,6 @@ export default function Register() {
               </p>
             )}
           </div>
-
-          {/* Password input */}
           <div>
             <label
               htmlFor="password"
@@ -145,7 +147,7 @@ export default function Register() {
             <input
               id="password"
               type="password"
-              {...register("password")} // Register the password field
+              {...register("password")}
               className={`px-2 py-1 border ${
                 errors.password ? "border-red-400" : "border-darkBeige"
               } bg-lightBeige rounded-sm shadow-custom-dark w-full focus:border-lightGreen focus:border-2 focus:ring-lightGreen focus:outline-none`}
@@ -157,8 +159,6 @@ export default function Register() {
               </p>
             )}
           </div>
-
-          {/* Venue Manager toggle */}
           <div className="text-sm">
             <label
               htmlFor="venueManager"
