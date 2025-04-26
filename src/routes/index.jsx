@@ -10,6 +10,14 @@ import {
 } from "../pages";
 import { HomeLayout, BgPalmsLayout, MainLayout } from "../layouts";
 
+/**
+ * Router configuration for the application.
+ * Defines routes and their corresponding layouts and components.
+ *
+ * @example
+ * import { router } from "./routes";
+ * <RouterProvider router={router} />
+ */
 const router = createBrowserRouter([
   {
     path: "/",
@@ -20,7 +28,7 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/home", // Add this route for /home
+        path: "/home",
         element: <Home />,
       },
     ],

@@ -1,6 +1,20 @@
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
+/**
+ * NavWideScreen component renders the navigation menu for wide screens.
+ * It includes links to various pages such as Home, All Venues, Account, Favorites, and Register.
+ * The navigation adjusts based on the user's login status and whether they are a venue manager.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {boolean} props.isLoggedIn - Indicates if the user is logged in.
+ * @param {boolean} props.venueManager - Indicates if the user is a venue manager.
+ * @returns {JSX.Element} The navigation menu for wide screens.
+ *
+ * @example
+ * <NavWideScreen isLoggedIn={true} venueManager={false} />
+ */
 export function NavWideScreen({ isLoggedIn, venueManager }) {
   return (
     <nav className="hidden md:flex flex-grow justify-center items-center">
@@ -52,6 +66,20 @@ export function NavWideScreen({ isLoggedIn, venueManager }) {
   );
 }
 
+/**
+ * NavMobile component renders the navigation menu for mobile screens.
+ * It includes links to various pages such as Home, All Venues, Account, Favorites, and Register.
+ * The navigation adjusts based on the user's login status and whether they are a venue manager.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {boolean} props.isLoggedIn - Indicates if the user is logged in.
+ * @param {boolean} props.venueManager - Indicates if the user is a venue manager.
+ * @returns {JSX.Element} The navigation menu for mobile screens.
+ *
+ * @example
+ * <NavMobile isLoggedIn={true} venueManager={false} />
+ */
 export function NavMobile({ isLoggedIn, venueManager }) {
   return (
     <nav>

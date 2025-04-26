@@ -172,7 +172,7 @@ export default function VenueDetailContent({
   };
 
   return (
-    <div className="mx-auto p-4 max-w-[600px]">
+    <div className="mx-auto p-4 max-w-[630px]">
       <VenueMediaCarousel media={media} />
       {userName === owner.name && (
         <div className="flex p-3 mt-3">

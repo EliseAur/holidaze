@@ -2,6 +2,27 @@ import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import FilterVenuesForm from "./FilterVenuesForm";
 
+/**
+ * FilterVenues component provides filtering and search functionality for a list of venues.
+ * Allows users to filter venues by various criteria such as parking, pets, WiFi, breakfast, guests, and price.
+ * Passes the filtered venues back to the parent component via the `onFilter` callback.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {Array<Object>} props.venues - The array of venues to filter.
+ * @param {Function} props.onFilter - Callback function to pass the filtered venues to the parent component.
+ * @returns {JSX.Element} A form for filtering venues.
+ *
+ * @example
+ * const venues = [
+ *   { name: "Luxury Villa", meta: { parking: true, pets: false }, price: 100, maxGuests: 4 },
+ *   { name: "Cozy Cabin", meta: { parking: false, pets: true }, price: 50, maxGuests: 2 },
+ * ];
+ * const handleFilter = (filteredVenues) => {
+ *   console.log("Filtered Venues:", filteredVenues);
+ * };
+ * <FilterVenues venues={venues} onFilter={handleFilter} />;
+ */
 export default function FilterVenues({ venues, onFilter }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [filters, setFilters] = useState({

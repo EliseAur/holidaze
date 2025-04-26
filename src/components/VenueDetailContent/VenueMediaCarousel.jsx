@@ -34,7 +34,7 @@ export default function VenueMediaCarousel({ media }) {
         showThumbs={false}
         infiniteLoop
         useKeyboardArrows
-        className="mt-3 shadow-sm"
+        className="shadow-sm"
       >
         {media.map((image, index) => (
           <div key={index}>
@@ -42,7 +42,7 @@ export default function VenueMediaCarousel({ media }) {
               <img
                 src={image.url}
                 alt={image.alt || "Venue image"}
-                className="w-full h-60 sm:h-72 object-cover rounded-sm"
+                className="w-full h-60 sm:h-80 object-cover rounded-sm"
                 onError={() => handleImageError(index)}
               />
             ) : (

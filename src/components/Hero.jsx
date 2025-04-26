@@ -5,12 +5,34 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
+/**
+ * Hero component renders a hero section with a search bar, suggestions, and a call-to-action button.
+ * It allows users to search for venues and navigate to specific venue details.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {Array<Object>} props.allVenues - An array of venue objects to be displayed in the suggestions.
+ * @param {string} props.allVenues[].id - The unique ID of the venue.
+ * @param {string} props.allVenues[].name - The name of the venue.
+ * @returns {JSX.Element} The hero section with a search bar, suggestions, and a call-to-action button.
+ *
+ * @example
+ * const venues = [
+ *   { id: "1", name: "Luxury Villa" },
+ *   { id: "2", name: "Cozy Cabin" },
+ * ];
+ * <Hero allVenues={venues} />
+ */
 export default function Hero({ allVenues }) {
   const [searchQuery, setSearchQuery] = useState(""); // Search query
   const [filteredVenues, setFilteredVenues] = useState([]); // Filtered venues for suggestions
   const navigate = useNavigate();
 
-  // Handle search input change
+  /**
+   * Handles changes to the search input and filters venues based on the query.
+   *
+   * @param {Object} e - The input change event.
+   */
   const handleSearchChange = (e) => {
     const query = e.target.value.toLowerCase();
     setSearchQuery(query);
@@ -26,7 +48,11 @@ export default function Hero({ allVenues }) {
     }
   };
 
-  // Handle venue click
+  /**
+   * Handles venue click and navigates to the venue detail page.
+   *
+   * @param {string} venueId - The ID of the clicked venue.
+   */
   const handleVenueClick = (venueId) => {
     navigate(`/venue/${venueId}`); // Navigate to the VenueDetail page
   };

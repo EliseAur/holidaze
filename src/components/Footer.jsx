@@ -1,5 +1,15 @@
 import FooterWithNoBg from "./FooterWithNoBg";
 
+/**
+ * Footer component renders the footer section of the application.
+ * It includes a background overlay (bg-palms) and a nested FooterWithNoBg component.
+ *
+ * @component
+ * @returns {JSX.Element} The footer section of the application.
+ *
+ * @example
+ * <Footer />
+ */
 export default function Footer() {
   return (
     <footer

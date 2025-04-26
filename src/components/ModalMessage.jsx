@@ -1,5 +1,27 @@
 import PropTypes from "prop-types";
 
+/**
+ * ModalMessage component renders a modal dialog box with a message.
+ * It provides options to display confirm and cancel buttons or a single close button.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {boolean} props.isOpen - Controls whether the modal is visible.
+ * @param {string} props.message - The message to display in the modal.
+ * @param {Function} props.onClose - Function to close the modal.
+ * @param {Function} [props.onConfirm] - Function to handle confirmation (optional).
+ * @param {boolean} [props.showConfirmButtons] - Whether to show confirm and cancel buttons (optional).
+ * @returns {JSX.Element|null} The modal component or `null` if `isOpen` is false.
+ *
+ * @example
+ * <ModalMessage
+ *   isOpen={true}
+ *   message="Are you sure you want to proceed?"
+ *   onClose={() => setIsOpen(false)}
+ *   onConfirm={() => handleConfirm()}
+ *   showConfirmButtons={true}
+ * />
+ */
 export default function ModalMessage({
   isOpen,
   message,
@@ -46,9 +68,9 @@ export default function ModalMessage({
 }
 
 ModalMessage.propTypes = {
-  isOpen: PropTypes.bool.isRequired, // Controls whether the modal is visible
-  message: PropTypes.string.isRequired, // The message to display in the modal
-  onClose: PropTypes.func.isRequired, // Function to close the modal
-  onConfirm: PropTypes.func, // Function to handle confirmation
-  showConfirmButtons: PropTypes.bool, // Whether to show confirm/cancel buttons
+  isOpen: PropTypes.bool.isRequired,
+  message: PropTypes.string.isRequired,
+  onClose: PropTypes.func.isRequired,
+  onConfirm: PropTypes.func,
+  showConfirmButtons: PropTypes.bool,
 };

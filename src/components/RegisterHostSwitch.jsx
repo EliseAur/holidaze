@@ -1,6 +1,28 @@
 import { Switch } from "@headlessui/react";
 import PropTypes from "prop-types";
 
+/**
+ * SwitchField component renders a toggle switch with a label.
+ * It allows users to toggle between two states (checked/unchecked).
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {string} props.label - The label text displayed next to the switch.
+ * @param {boolean} props.checked - The current state of the switch (true for checked, false for unchecked).
+ * @param {Function} props.onChange - Function to handle the state change of the switch.
+ * @param {string} [props.textColor] - Optional text color for the label.
+ * @param {string} [props.textShadow] - Optional text shadow for the label.
+ * @returns {JSX.Element} The toggle switch with a label.
+ *
+ * @example
+ * <SwitchField
+ *   label="Enable Notifications"
+ *   checked={isEnabled}
+ *   onChange={handleToggle}
+ *   textColor="text-black"
+ *   textShadow="shadow-md"
+ * />
+ */
 export default function SwitchField({
   label,
   checked,

@@ -5,7 +5,11 @@ import {
   fetchAllVenuesWithoutPagination,
 } from "../api/fetchVenues";
 import { FilterVenues, VenueCard, LoadingSpinner } from "../components";
-import { BackToTop, ErrorBox } from "../components/common";
+import {
+  BackToTop,
+  ErrorBox,
+  ViewMoreButtonAccount,
+} from "../components/common";
 import { useFavorites } from "../hooks/useFavorites";
 import useSEO from "../hooks/useSEO";
 
@@ -162,16 +166,29 @@ function Venues() {
             ))}
           </div>
           {filteredVenues.length === 0 && venues.length < allVenues.length && (
-            <div className="flex justify-center items-center mx-auto">
-              <button
-                className="bg-black text-beige font-bold py-2 px-4 rounded mt-8 shadow-custom-dark hover:bg-gray-900 block mr-2 cursor-pointer w-[170px]"
-                onClick={loadMoreVenues}
-                disabled={loading}
-              >
-                {loading ? "Loading..." : "Load More Venues"}
-              </button>
-              <BackToTop />
-            </div>
+            <>
+              <div className="flex justify-center items-center max-w-[220px] mx-auto">
+                <ViewMoreButtonAccount
+                  isShown={false}
+                  toggleShown={loadMoreVenues}
+                  totalItems={allVenues.length}
+                  visibleItems={venues.length}
+                  showText="Load More Venues"
+                  hideText="Loading..."
+                />
+                <BackToTop />
+              </div>
+
+              <div className="text-center mt-2 mr-12">
+                <p className="text-sm text-black">
+                  Showing{" "}
+                  <span className="underline font-bold">
+                    {venues.length} of {allVenues.length}
+                  </span>{" "}
+                  venues
+                </p>
+              </div>
+            </>
           )}
         </>
       )}
