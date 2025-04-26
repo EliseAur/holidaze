@@ -83,7 +83,7 @@ export default function Login() {
   return (
     <div className="w-full max-w-xs p-4 mx-auto">
       <h1 className="text-4xl font-black italic text-lightGreen text-shadow mb-4">
-        Login yes
+        Login
       </h1>
       {apiError && (
         <p className="text-red-600 text-sm text-center mb-4 bg-red-100 p-2 rounded-sm shadow-custom-dark border-1 border-red-400">

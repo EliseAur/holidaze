@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import PropTypes from "prop-types";
@@ -16,9 +16,14 @@ import PropTypes from "prop-types";
  * @returns {JSX.Element} The rendered VenueMediaCarousel component.
  */
 export default function VenueMediaCarousel({ media }) {
-  const [imageValidity, setImageValidity] = useState(
-    media.map(() => true), // Initialize all images as valid
-  );
+  const [imageValidity, setImageValidity] = useState([]);
+
+  // Reset imageValidity whenever the media prop changes
+  useEffect(() => {
+    setImageValidity(media.map(() => true)); // Initialize all images as valid
+  }, [media]);
+
+  console.log("Image validity:", imageValidity);
 
   const handleImageError = (index) => {
     setImageValidity((prev) => {
@@ -31,6 +36,7 @@ export default function VenueMediaCarousel({ media }) {
   if (media.length > 1) {
     return (
       <Carousel
+        key={media.map((image) => image.url).join(",")} // Use media URLs as a unique key
         showThumbs={false}
         infiniteLoop
         useKeyboardArrows
@@ -46,7 +52,7 @@ export default function VenueMediaCarousel({ media }) {
                 onError={() => handleImageError(index)}
               />
             ) : (
-              <div className="w-full h-60 sm:h-72 bg-gray-300 flex items-center justify-center rounded-sm">
+              <div className="w-full h-60 sm:h-80 bg-gray-300 flex items-center justify-center rounded-sm">
                 <span className="text-gray-700">No image found</span>
               </div>
             )}
@@ -61,18 +67,18 @@ export default function VenueMediaCarousel({ media }) {
       <img
         src={media[0].url}
         alt={media[0].alt || "Venue image"}
-        className="mt-3 w-full h-60 sm:h-72 object-cover rounded-sm"
+        className="mt-3 w-full h-60 sm:h-80 object-cover rounded-sm"
         onError={() => handleImageError(0)}
       />
     ) : (
-      <div className="mt-3 w-full h-60 sm:h-72 bg-gray-300 flex items-center justify-center rounded-sm">
+      <div className="mt-3 w-full h-60 sm:h-80 bg-gray-300 flex items-center justify-center rounded-sm">
         <span className="text-gray-700">No image found</span>
       </div>
     );
   }
 
   return (
-    <div className="mt-3 w-full h-60 sm:h-72 bg-gray-300 flex items-center justify-center rounded-sm">
+    <div className="mt-3 w-full h-60 sm:h-80 bg-gray-300 flex items-center justify-center rounded-sm">
       <span className="text-gray-700 text-light">No image available</span>
     </div>
   );

@@ -74,7 +74,7 @@ export default function VenueUpdateForm({ venue, onClose, onUpdate }) {
       const updatedVenue = await updateVenue(venue.id, data);
       console.log("Venue updated successfully:", updatedVenue);
       setIsUpdated(true);
-      onUpdate();
+      onUpdate(updatedVenue);
     } catch (error) {
       console.error("Error updating venue:", error);
 
