@@ -9,6 +9,17 @@ import { BackToTop, ErrorBox } from "../components/common";
 import { useFavorites } from "../hooks/useFavorites";
 import useSEO from "../hooks/useSEO";
 
+/**
+ * Venues component for displaying a list of all available venues.
+ * Supports pagination, filtering, and searching for venues.
+ * Allows users to mark venues as favorites and load more venues dynamically.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered Venues component.
+ *
+ * @example
+ * <Venues />
+ */
 function Venues() {
   const [allVenues, setAllVenues] = useState([]); // Store all venues fetched in the background
   const [venues, setVenues] = useState([]); // Initialize the state with an empty array
@@ -28,7 +39,13 @@ function Venues() {
       "all venues, vacation homes, holiday rentals, venue search, venue filters, Holidaze",
   });
 
-  // Fetch all venues in the background
+  /**
+   * Fetches all venues in the background without pagination.
+   * Stores the fetched venues in the `allVenues` state.
+   *
+   * @async
+   * @returns {Promise<void>} Resolves when all venues are fetched.
+   */
   useEffect(() => {
     async function fetchAllVenuesInBackground() {
       try {
@@ -43,7 +60,13 @@ function Venues() {
     fetchAllVenuesInBackground();
   }, []);
 
-  // Fetch paginated venues
+  /**
+   * Fetches paginated venues based on the current page.
+   * Updates the `venues` state with the fetched data.
+   *
+   * @async
+   * @returns {Promise<void>} Resolves when paginated venues are fetched.
+   */
   useEffect(() => {
     async function getPaginatedVenues() {
       try {
@@ -68,6 +91,12 @@ function Venues() {
     getPaginatedVenues();
   }, [page]);
 
+  /**
+   * Handles filtering of venues based on user input.
+   * Updates the `filteredVenues` and `noMatches` states accordingly.
+   *
+   * @param {Array<Object>|null} filtered - The filtered venues or `null` to reset filters.
+   */
   const handleFilter = useCallback((filtered) => {
     if (filtered === null) {
       setFilteredVenues([]); // Reset filters: show paginated venues
@@ -82,10 +111,18 @@ function Venues() {
     }
   }, []);
 
+  /**
+   * Loads more venues by incrementing the page number.
+   */
   const loadMoreVenues = () => {
     setPage((prevPage) => prevPage + 1); // Increment the page number
   };
 
+  /**
+   * Determines the venues to display based on filtering and pagination.
+   *
+   * @returns {Array<Object>} The venues to display.
+   */
   const venuesToDisplay = noMatches
     ? []
     : filteredVenues.length > 0
