@@ -8,12 +8,24 @@ import {
   VenueUpdateForm,
   ModalMessage,
 } from "../components";
+import { resetBookingForm, calculateTotalPrice } from "../utils";
 import { VenueDetailContent } from "../components/VenueDetailContent";
 import { ErrorBox } from "../components/common";
 import useSEO from "../hooks/useSEO";
 import { fetchBooking } from "../api";
-import { differenceInDays, eachDayOfInterval, isSameDay } from "date-fns";
+import { eachDayOfInterval, isSameDay } from "date-fns";
 
+/**
+ * VenueDetail component for displaying detailed information about a specific venue.
+ * Handles booking functionality, date selection, and venue updates.
+ * Includes modals for booking confirmation, error messages, and venue updates.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered VenueDetail component.
+ *
+ * @example
+ * <VenueDetail />
+ */
 function VenueDetail() {
   const { id } = useParams();
   const [venue, setVenue] = useState(null);
@@ -60,7 +72,6 @@ function VenueDetail() {
     try {
       setError(null); // Reset error state
       const venue = await fetchVenueDetails(id);
-      console.log("Venue details with API fetch:", venue);
       setVenue(venue);
     } catch (error) {
       setError(
@@ -77,20 +88,13 @@ function VenueDetail() {
     const [start, end] = dates;
     setStartDate(start);
     setEndDate(end);
-
-    if (start && end) {
-      const nights = differenceInDays(end, start);
-      setTotalPrice(nights * venue.price);
-    } else {
-      // Reset the total price if the range is incomplete
-      setTotalPrice(0);
-    }
+    setTotalPrice(calculateTotalPrice(start, end, venue.price));
   };
 
   const handleBooking = async () => {
     if (!startDate || !endDate) {
       openMessageModal("Please select valid start and end dates.");
-      resetBookingForm(); // Reset the form
+      resetForm(); // Reset the form
       return;
     }
     // Validate the selected dates
@@ -122,32 +126,26 @@ function VenueDetail() {
 
       // Re-fetch the venue details to update bookings
       await loadVenue();
-
       openBookingModal(); // Open the modal
-      resetBookingForm(); // Reset the form
+      resetForm(); // Reset the form
     } catch (error) {
       console.error("Error booking:", error);
       openMessageModal(
-        "An error occurred while booking. Please try again later.",
+        `An error occurred while booking. Please try again later. ${error.message}`,
       );
-      resetBookingForm(); // Reset the form
+      resetForm(); // Reset the form
     }
   };
 
-  const resetBookingForm = () => {
-    setStartDate(null); // Reset start date
-    setEndDate(null); // Reset end date
-    setGuests(1); // Reset guests to default value
-    setTotalPrice(0); // Reset total price
-  };
+  const resetForm = () =>
+    resetBookingForm(setStartDate, setEndDate, setGuests, setTotalPrice);
 
   if (error) {
-    console.log("Error fetching venue:", error);
     return <ErrorBox message={error} />;
   }
 
   if (isRedirecting) {
-    return <Navigate to="/account" />; // Redirect to the account page
+    return <Navigate to="/account" />;
   }
 
   if (!venue) {
@@ -173,14 +171,17 @@ function VenueDetail() {
           setIsRedirecting={setIsRedirecting}
         />
       )}
+
       <Modal isOpen={isBookingModalOpen} onClose={closeBookingModal}>
         <BookingConfirmation onClose={closeBookingModal} />
       </Modal>
+
       <ModalMessage
         isOpen={isMessageModalOpen}
         message={modalMessage}
         onClose={closeMessageModal}
       />
+
       <Modal isOpen={isVenueModalOpen} onClose={closeVenueModal}>
         <VenueUpdateForm
           venue={venue}

@@ -4,6 +4,7 @@ import { sortBookingsByDate } from "./sortBookingsByDateFrom";
 import { sortVenuesByCreated } from "./sortVenuesByCreated";
 import { filterUpcomingBookings } from "./filterUpcomingBookings";
 import { sliceItemsByScreenSize } from "./sliceItemsByScreenSize";
+import { resetBookingForm, calculateTotalPrice } from "./bookingUtils";
 
 export {
   isValidImageUrl,
@@ -13,4 +14,6 @@ export {
   sortVenuesByCreated,
   filterUpcomingBookings,
   sliceItemsByScreenSize,
+  resetBookingForm,
+  calculateTotalPrice,
 };
