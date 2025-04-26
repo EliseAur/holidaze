@@ -4,6 +4,9 @@ import * as yup from "yup";
  * ProfileSchema
  *
  * A `yup` schema for validating profile update data.
+ * Ensures the bio, avatar, banner, and venue manager fields meet validation criteria.
+ *
+ * @returns {yup.ObjectSchema} A schema object for validating profile update data.
  */
 export const ProfileSchema = yup.object({
   bio: yup

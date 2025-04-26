@@ -6,6 +6,17 @@ import { fetchFavorites } from "../api/fetchFavorites";
 import { useFavorites } from "../hooks/useFavorites";
 import useSEO from "../hooks/useSEO";
 
+/**
+ * Favorites component for displaying and managing the user's favorite venues.
+ * Fetches the user's favorite venues from the API and allows users to view or remove them from their favorites list.
+ * Displays a loading spinner while fetching data and an error message if the fetch fails.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered Favorites component.
+ *
+ * @example
+ * <Favorites />
+ */
 export default function Favorites() {
   const { favorites, handleFavoriteClick } = useFavorites(true);
   const [favoriteVenues, setFavoriteVenues] = useState([]);
