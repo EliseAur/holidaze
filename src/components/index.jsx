@@ -14,7 +14,6 @@ import {
 import FilterVenuesForm from "./FilterVenuesForm";
 import FilterVenues from "./FilterVenues";
 import VenueCard from "./VenueCard";
-import VenueDetailContent from "./VenueDetailContent";
 import Footer from "./Footer";
 import FooterWithNoBg from "./FooterWithNoBg";
 import SwitchField from "./RegisterHostSwitch";
@@ -41,7 +40,6 @@ export {
   VenueCard,
   Footer,
   FooterWithNoBg,
-  VenueDetailContent,
   SwitchField,
   LoadingSpinner,
   Logo,

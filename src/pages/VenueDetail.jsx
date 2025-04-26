@@ -2,13 +2,13 @@ import { useState, useEffect, useCallback } from "react";
 import { useParams, Navigate } from "react-router-dom";
 import { fetchVenueDetails } from "../api";
 import {
-  VenueDetailContent,
   LoadingSpinner,
   Modal,
   BookingConfirmation,
   VenueUpdateForm,
   ModalMessage,
 } from "../components";
+import { VenueDetailContent } from "../components/VenueDetailContent";
 import { ErrorBox } from "../components/common";
 import useSEO from "../hooks/useSEO";
 import { fetchBooking } from "../api";
