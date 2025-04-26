@@ -1,5 +1,21 @@
 import { useEffect } from "react";
 
+/**
+ * Custom hook to manage SEO metadata for a page.
+ * Updates the document's title, meta description, and meta keywords dynamically.
+ *
+ * @param {Object} params - The parameters for the hook.
+ * @param {string} params.title - The title to set for the document.
+ * @param {string} params.description - The meta description to set for the document.
+ * @param {string} params.keywords - The meta keywords to set for the document.
+ *
+ * @example
+ * useSEO({
+ *   title: "Holidaze | Home",
+ *   description: "Find the best venues for your next vacation.",
+ *   keywords: "vacation, venues, travel, booking",
+ * });
+ */
 export default function useSEO({ title, description, keywords }) {
   useEffect(() => {
     // Update the title

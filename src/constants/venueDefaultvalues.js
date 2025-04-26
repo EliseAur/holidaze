@@ -1,3 +1,8 @@
+/**
+ * Default values for a venue object.
+ * This object provides the initial structure and default values for creating or updating a venue.
+ * Used in VenueCreateForm and VenueUpdateForm components.
+ */
 export const venueDefaultValues = {
   name: "",
   description: "",
