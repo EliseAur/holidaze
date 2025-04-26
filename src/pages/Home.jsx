@@ -6,6 +6,17 @@ import { BackToTop, ErrorBox } from "../components/common";
 import { useFavorites } from "../hooks/useFavorites";
 import useSEO from "../hooks/useSEO";
 
+/**
+ * Home component for displaying the latest venues and managing user interactions.
+ * Fetches the latest venues from the API and allows users to view them, mark them as favorites, or navigate to all venues.
+ * Displays a loading spinner while fetching data and an error message if the fetch fails.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered Home component.
+ *
+ * @example
+ * <Home />
+ */
 function Home() {
   const [latestVenues, setLatestVenues] = useState([]); // Initialize the state with an empty array
   const { isLoggedIn } = useOutletContext();

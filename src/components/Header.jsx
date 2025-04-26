@@ -13,6 +13,17 @@ import {
 } from "./index";
 import { useAuth } from "../context/useAuth";
 
+/**
+ * Header component renders the navigation header for the application.
+ * It includes a logo, navigation links for wide and mobile screens, and login/logout functionality.
+ * The mobile menu can be toggled open or closed, and it automatically closes when clicking outside or navigating to a new route.
+ *
+ * @component
+ * @returns {JSX.Element} The header component with navigation and menu functionality.
+ *
+ * @example
+ * <Header />
+ */
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
@@ -24,22 +35,34 @@ export default function Header() {
     handleLogout: authHandleLogout,
   } = useAuth(); // Use the handleLogout from AuthProvider
 
+  /**
+   * Toggles the mobile menu open or closed.
+   */
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
+  /**
+   * Closes the mobile menu when clicking outside of it.
+   *
+   * @param {Event} event - The click event.
+   */
   const handleClickOutside = (event) => {
     if (menuRef.current && !menuRef.current.contains(event.target)) {
       setIsOpen(false);
     }
   };
 
-  // Close the menu when the route changes
+  /**
+   * Automatically closes the mobile menu when the route changes.
+   */
   useEffect(() => {
     setIsOpen(false);
   }, [location]);
 
-  // Add event listener to detect clicks outside the menu
+  /**
+   * Adds or removes an event listener to detect clicks outside the mobile menu.
+   */
   useEffect(() => {
     if (isOpen) {
       document.addEventListener("mousedown", handleClickOutside);
@@ -51,7 +74,9 @@ export default function Header() {
     };
   }, [isOpen]);
 
-  // Logout function
+  /**
+   * Logs the user out and navigates to the login page.
+   */
   const handleLogout = () => {
     authHandleLogout(); // Call the handleLogout from AuthProvider
     navigate("/login"); // Navigate to the login page
@@ -70,14 +95,14 @@ export default function Header() {
               <LoginRegWideScreen />
             )}
           </div>
-          <div className="md:hidden ml-auto">
+          <div className="md:hidden ml-auto mt-1 mr-1">
             <button
               onClick={toggleMenu}
               className="text-white focus:outline-none"
             >
               <FontAwesomeIcon
                 icon={isOpen ? faTimes : faBars}
-                className="h-6 w-6 text-2xl hover:text-lightGreen text-shadow"
+                className="h-6 w-6 text-3xl hover:text-lightGreen text-shadow"
                 title={isOpen ? "Close menu" : "Open menu"}
               />
             </button>

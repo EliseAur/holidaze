@@ -1,29 +1,24 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
+import { LoginSchema } from "../schemas";
 import { authLogin } from "../api/authLogin";
 import { useAuth } from "../context/useAuth";
 import { useState } from "react";
 import useSEO from "../hooks/useSEO";
 
-// Define the validation schema using yup
-const loginSchema = yup.object().shape({
-  email: yup
-    .string()
-    .email("Please enter a valid email address")
-    .matches(
-      /^[a-zA-Z0-9._%+-]+@stud\.noroff\.no$/,
-      "Email must be in the format name@stud.noroff.no",
-    )
-
-    .required("Email is required"),
-  password: yup
-    .string()
-    .min(6, "Password must be at least 6 characters")
-    .required("Password is required"),
-});
-
+/**
+ * Login component for user authentication.
+ * Allows users to log in to their Holidaze account by submitting their email and password.
+ * Validates the form using `react-hook-form` and `yup`, and handles API errors gracefully.
+ * Redirects the user to their account page upon successful login.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered Login component.
+ *
+ * @example
+ * <Login />
+ */
 export default function Login() {
   const navigate = useNavigate();
   const { handleLogin } = useAuth();
@@ -43,33 +38,44 @@ export default function Login() {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(loginSchema),
+    resolver: yupResolver(LoginSchema),
     mode: "onBlur",
   });
 
-  // Handle form submission
+  /**
+   * Handles the form submission for user login.
+   * Sends the user's email and password to the authentication API and processes the response.
+   * If successful, stores the user's token and navigates to the account page.
+   * If an error occurs, sets an appropriate error message.
+   *
+   * @async
+   * @param {Object} data - The form data containing the user's email and password.
+   * @param {string} data.email - The user's email address.
+   * @param {string} data.password - The user's password.
+   * @returns {Promise<void>} Resolves when the login process is complete.
+   *
+   * @example
+   * const data = { email: "user@example.com", password: "password123" };
+   * await onSubmit(data);
+   */
   const onSubmit = async (data) => {
     try {
       const result = await authLogin(data.email, data.password);
-      console.log("Login response:", result);
 
-      // Store the token in local storage
+      // Check if the response contains the required data
       if (result && result.accessToken && result.name) {
         handleLogin(result.accessToken, result.name, result.venueManager);
         navigate("/account");
       } else {
         setApiError("Unexpected error occurred. Please try again.");
-        console.error("Token or name not found in the response");
       }
     } catch (error) {
-      console.error("1) Error logging in:", error);
-
-      // Log the entire error object to inspect its structure
-      console.log("Full error object:", error);
       if (error.message) {
         setApiError(error.message);
       } else {
-        setApiError("An unexpected error occurred. Please try again.");
+        setApiError(
+          error.message || "An unexpected error occurred. Please try again.",
+        );
       }
     }
   };
@@ -79,7 +85,6 @@ export default function Login() {
       <h1 className="text-4xl font-black italic text-lightGreen text-shadow mb-4">
         Login
       </h1>
-      {/* Display API error message */}
       {apiError && (
         <p className="text-red-600 text-sm text-center mb-4 bg-red-100 p-2 rounded-sm shadow-custom-dark border-1 border-red-400">
           {apiError}
@@ -87,7 +92,6 @@ export default function Login() {
       )}
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="grid grid-cols-1 gap-4 mb-4">
-          {/* Email input */}
           <div>
             <label
               htmlFor="email"
@@ -98,7 +102,7 @@ export default function Login() {
             <input
               id="email"
               type="email"
-              {...register("email")} // Register the email field
+              {...register("email")}
               className={`px-2 py-1 border ${
                 errors.email ? "border-red-500" : "border-darkBeige"
               } bg-lightBeige rounded-sm shadow-custom-dark w-full focus:border-lightGreen focus:border-2 focus:ring-lightGreen focus:outline-none`}
@@ -110,8 +114,6 @@ export default function Login() {
               </p>
             )}
           </div>
-
-          {/* Password input */}
           <div>
             <label
               htmlFor="password"
@@ -122,7 +124,7 @@ export default function Login() {
             <input
               id="password"
               type="password"
-              {...register("password")} // Register the password field
+              {...register("password")}
               className={`px-2 py-1 border ${
                 errors.password ? "border-red-500" : "border-darkBeige"
               } bg-lightBeige rounded-sm shadow-custom-dark w-full focus:border-lightGreen focus:border-2 focus:ring-lightGreen focus:outline-none`}

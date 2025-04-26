@@ -3,12 +3,21 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import PropTypes from "prop-types";
 
+/**
+ * Logo component renders the application logo as a clickable link to the homepage.
+ *
+ * @component
+ * @returns {JSX.Element} The logo styled as a link to the homepage.
+ *
+ * @example
+ * <Logo />
+ */
 export function Logo() {
   return (
     <div>
       <Link
         to="/"
-        className="text-2xl text-shadow font-black italic text-lightGreen hover:text-darkGreen sm:text-3xl"
+        className="text-3xl text-shadow font-black italic text-lightGreen hover:text-darkGreen sm:text-3xl"
       >
         HoliDaze
       </Link>
@@ -16,6 +25,17 @@ export function Logo() {
   );
 }
 
+/**
+ * LogoutAccountBtnWideScreen component renders a logout button and an account link for wide screens.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {Function} props.handleLogout - Function to handle the logout action.
+ * @returns {JSX.Element} A logout button and an account link styled for wide screens.
+ *
+ * @example
+ * <LogoutAccountBtnWideScreen handleLogout={handleLogout} />
+ */
 export function LogoutAccountBtnWideScreen({ handleLogout }) {
   const location = useLocation();
   return (
@@ -36,6 +56,17 @@ export function LogoutAccountBtnWideScreen({ handleLogout }) {
   );
 }
 
+/**
+ * LogoutAccountBtnMobile component renders a logout button and an account link for mobile screens.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {Function} props.handleLogout - Function to handle the logout action.
+ * @returns {JSX.Element} A logout button and an account link styled for mobile screens.
+ *
+ * @example
+ * <LogoutAccountBtnMobile handleLogout={handleLogout} />
+ */
 export function LogoutAccountBtnMobile({ handleLogout }) {
   return (
     <div className="flex text-right px-4">
@@ -56,6 +87,15 @@ export function LogoutAccountBtnMobile({ handleLogout }) {
   );
 }
 
+/**
+ * LoginRegWideScreen component renders login and register buttons for wide screens.
+ *
+ * @component
+ * @returns {JSX.Element} Login and register buttons styled for wide screens.
+ *
+ * @example
+ * <LoginRegWideScreen />
+ */
 export function LoginRegWideScreen() {
   const location = useLocation();
 
@@ -77,6 +117,15 @@ export function LoginRegWideScreen() {
   );
 }
 
+/**
+ * LoginRegMobile component renders login and register buttons for mobile screens.
+ *
+ * @component
+ * @returns {JSX.Element} Login and register buttons styled for mobile screens.
+ *
+ * @example
+ * <LoginRegMobile />
+ */
 export function LoginRegMobile() {
   return (
     <div className="flex mt-5">

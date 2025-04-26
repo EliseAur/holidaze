@@ -1,6 +1,18 @@
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
+/**
+ * BookingConfirmation component displays a confirmation message after a successful booking.
+ * Includes a link to view all bookings in the user's account and a button to close the confirmation modal.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {Function} props.onClose - Function to handle closing the confirmation modal.
+ * @returns {JSX.Element} A styled confirmation message with a close button and a link to the account page.
+ *
+ * @example
+ * <BookingConfirmation onClose={() => setShowConfirmation(false)} />
+ */
 export default function BookingConfirmation({ onClose }) {
   return (
     <div className="flex flex-col items-center justify-center pb-10 pt-4">

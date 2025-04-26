@@ -1,5 +1,21 @@
 import PropTypes from "prop-types";
 
+/**
+ * Modal component renders a modal dialog box.
+ * It displays its children content when `isOpen` is true and provides a close button to dismiss the modal.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {boolean} props.isOpen - Determines whether the modal is open or not.
+ * @param {Function} props.onClose - Function to handle closing the modal.
+ * @param {React.ReactNode} props.children - The content to display inside the modal.
+ * @returns {JSX.Element|null} The modal component or `null` if `isOpen` is false.
+ *
+ * @example
+ * <Modal isOpen={true} onClose={() => setIsOpen(false)}>
+ *   <p>Modal Content</p>
+ * </Modal>
+ */
 export default function Modal({ isOpen, onClose, children }) {
   if (!isOpen) return null;
 

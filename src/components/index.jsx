@@ -14,7 +14,6 @@ import {
 import FilterVenuesForm from "./FilterVenuesForm";
 import FilterVenues from "./FilterVenues";
 import VenueCard from "./VenueCard";
-import VenueDetailContent from "./VenueDetailContent";
 import Footer from "./Footer";
 import FooterWithNoBg from "./FooterWithNoBg";
 import SwitchField from "./RegisterHostSwitch";
@@ -26,6 +25,7 @@ import ModalMessage from "./ModalMessage";
 import BookingConfirmation from "./BookingConformation";
 import ProfileCard from "./ProfileCard";
 import VenueUpdateForm from "./VenueUpdateForm";
+import VenueForm from "./VenueForm";
 import BookingCard from "./BookingCard";
 
 export {
@@ -40,7 +40,6 @@ export {
   VenueCard,
   Footer,
   FooterWithNoBg,
-  VenueDetailContent,
   SwitchField,
   LoadingSpinner,
   Logo,
@@ -56,4 +55,5 @@ export {
   VenueUpdateForm,
   ModalMessage,
   BookingCard,
+  VenueForm,
 };

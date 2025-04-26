@@ -1,6 +1,28 @@
 import { apiFetch } from "./apiFetch";
 import { API_HOLIDAZE_BASE } from "./apiConfig";
 
+/**
+ * Updates an existing venue with the provided data.
+ *
+ * @async
+ * @function
+ * @param {string} venueId - The ID of the venue to update.
+ * @param {Object} updatedVenue - The updated venue data.
+ * @returns {Promise<Object>} The response data from the API, including the updated venue details.
+ *
+ * @throws {Error} Throws an error if the request fails or the API returns an error.
+ *
+ * @example
+ * const updatedVenueData = {
+ *   name: "Updated Luxury Villa",
+ *   description: "An updated description for the villa.",
+ *   price: 600,
+ *   maxGuests: 12,
+ *   media: [{ url: "https://example.com/image.jpg" }],
+ * };
+ * const updatedVenue = await updateVenue("12345", updatedVenueData);
+ * console.log("Venue updated successfully:", updatedVenue);
+ */
 export async function updateVenue(venueId, updatedVenue) {
   if (!venueId) {
     throw new Error("Venue ID is required to update a venue");

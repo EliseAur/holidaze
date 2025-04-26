@@ -2,6 +2,17 @@ import { Outlet } from "react-router-dom";
 import { Header, FooterWithNoBg } from "../components";
 import { useAuth } from "../context/useAuth";
 
+/**
+ * BgPalmsLayout component provides a layout with a background image on header, footer and main content area.
+ * Used for Login page and register page.
+ * It uses the authentication context to pass login state and functions to child components via the Outlet.
+ *
+ * @component
+ * @returns {JSX.Element} The layout component with a background image and structured sections.
+ *
+ * @example
+ * <BgPalmsLayout />
+ */
 export default function BgPalmsLayout() {
   const { isLoggedIn, handleLogin, handleLogout } = useAuth();
 

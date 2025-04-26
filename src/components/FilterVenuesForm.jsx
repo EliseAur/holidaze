@@ -9,6 +9,45 @@ import {
   faSearch,
 } from "@fortawesome/free-solid-svg-icons";
 
+/**
+ * FilterVenuesForm component renders a form for filtering and searching venues.
+ * Allows users to filter venues by various criteria such as parking, pets, WiFi, breakfast, guests, and price.
+ * Includes a search bar and buttons to apply or reset filters.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {string} props.searchQuery - The current search query string.
+ * @param {Object} props.filters - The current filter settings.
+ * @param {boolean} props.filters.parking - Whether to filter venues with parking.
+ * @param {boolean} props.filters.pets - Whether to filter venues that allow pets.
+ * @param {boolean} props.filters.wifi - Whether to filter venues with WiFi.
+ * @param {boolean} props.filters.breakfast - Whether to filter venues with breakfast.
+ * @param {string} props.filters.guests - The number of guests to filter by.
+ * @param {string} props.filters.price - The price range to filter by.
+ * @param {Function} props.onSearchChange - Function to handle changes to the search input.
+ * @param {Function} props.onInputChange - Function to handle changes to the filter inputs.
+ * @param {Function} props.onApplyFilters - Function to apply the current filters.
+ * @param {Function} props.onResetFilters - Function to reset all filters to their default values.
+ * @returns {JSX.Element|null} A form for filtering venues, or `null` if the filters prop is undefined.
+ *
+ * @example
+ * const filters = {
+ *   parking: true,
+ *   pets: false,
+ *   wifi: true,
+ *   breakfast: false,
+ *   guests: "2",
+ *   price: "medium",
+ * };
+ * <FilterVenuesForm
+ *   searchQuery="Luxury"
+ *   filters={filters}
+ *   onSearchChange={handleSearchChange}
+ *   onInputChange={handleInputChange}
+ *   onApplyFilters={applyFilters}
+ *   onResetFilters={resetFilters}
+ * />;
+ */
 export default function FilterVenuesForm({
   searchQuery,
   filters,

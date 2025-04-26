@@ -8,6 +8,34 @@ import {
 import { Modal, ProfileUpdateForm, VenueCreateForm } from "./index";
 import placeholderImage from "../images/placeholder-profile-img.jpg";
 
+/**
+ * ProfileCard component displays a user's profile information, including name, email, bio, and avatar.
+ * It also provides options to edit the profile, add a venue (if the user is a venue manager), and navigate to sections like Hosting, Bookings, and Favorites.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {Object} props.profile - The user's profile data.
+ * @param {Function} props.openProfileModal - Function to open the profile edit modal.
+ * @param {Function} props.closeProfileModal - Function to close the profile edit modal.
+ * @param {boolean} props.isProfileModalOpen - Indicates if the profile edit modal is open.
+ * @param {Function} props.openVenueModal - Function to open the venue creation modal.
+ * @param {Function} props.closeVenueModal - Function to close the venue creation modal.
+ * @param {boolean} props.isVenueModalOpen - Indicates if the venue creation modal is open.
+ * @param {Function} props.getProfile - Function to refresh the profile data.
+ * @returns {JSX.Element} The profile card component.
+ *
+ * @example
+ * <ProfileCard
+ *   profile={profile}
+ *   openProfileModal={openProfileModal}
+ *   closeProfileModal={closeProfileModal}
+ *   isProfileModalOpen={isProfileModalOpen}
+ *   openVenueModal={openVenueModal}
+ *   closeVenueModal={closeVenueModal}
+ *   isVenueModalOpen={isVenueModalOpen}
+ *   getProfile={getProfile}
+ * />
+ */
 export default function ProfileCard({
   profile,
   openProfileModal,

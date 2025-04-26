@@ -5,6 +5,16 @@ import {
   faYoutube,
 } from "@fortawesome/free-brands-svg-icons";
 
+/**
+ * FooterWithNoBg component renders the footer content without a background.
+ * Includes social media links (Facebook, Instagram, YouTube) and copyright information.
+ *
+ * @component
+ * @returns {JSX.Element} The footer content with social media links and copyright text.
+ *
+ * @example
+ * <FooterWithNoBg />
+ */
 export default function FooterWithNoBg() {
   return (
     <>

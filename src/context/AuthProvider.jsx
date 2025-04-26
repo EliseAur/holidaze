@@ -2,6 +2,19 @@ import { useState } from "react";
 import { AuthContext } from "./AuthContext";
 import PropTypes from "prop-types";
 
+/**
+ * AuthProvider component manages authentication state and provides it to child components.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {React.ReactNode} props.children - The child components to wrap with the provider.
+ * @returns {JSX.Element} The AuthContext provider.
+ *
+ * @example
+ * <AuthProvider>
+ *   <App />
+ * </AuthProvider>
+ */
 export function AuthProvider({ children }) {
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
     // Check if the token exists in local storage

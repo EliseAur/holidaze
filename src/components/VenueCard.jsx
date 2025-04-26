@@ -1,6 +1,6 @@
 import { PropTypes } from "prop-types";
-import { useState } from "react";
 import { Link } from "react-router-dom";
+import { VenueCardMedia } from "./common";
 import FacilityIconRounded from "./common/FacilitiesIcons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -11,42 +11,43 @@ import {
   faSackDollar,
 } from "@fortawesome/free-solid-svg-icons";
 
+/**
+ * VenueCard Component
+ *
+ * This component renders a card displaying details about a venue, including its name, location,
+ * price, rating, and available facilities. It also includes a favorite button and a link to view
+ * or manage the venue.
+ *
+ * Props:
+ * @param {Object} venue - The venue object containing details such as `id`, `name`, `price`, and `location`.
+ * Example:
+ * {
+ *   id: "123",
+ *   name: "Luxury Villa",
+ *   price: 200,
+ *   location: { city: "Oslo", country: "Norway" },
+ *   rating: 4,
+ *   meta: { wifi: true, pets: false },
+ * }
+ * @param {boolean} [isFavorite] - Indicates if the venue is marked as a favorite.
+ * @param {Function} [onFavoriteClick] - Callback function triggered when the favorite button is clicked.
+ * @param {boolean} [isHostedByUser] - Indicates if the venue is hosted by the current user.
+ *
+ * @returns {JSX.Element} The rendered VenueCard component.
+ */
 export default function VenueCard({
   venue,
   isFavorite,
   onFavoriteClick,
   isHostedByUser,
 }) {
-  const [isImageValid, setIsImageValid] = useState(true);
-
-  const handleImageError = () => {
-    setIsImageValid(false); // Set the state to false if the image fails to load
-  };
-
   return (
     <div className="bg-lightBeige rounded-sm shadow-lg relative hover:shadow-custom-dark">
-      {venue.media.length > 0 && isImageValid ? (
-        <Link to={`/venue/${venue.id}`}>
-          <img
-            src={venue.media[0]?.url}
-            alt={venue.media[0]?.alt || "Venue image"}
-            className="rounded-t-sm w-full h-50 sm:h-56 object-cover object-center cursor-pointer"
-            onError={handleImageError} // Handle image load failure
-          />
-        </Link>
-      ) : (
-        <Link
-          to={`/venue/${venue.id}`}
-          className="rounded-t-sm w-full h-40 sm:h-56 object-cover object-center cursor-pointer bg-gray-300 flex items-center justify-center"
-        >
-          <span className="text-gray-700">
-            {venue.media.length > 0 && venue.media[0]?.url
-              ? "No image found"
-              : "No image provided"}
-          </span>
-        </Link>
-      )}
-
+      <VenueCardMedia
+        venueId={venue.id}
+        media={venue.media}
+        className="rounded-t-sm w-full h-50 sm:h-56 object-cover object-center cursor-pointer"
+      />
       <button
         className={`absolute top-2 right-2 text-2xl text-lightBeige text-shadow hover:scale-110 transform transition-transform duration-200 cursor-pointer ${isFavorite ? "text-lightGreen hover:none" : ""}`}
         title="Add to favorites"
