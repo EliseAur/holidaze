@@ -23,8 +23,6 @@ export async function fetchLatestVenues(limit = 12) {
     throw new Error("Data is not an array");
   }
 
-  console.log("Fetched Latest venues:", data);
-
   return data;
 }
 
@@ -51,8 +49,6 @@ export async function fetchAllVenues(page = 1, limit = 12) {
     throw new Error("Data is not an array");
   }
 
-  console.log("Fetched All venues", data);
-
   return data;
 }
 
@@ -76,8 +72,6 @@ export async function fetchAllVenuesWithoutPagination() {
   if (!Array.isArray(data)) {
     throw new Error("Data is not an array");
   }
-
-  console.log("Fetched All venues without pagination", data);
 
   return data;
 }

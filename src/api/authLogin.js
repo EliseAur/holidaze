@@ -34,10 +34,8 @@ export async function authLogin(email, password) {
 
   try {
     const result = await apiFetch(endpoint, options, false);
-    console.log("Login data:", result);
     return result;
   } catch (error) {
-    console.error("Error logging in:", error);
-    throw error;
+    throw new Error(`Failed to login: ${error.message}`);
   }
 }

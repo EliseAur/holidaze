@@ -40,9 +40,7 @@ function Home() {
         setError(null); // Reset error state
         const latest = await fetchLatestVenues();
         setLatestVenues(latest); // Store the latest venues in the state
-        console.log("Latest Fetched venues:", latest); // Log the fetched venues
       } catch (error) {
-        console.error("Error fetching venues:", error);
         setError(
           `Failed to load latest venues. Please try again later. ${error.message}`,
         );

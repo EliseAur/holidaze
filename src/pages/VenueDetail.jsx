@@ -95,7 +95,7 @@ function VenueDetail() {
   const handleBooking = async () => {
     if (!startDate || !endDate) {
       openMessageModal("Please select valid start and end dates.");
-      resetForm(); // Reset the form
+      resetForm();
       return;
     }
     // Validate the selected dates
@@ -111,7 +111,7 @@ function VenueDetail() {
       openMessageModal(
         "The selected dates overlap with an existing booking. Please choose different dates.",
       );
-      resetBookingForm(); // Reset the form
+      resetBookingForm();
       return;
     }
 
@@ -122,19 +122,18 @@ function VenueDetail() {
         guests: Number(guests),
         venueId: venue.id,
       };
-      const result = await fetchBooking(bookingData);
-      console.log("Booking successful:", result);
+
+      await fetchBooking(bookingData);
 
       // Re-fetch the venue details to update bookings
       await loadVenue();
-      openBookingModal(); // Open the modal
-      resetForm(); // Reset the form
+      openBookingModal();
+      resetForm();
     } catch (error) {
-      console.error("Error booking:", error);
       openMessageModal(
         `An error occurred while booking. Please try again later. ${error.message}`,
       );
-      resetForm(); // Reset the form
+      resetForm();
     }
   };
 
@@ -188,7 +187,6 @@ function VenueDetail() {
           venue={venue}
           onClose={closeVenueModal}
           onUpdate={() => {
-            console.log("Re-fetching venue details after update...");
             loadVenue(); // Re-fetch the updated venue details
           }}
         />

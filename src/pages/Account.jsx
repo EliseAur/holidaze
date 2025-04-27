@@ -62,7 +62,7 @@ export default function Account() {
         const fetchedVenues = await fetchFavorites();
         setFavoriteVenues(fetchedVenues);
       } catch (error) {
-        console.error("Error fetching favorite venues:", error);
+        throw new Error("Failed to fetch favorite venues: ", error.message);
       }
     };
 

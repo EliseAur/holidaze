@@ -102,8 +102,6 @@ export default function VenueDetailContent({
    * @returns {Promise<void>} Resolves when the deletion process is complete.
    */
   const handleDeleteVenue = async () => {
-    console.log("Attempting to delete venue with ID:", id);
-
     if (userName !== venue.owner.name) {
       setModalMessage("You are not authorized to delete this venue.");
       setIsMessageModalOpen(true);
@@ -143,8 +141,9 @@ export default function VenueDetailContent({
         navigate("/account");
       }, 2000);
     } catch (error) {
-      console.error(`Failed to delete venue with ID ${id}:`, error);
-      setModalMessage("Failed to delete the venue. Please try again.");
+      setModalMessage(
+        error.message || "Failed to delete the venue. Please try again.",
+      );
       setIsMessageModalOpen(true);
     }
   };

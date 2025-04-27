@@ -55,9 +55,10 @@ function Venues() {
       try {
         const allFetchedVenues = await fetchAllVenuesWithoutPagination(); // Fetch all venues
         setAllVenues(allFetchedVenues); // Store all venues in the state
-        console.log("Fetched All venues without pagination", allFetchedVenues);
       } catch (error) {
-        console.error("Error fetching all venues in the background:", error);
+        setError(
+          `Failed to load all venues. Please try again later. ${error.message}`,
+        );
       }
     }
 
@@ -83,7 +84,6 @@ function Venues() {
           return updatedVenues;
         });
       } catch (error) {
-        console.error("Error fetching paginated venues:", error);
         setError(
           `Failed to load venues. Please try again later. ${error.message}`,
         );

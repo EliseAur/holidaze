@@ -46,8 +46,6 @@ export default function VenueCreateForm({ onClose, onUpdate }) {
    * @returns {Promise<void>}
    */
   const onSubmit = async (data) => {
-    console.log("Form data before processing:", data);
-
     // Validate and filter image URLs
     const filteredMedia = await validateAndFilterVenueImages(
       data.media,
@@ -58,17 +56,15 @@ export default function VenueCreateForm({ onClose, onUpdate }) {
     data.media = filteredMedia;
 
     try {
-      const newVenue = await createVenue(data);
-      console.log("Venue created successfully:", newVenue);
+      await createVenue(data);
       setIsCreated(true);
       onUpdate();
     } catch (error) {
-      console.error("Error creating venue:", error);
-
       // Handle generic form errors
       setError("form", {
         type: "manual",
         message:
+          error.message ||
           "An unknown error occurred. Please check the provided data and try again.",
       });
     }

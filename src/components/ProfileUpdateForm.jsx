@@ -50,7 +50,7 @@ export default function ProfileUpdateForm({ onClose, onUpdate }) {
           setValue(key, profileData[key]);
         });
       } catch (error) {
-        console.error("Error fetching profile:", error);
+        throw new Error(`Failed to fetch profile: ${error.message}`);
       }
     }
 
@@ -96,14 +96,14 @@ export default function ProfileUpdateForm({ onClose, onUpdate }) {
 
     try {
       const updatedProfile = await updateProfile(data);
-      console.log("Profile updated successfully:", updatedProfile);
+      setProfile(updatedProfile);
       setIsUpdated(true); // Set the state to true after a successful update
       onUpdate(); // Call the callback function to update the account page
     } catch (error) {
-      console.error("1) Error updating profile:", error);
       setError("form", {
         type: "manual",
         message:
+          error.message ||
           "An unknown error occurred. Please check the provided data and try again.",
       });
     }

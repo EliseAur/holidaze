@@ -71,8 +71,6 @@ export default function Register() {
       await authRegister(data);
       navigate("/login");
     } catch (error) {
-      console.error("Error registering:", error);
-
       // Extract the error message from the API response
       if (error.message) {
         setApiError(error.message);

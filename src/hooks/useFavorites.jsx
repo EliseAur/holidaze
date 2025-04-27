@@ -37,9 +37,5 @@ export function useFavorites(isLoggedIn) {
     });
   };
 
-  useEffect(() => {
-    console.log("Favorites:", favorites);
-  }, [favorites]);
-
   return { favorites, handleFavoriteClick };
 }

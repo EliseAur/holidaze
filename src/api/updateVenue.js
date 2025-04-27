@@ -56,12 +56,8 @@ export async function updateVenue(venueId, updatedVenue) {
       throw new Error("Data is not an object");
     }
 
-    console.log(`Updated Venue by ${userName}:`, data);
-
     return data;
   } catch (error) {
-    console.error("Error updating venue:", error);
-
     // Extract the image URL from the error message if applicable
     const imageUrlMatch = error.message.match(/https?:\/\/[^\s]+/);
     const imageUrl = imageUrlMatch ? imageUrlMatch[0] : null;

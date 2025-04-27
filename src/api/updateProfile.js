@@ -44,7 +44,5 @@ export async function updateProfile(updatedProfile) {
     throw new Error("Data is not an object");
   }
 
-  console.log(`Updated profile ${userName}:`, data);
-
   return data;
 }
