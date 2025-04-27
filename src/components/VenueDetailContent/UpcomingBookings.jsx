@@ -1,3 +1,4 @@
+import React from "react";
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarDay, faSackDollar } from "@fortawesome/free-solid-svg-icons";

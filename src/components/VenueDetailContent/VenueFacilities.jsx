@@ -1,3 +1,4 @@
+import React from "react";
 import PropTypes from "prop-types";
 import FacilityIconRounded from "../common/FacilitiesIcons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
