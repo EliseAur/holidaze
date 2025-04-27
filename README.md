@@ -2,7 +2,7 @@
 
 Holidaze is a venue booking platform built with React and Vite. It allows users to browse venues, make bookings, and manage venues as a venue manager. The application includes features such as user registration, venue management, and booking functionality.
 
-![Holidaze Screenshot](./images/holidaze-home-readme.jpg)
+![Holidaze Screenshot](/images/holidaze-home-readme.jpg)
 
 ## Table of Contents
 
