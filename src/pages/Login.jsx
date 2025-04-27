@@ -1,3 +1,4 @@
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -67,15 +68,17 @@ export default function Login() {
         handleLogin(result.accessToken, result.name, result.venueManager);
         navigate("/account");
       } else {
-        setApiError("Unexpected error occurred. Please try again.");
+        setApiError(errors.message);
       }
     } catch (error) {
       if (error.message) {
         setApiError(error.message);
+        console.error("Test error1", error.message);
       } else {
         setApiError(
           error.message || "An unexpected error occurred. Please try again.",
         );
+        console.error("Test error2", error.message);
       }
     }
   };

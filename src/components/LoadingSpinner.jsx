@@ -1,3 +1,4 @@
+import React from "react";
 /**
  * LoadingSpinner component renders a loading spinner with a "Loading..." message.
  * It is used to indicate that content is being loaded.

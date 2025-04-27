@@ -1,5 +1,16 @@
 import PropTypes from "prop-types";
 
+/**
+ * ErrorBox component displays an error message in a styled alert box.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {string} props.message - The error message to display.
+ * @returns {JSX.Element} A styled alert box containing the error message.
+ *
+ * @example
+ * <ErrorBox message="Something went wrong!" />
+ */
 export default function ErrorBox({ message }) {
   return (
     <div

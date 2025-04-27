@@ -1,3 +1,4 @@
+import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faWifi,
@@ -14,6 +15,20 @@ const icons = {
   parking: faParking,
 };
 
+/**
+ * FacilityIconRounded component displays a rounded icon representing a facility (e.g., WiFi, pets, breakfast, parking).
+ * The icon's background color changes based on the availability of the facility.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {boolean} props.available - Whether the facility is available.
+ * @param {string} props.type - The type of facility (e.g., "wifi", "pets", "breakfast", "parking").
+ * @returns {JSX.Element} A styled span element containing the facility icon.
+ *
+ * @example
+ * <FacilityIconRounded available={true} type="wifi" />
+ * <FacilityIconRounded available={false} type="parking" />
+ */
 export default function FacilityIconRounded({ available, type }) {
   return (
     <span

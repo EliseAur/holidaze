@@ -1,3 +1,4 @@
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -40,6 +41,9 @@ export default function Register() {
     watch,
     formState: { errors },
   } = useForm({
+    defaultValues: {
+      venueManager: false, // Initialize venueManager to false
+    },
     resolver: yupResolver(RegisterSchema),
     mode: "onBlur",
   });
