@@ -24,12 +24,6 @@ export default function VenueMediaCarousel({ media }) {
     setImageValidity(media.map(() => true)); // Initialize all images as valid
   }, [media]);
 
-  console.log("Image validity:", imageValidity);
-  console.log(
-    "Image validity:",
-    media.map((image) => imageValidity[media.indexOf(image)]),
-  );
-
   const handleImageError = (index) => {
     setImageValidity((prev) => {
       const updatedValidity = [...prev];

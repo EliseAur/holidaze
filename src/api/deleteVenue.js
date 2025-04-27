@@ -19,7 +19,6 @@ export async function deleteVenue(id) {
 
   try {
     await apiFetch(endpoint, options);
-    console.log(`Venue with ID ${id} deleted successfully.`);
   } catch (error) {
     console.error(`Failed to delete venue with ID ${id}:`, error);
     throw error;

@@ -25,7 +25,7 @@ function HomeLayout() {
         const all = await fetchAllVenuesWithoutPagination();
         setAllVenues(all); // Store all venues in the state
       } catch (error) {
-        console.error("Error fetching all venues:", error);
+        throw new Error("Failed to fetch venues: ", error.message);
       }
     }
 

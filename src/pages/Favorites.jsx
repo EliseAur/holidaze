@@ -36,12 +36,13 @@ export default function Favorites() {
     const fetchFavoriteVenues = async () => {
       try {
         setLoading(true);
-        setError(null); // Reset error state
+        setError(null);
         const fetchedVenues = await fetchFavorites();
         setFavoriteVenues(fetchedVenues);
       } catch (error) {
-        console.error("Error fetching favorites:", error);
-        setError("Failed to load favorites. Please try again later."); // Set error message
+        setError(
+          error.message || "Failed to load favorites. Please try again later.",
+        );
       } finally {
         setLoading(false);
       }
@@ -51,7 +52,7 @@ export default function Favorites() {
   }, [favorites]);
 
   if (loading) {
-    return <LoadingSpinner />; // Show spinner while loading
+    return <LoadingSpinner />;
   }
 
   if (error) {

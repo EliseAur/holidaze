@@ -57,7 +57,6 @@ export default function FilterVenuesForm({
   onResetFilters,
 }) {
   if (!filters) {
-    console.error("Filters prop is undefined in FilterVenuesForm.");
     return null; // Prevent rendering if filters is undefined
   }
   return (

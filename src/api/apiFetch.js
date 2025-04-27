@@ -68,7 +68,6 @@ export async function apiFetch(endpoint, options = {}, requireAuth = true) {
       throw error;
     }
   } catch (error) {
-    console.error("Error fetching data:", error);
-    throw error;
+    throw new Error(`Failed to fetch data: ${error.message}`);
   }
 }

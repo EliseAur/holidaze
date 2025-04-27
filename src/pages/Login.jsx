@@ -73,12 +73,10 @@ export default function Login() {
     } catch (error) {
       if (error.message) {
         setApiError(error.message);
-        console.error("Test error1", error.message);
       } else {
         setApiError(
           error.message || "An unexpected error occurred. Please try again.",
         );
-        console.error("Test error2", error.message);
       }
     }
   };
