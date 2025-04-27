@@ -1,6 +1,15 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
 
+/**
+ * BackToTop component renders a button that scrolls the user back to the top of the page.
+ *
+ * @component
+ * @returns {JSX.Element} A styled anchor link that navigates to the top of the page.
+ *
+ * @example
+ * <BackToTop />
+ */
 export default function BackToTop() {
   return (
     <a

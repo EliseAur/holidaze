@@ -1,3 +1,4 @@
+import React from "react";
 import PropTypes from "prop-types";
 import placeholderImage from "../../images/placeholder-profile-img.jpg";
 
