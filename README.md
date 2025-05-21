@@ -121,7 +121,6 @@ Contributions are welcome! If you would like to contribute, please fork the repo
 Feel free to contact me if you have any questions or feedback about the project:
 
 [My Linkedin](https://www.linkedin.com/in/elise-aurtande/)
-![bilde](https://github.com/user-attachments/assets/4c0c2bb4-cbe4-47d7-9844-aeee22e2eddf)
 
 
 
